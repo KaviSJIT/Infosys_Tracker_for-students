@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Infosys Springboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Specific overrides for login page layout to prevent inherited top padding */
+        body { padding-top: 0 !important; }
+        
+        /* Subtle Grid Pattern overlay for the right panel */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Form specific scroll area if needed for smaller height screens */
+        .login-right {
+            overflow-y: auto;
+            padding: 4rem 5%; /* padding internally to buffer card on small screens */
+        }
+    </style>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <!-- Left Side: Informational Content -->
+        <div class="login-left">
+            <a href="index.html" class="back-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="back-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Home
+            </a>
+
+            <div class="login-branding">
+                <div class="brand-logo-circle">S</div>
+                <div class="brand-text">
+                    <h2>StudentsConnect</h2>
+                    <p>Track &bull; Verify &bull; Connect</p>
+                </div>
+            </div>
+
+            <h1 class="login-headline">Track. Verify. <span class="text-cyan">Analyze.</span></h1>
+            <p class="login-desc">Centralized platform for managing Infosys Springboard participation, internships, and certifications.</p>
+
+            <ul class="login-features">
+                <li>
+                    <div class="icon-circle icon-purple">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <span>Real-time tracking & analytics</span>
+                </li>
+                <li>
+                    <div class="icon-circle icon-cyan">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <span>Automated verification system</span>
+                </li>
+                <li>
+                    <div class="icon-circle icon-green">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <span>Comprehensive reporting</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right Side: Interactive Form -->
+        <div class="login-right">
+            <div class="grid-bg"></div>
+            
+            <div class="login-card">
+                <h2 class="card-headline">Create Account</h2>
+                <p class="card-sub">Register to get started</p>
+
+                <div class="role-selector">
+                    <p class="input-label">Select Role</p>
+                    <div class="role-pills">
+                        <div class="role-pill">Student</div>
+                        <div class="role-pill active">Faculty</div>
+                        <div class="role-pill">Admin</div>
+                    </div>
+                </div>
+
+                <form class="login-form">
+                    <div class="input-group" style="margin-bottom: 1.2rem;">
+                        <label class="input-label">Full Name</label>
+                        <input type="text" placeholder="Enter your name" class="login-input">
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 1.2rem;">
+                        <label class="input-label">Register Number</label>
+                        <input type="text" placeholder="e.g., 4JK21CS001" class="login-input">
+                    </div>
+
+                    <div class="role-selector" style="margin-bottom: 1.2rem;">
+                        <p class="input-label">College</p>
+                        <div class="role-pills">
+                            <div class="role-pill college-pill active">Engineering</div>
+                            <div class="role-pill college-pill">Technology</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 1.2rem;">
+                        <label class="input-label">Email Address</label>
+                        <input type="email" placeholder="you@example.com" class="login-input">
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 2rem;">
+                        <label class="input-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" placeholder="••••••••" class="login-input">
+                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-submit-btn">Create Account</button>
+                </form>
+
+                <p class="signup-prompt">
+                    Already have an account? <a href="login.html">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scope active pill toggling to specific groups
+            const pillGroups = document.querySelectorAll('.role-pills');
+            
+            pillGroups.forEach(group => {
+                const pills = group.querySelectorAll('.role-pill');
+                pills.forEach(pill => {
+                    pill.addEventListener('click', () => {
+                        // Remove active class from all pills in THIS group
+                        pills.forEach(p => p.classList.remove('active'));
+                        // Add active class to the clicked pill
+                        pill.classList.add('active');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

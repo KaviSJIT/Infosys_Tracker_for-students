@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs - Infosys Springboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">S</div>
+                <div class="sidebar-brand">
+                    <h3>CompanyConnect</h3>
+                    <p>Track • Verify • Connect</p>
+                </div>
+            </div>
+            
+            <div class="role-badge">Role: Student</div>
+            
+            <ul class="nav-menu">
+                <li>
+                    <a href="dashboard.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="programs.html" class="nav-item active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        Programs
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Participation
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Settings
+                    </a>
+                </li>
+                
+                <li class="nav-item logout">
+                    <a href="login.html" class="nav-item" style="padding:0; width:100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            
+            <header class="topbar" style="margin-bottom: 2rem;">
+                <div class="search-bar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search...">
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="top-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="notification-dot"></span>
+                    </div>
+                    <div class="profile-pill">S</div>
+                </div>
+            </header>
+
+            <div class="programs-header">
+                <h1>Programs</h1>
+                <p>Browse and manage all available programs</p>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search programs...">
+                </div>
+                <div class="filter-pills">
+                    <div class="fpill active">All</div>
+                    <div class="fpill">Certification</div>
+                    <div class="fpill">Training</div>
+                    <div class="fpill">Internship</div>
+                    <div class="fpill">Workshop</div>
+                </div>
+            </div>
+
+            <!-- Programs Grid -->
+            <div class="programs-grid">
+                
+                <!-- Card 1 -->
+                <div class="p-card">
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"></path><path d="M8 6l-6 6 6 6"></path></svg>
+                        </div>
+                        <span class="ptag blue">Certification</span>
+                        <span class="ptag cyan" style="background: rgba(6,182,212,0.2); color: #22d3ee;">Active</span>
+                    </div>
+                    <h3>Infosys Springboard – Python Programming</h3>
+                    <p class="p-desc">Comprehensive Python programming course with hands-on projects</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            8 weeks
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            142 enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full">View Details</button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="p-card">
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+                        </div>
+                        <span class="ptag blue" style="background: rgba(59,130,246,0.2); color: #93c5fd;">Training</span>
+                        <span class="ptag cyan" style="background: rgba(6,182,212,0.2); color: #22d3ee;">Active</span>
+                    </div>
+                    <h3>AWS Cloud Practitioner</h3>
+                    <p class="p-desc">Learn AWS fundamentals and cloud computing basics</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            6 weeks
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            98 enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full">View Details</button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="p-card">
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="18" y="3" width="4" height="18"></rect><rect x="10" y="8" width="4" height="13"></rect><rect x="2" y="13" width="4" height="8"></rect></svg>
+                        </div>
+                        <span class="ptag blue">Certification</span>
+                        <span class="ptag cyan" style="background: rgba(6,182,212,0.2); color: #22d3ee;">Active</span>
+                    </div>
+                    <h3>Data Science with Python</h3>
+                    <p class="p-desc">Master data analysis, visualization, and machine learning</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            10 weeks
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            54 enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full">View Details</button>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="p-card">
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                        </div>
+                        <span class="ptag blue" style="background: rgba(59,130,246,0.2); color: #93c5fd;">Training</span>
+                        <span class="ptag green">Completed</span>
+                    </div>
+                    <h3>Faculty Development Program</h3>
+                    <p class="p-desc">Advanced teaching methodologies and curriculum development</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            6 weeks
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            32 enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full">View Details</button>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="p-card">
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        </div>
+                        <span class="ptag blue" style="background: rgba(59,130,246,0.2); color: #93c5fd;">Internship</span>
+                        <span class="ptag cyan" style="background: rgba(6,182,212,0.2); color: #22d3ee;">Active</span>
+                    </div>
+                    <h3>Virtual Internship - Web Development</h3>
+                    <p class="p-desc">Build real-world web applications with modern technologies</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            8 weeks
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            76 enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full">View Details</button>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="p-card">
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <span class="ptag blue" style="background: rgba(59,130,246,0.2); color: #93c5fd;">Workshop</span>
+                        <span class="ptag orange">Upcoming</span>
+                    </div>
+                    <h3>HackWithInfy 2026</h3>
+                    <p class="p-desc">Competitive coding workshop and hackathon preparation</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            2 days
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            125 enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full">View Details</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

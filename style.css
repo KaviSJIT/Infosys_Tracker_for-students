@@ -799,12 +799,12 @@ body::after {
 }
 
 .brand-logo-circle {
-    width: 56px;
-    height: 56px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, #b51ffc 0%, #7ba8ff 100%); /* gradient from image */
     color: white;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 700;
     display: flex;
     justify-content: center;
@@ -825,7 +825,7 @@ body::after {
 }
 
 .login-headline {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1.5rem;
@@ -833,7 +833,14 @@ body::after {
 }
 
 .text-cyan {
-    color: #06b6d4;  /* distinct cyan color for Analyze. */
+    color: #4df0ff; /* Bright blue-cyan to match the image */
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #b51ffc 0%, #4df0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .login-desc {
@@ -886,60 +893,61 @@ body::after {
 .login-card {
     background-color: #0c152e; /* dark blue card from original */
     border: 1px solid rgba(255, 255, 255, 0.03);
-    border-radius: 20px;
-    padding: 3rem;
+    border-radius: 16px;
+    padding: 2.2rem;
     width: 100%;
-    max-width: 500px;
+    max-width: 420px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
     position: relative;
     z-index: 10;
 }
 
 .card-headline {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: white;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .card-sub {
     color: var(--text-secondary);
-    margin-bottom: 2.5rem;
-    font-size: 0.95rem;
+    margin-bottom: 1.8rem;
+    font-size: 0.85rem;
 }
 
 .input-label {
     display: block;
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
 }
 
 .role-pills {
     display: flex;
-    background: #060a15;
+    background: #030612; /* Extreme dark */
     border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(255,255,255,0.05);
+    padding: 5px;
+    margin-bottom: 1.5rem;
+    border: none; /* No border visible in image */
 }
 
 .role-pill {
     flex: 1;
     text-align: center;
-    padding: 0.6rem 0;
-    font-size: 0.9rem;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-secondary);
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .role-pill.active {
-    background: #a855f7; /* flat active purple */
+    background: #b926ff; /* vibrant purple from image */
     color: white;
-    box-shadow: 0 2px 10px rgba(168, 85, 247, 0.2);
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(181, 31, 252, 0.2);
 }
 
 .college-pill.active {
@@ -948,17 +956,18 @@ body::after {
 }
 
 .input-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
 }
 
 .login-input {
     width: 100%;
-    background: #020617; /* deeply dark fill */
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 1rem 1.2rem;
-    border-radius: 12px;
+    background: #030612; /* deeply dark fill */
+    border: none;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
     color: white;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
     font-family: inherit;
     transition: all 0.3s ease;
 }
@@ -995,8 +1004,8 @@ body::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2.5rem;
-    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
 }
 
 .checkbox-wrapper {
@@ -1004,21 +1013,36 @@ body::after {
     align-items: center;
     gap: 0.6rem;
     color: #cbd5e1;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     cursor: pointer;
 }
 
 .checkbox-wrapper input {
-    accent-color: #a855f7;
-    width: 16px;
-    height: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    border-radius: 3px;
     cursor: pointer;
+    position: relative;
+    outline: none;
+}
+
+.checkbox-wrapper input:checked::after {
+    content: '';
+    position: absolute;
+    top: 1px; left: 4px;
+    width: 3px; height: 8px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 .forgot-link {
     color: #c084fc;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     transition: color 0.3s ease;
 }
 
@@ -1029,16 +1053,16 @@ body::after {
 
 .login-submit-btn {
     width: 100%;
-    background: #a855f7; /* Flat bright purple matching ui */
+    background: #a920fa; /* Flat bright purple matching ui */
     color: white;
     border: none;
-    padding: 1.2rem;
+    padding: 0.9rem;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    box-shadow: 0 4px 15px rgba(168, 36, 255, 0.3);
 }
 
 .login-submit-btn:hover {
@@ -1048,9 +1072,9 @@ body::after {
 
 .signup-prompt {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
 }
 
 .signup-prompt a {
@@ -1083,4 +1107,82 @@ body::after {
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
+}
+
+/* Captcha Styles */
+.captcha-row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    height: 42px;
+}
+
+.captcha-display {
+    flex: 0 0 100px;
+    background: #030612;
+    border: 1px dashed rgba(168, 85, 247, 0.4);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+}
+
+/* Background noise for captcha */
+.captcha-display::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+}
+
+.captcha-char {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 1px;
+}
+
+.captcha-char:nth-child(odd) {
+    color: #c084fc;
+}
+
+.captcha-char:nth-child(even) {
+    color: #4df0ff;
+}
+
+.captcha-refresh {
+    flex: 0 0 42px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.captcha-refresh:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.captcha-input {
+    flex: 1;
+    letter-spacing: 1px;
+    padding: 0 0.8rem;
+    height: 100%;
+    font-size: 0.85rem;
 }

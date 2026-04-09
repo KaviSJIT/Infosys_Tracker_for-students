@@ -194,7 +194,20 @@
                         generateCaptcha();
                         captchaInput.value = '';
                     } else {
-                        window.location.href = 'dashboard.html';
+                        // MOCK LOGIN LOGIC
+                        const activeRolePill = document.querySelector('.role-pill.active');
+                        const role = activeRolePill ? activeRolePill.textContent : 'Student';
+                        
+                        const user = Auth.loginByRole(role);
+                        if (user) {
+                            if (user.role === 'Admin') {
+                                window.location.href = 'reports.html';
+                            } else {
+                                window.location.href = 'dashboard.html';
+                            }
+                        } else {
+                            alert("Login failed");
+                        }
                     }
                 };
             }
@@ -215,5 +228,8 @@
             }
         });
     </script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
 </body>
 </html>

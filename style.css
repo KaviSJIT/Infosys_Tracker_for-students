@@ -1186,3 +1186,217 @@ body::after {
     height: 100%;
     font-size: 0.85rem;
 }
+
+/* ========================================= */
+/* LIGHT MODE OVERRIDES                      */
+/* ========================================= */
+
+body.light-mode {
+    --bg-color: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --nav-bg: rgba(255, 255, 255, 0.9);
+    --border-color: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
+
+body.light-mode .navbar, body.light-mode .topbar, body.light-mode .sidebar {
+    background: var(--nav-bg);
+    border-color: var(--border-color);
+}
+
+body.light-mode .stat-card, body.light-mode .p-card, body.light-mode .rec-card, body.light-mode .sub-card, body.light-mode .table-card, body.light-mode .chart-card, body.light-mode .feature-card {
+    background-color: #ffffff;
+    border-color: #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+body.light-mode .sidebar-promo, body.light-mode .login-card, body.light-mode .role-pill, body.light-mode .login-input {
+    background-color: #ffffff;
+    border-color: #cbd5e1;
+    color: var(--text-primary);
+}
+
+body.light-mode .search-bar input {
+    color: var(--text-primary);
+}
+
+body.light-mode .nav-item {
+    color: var(--text-secondary);
+}
+
+body.light-mode .nav-item.active {
+    color: var(--accent-purple);
+    background: rgba(157, 92, 255, 0.1);
+}
+
+body.light-mode .stat-value, body.light-mode h1, body.light-mode h2, body.light-mode h3 {
+    color: var(--text-primary);
+}
+
+body.light-mode .reports-table th {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+body.light-mode .reports-table tr {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+body.light-mode .reports-table tr:hover {
+    background: #f8fafc;
+}
+
+body.light-mode .filter-bar, body.light-mode .reports-filter-bar {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+body.light-mode .top-icon {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+body.light-mode .top-icon:hover {
+    background: #e2e8f0;
+}
+
+body.light-mode .btn-secondary, body.light-mode .btn-action.outline, body.light-mode .btn-sub-action.dark-outline {
+    border-color: #cbd5e1;
+    color: #334155;
+    background: white;
+}
+
+body.light-mode .btn-secondary:hover, body.light-mode .btn-action.outline:hover {
+    background: #f1f5f9;
+}
+
+body.light-mode .ptag {
+    font-weight: 600;
+}
+
+body.light-mode .p-stat-card {
+    border: 1px solid #e2e8f0;
+}
+
+/* Theme Toggle Button specific */
+.theme-toggle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-content {
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+body.light-mode .modal-content {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.modal-header h3 { margin: 0; font-size: 1.25rem; }
+.close-modal { cursor: pointer; color: var(--text-secondary); background: transparent; border: none; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-secondary); }
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-primary);
+    font-family: inherit;
+}
+body.light-mode .form-group input, body.light-mode .form-group select {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+/* Medals for Faculty */
+.medals-box {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    flex: 1;
+}
+body.light-mode .medal {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+.medal-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.2rem; }
+.medal.gold .medal-icon { background: linear-gradient(135deg, #fef08a, #ca8a04); color: #713f12; box-shadow: 0 0 15px rgba(234, 179, 8, 0.4); }
+.medal.silver .medal-icon { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #1e293b; box-shadow: 0 0 15px rgba(148, 163, 184, 0.4); }
+.medal.bronze .medal-icon { background: linear-gradient(135deg, #fed7aa, #b45309); color: #431407; box-shadow: 0 0 15px rgba(217, 119, 6, 0.4); }
+.medal span { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+
+/* Dashboard hiding */
+.faculty-only, .admin-only, .student-only { display: none !important; }
+body.role-faculty .faculty-only { display: flex !important; }
+body.role-admin .admin-only { display: flex !important; }
+body.role-student .student-only { display: flex !important; }
+body.role-faculty .faculty-only-block { display: block !important; }
+
+/* Utility */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(16,185,129,0.3);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 3000;
+}
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}

@@ -477,5 +477,63 @@
             </div>
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = Auth.requireAuth(['Student', 'Faculty']);
+            if (user) {
+                Auth.updateUI();
+                
+                // Populate Dashboard dynamic stats based on DB
+                const enrollments = DB.getEnrollments().filter(e => e.userId === user.id);
+                
+                const stats = {
+                    enrolled: enrollments.length,
+                    completed: enrollments.filter(e => e.status === 'Completed').length,
+                    pendingCerts: enrollments.filter(e => e.status === 'Under Review').length,
+                    hours: enrollments.reduce((acc, curr) => acc + curr.hours, 0)
+                };
+                
+                // Update DOM (Assume stat values are in order)
+                const statValues = document.querySelectorAll('.stat-value');
+                if (statValues.length >= 4) {
+                    statValues[0].textContent = stats.enrolled;
+                    statValues[1].textContent = stats.completed;
+                    statValues[2].textContent = stats.pendingCerts;
+                    statValues[3].textContent = stats.hours;
+                }
+                
+                // If Faculty, insert Medals visually
+                if (user.role === 'Faculty') {
+                    const statsGrid = document.querySelector('.stats-grid');
+                    let html = '<div class="medals-box faculty-only-block" style="grid-column: span 4; margin-bottom: 2rem;">';
+                    
+                    if (stats.completed >= 1) {
+                        html += '<div class="medal bronze"><div class="medal-icon">B</div><span>Bronze</span></div>';
+                    }
+                    if (stats.completed >= 3) {
+                        html += '<div class="medal silver"><div class="medal-icon">S</div><span>Silver</span></div>';
+                    }
+                    if (stats.completed >= 5) {
+                        html += '<div class="medal gold"><div class="medal-icon">G</div><span>Gold</span></div>';
+                    }
+                    
+                    if (stats.completed === 0) {
+                        html += '<div style="color:var(--text-secondary); width:100%; text-align:center;">Complete programs to earn medals!</div>';
+                    }
+                    
+                    html += '</div>';
+                    // insert before learning journey
+                    const learningJourney = document.querySelector('.learning-journey');
+                    if (learningJourney) {
+                        learningJourney.insertAdjacentHTML('beforebegin', html);
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -393,9 +393,182 @@
             </div>
             <!-- End Submissions List -->
             
-            <div style="height: 50px;"></div> <!-- Bottom padding -->
-
-        </main>
+    <!-- Full Modal HTML for Proof Upload -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Completion Proof</h3>
+                <button class="close-modal" aria-label="Close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="form-group">
+                <label>Select Program</label>
+                <select id="modalProgramSelect">
+                    <option value="">-- Choose a Program --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Completion Certificate or Details</label>
+                <input type="text" id="modalProofInput" placeholder="E.g. Certificate ID, URL, or Base64 String Mock">
+            </div>
+            <button class="btn-primary" id="btnSubmitProof" style="width:100%; border-radius:8px;">Submit Proof</button>
+        </div>
     </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    
+    <script>
+        // Simple Toast fn
+        function showToast(msg) {
+            let toast = document.querySelector('.toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = Auth.requireAuth(['Student', 'Faculty']);
+            if (user) {
+                Auth.updateUI();
+                renderSubmissions();
+            }
+
+            // Modal Logic
+            const modal = document.getElementById('uploadModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const uploadBtn = document.querySelector('.ph-actions .btn-action');
+            if (uploadBtn) {
+                uploadBtn.addEventListener('click', () => {
+                    populateModalSelect();
+                    modal.classList.add('active');
+                });
+            }
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+            }
+            
+            document.getElementById('btnSubmitProof').addEventListener('click', () => {
+                const eid = document.getElementById('modalProgramSelect').value;
+                const proofStr = document.getElementById('modalProofInput').value;
+                if (!eid || !proofStr.trim()) {
+                    alert('Please select a program and enter proof details.');
+                    return;
+                }
+                if (DB.submitProof(eid, proofStr)) {
+                    modal.classList.remove('active');
+                    showToast('Proof submitted successfully!');
+                    renderSubmissions(); // Re-render table and cards
+                }
+            });
+        });
+
+        function populateModalSelect() {
+            const user = Auth.getUser();
+            const enrollments = DB.getEnrollments().filter(e => e.userId === user.id && (e.status === 'In Progress' || e.status === 'Pending'));
+            const programs = DB.getPrograms();
+            
+            const sel = document.getElementById('modalProgramSelect');
+            sel.innerHTML = '<option value="">-- Choose a Program --</option>';
+            enrollments.forEach(en => {
+                const prog = programs.find(p => p.id === en.programId);
+                sel.innerHTML += \`<option value="\${en.id}">\${prog ? prog.title : en.programId}</option>\`;
+            });
+        }
+
+        function renderSubmissions() {
+            const user = Auth.getUser();
+            const enrollments = DB.getEnrollments().filter(e => e.userId === user.id);
+            const programs = DB.getPrograms();
+            
+            // Update Stats
+            const statsCards = document.querySelectorAll('.p-stat-value');
+            if (statsCards.length >= 4) {
+                statsCards[0].textContent = enrollments.length;
+                statsCards[1].textContent = enrollments.filter(e => e.status === 'Under Review').length;
+                statsCards[2].textContent = enrollments.filter(e => e.status === 'Verified').length;
+                statsCards[3].textContent = enrollments.filter(e => e.status === 'Completed').length;
+            }
+
+            const list = document.querySelector('.submissions-list');
+            if (!list) return;
+            list.innerHTML = '';
+            
+            if (enrollments.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding: 4rem; color: var(--text-secondary);">No enrollments found. Go to Programs to enroll.</div>';
+                return;
+            }
+            
+            enrollments.forEach(en => {
+                const prog = programs.find(p => p.id === en.programId);
+                if(!prog) return;
+
+                // Determine badging and timeline based on status
+                let badgeColor = 'orange';
+                if(en.status === 'Completed' || en.status === 'Verified') badgeColor = 'green';
+                if(en.status === 'Under Review') badgeColor = 'purple';
+                
+                // Timeline building
+                const isUnderReviewOrLater = ['Under Review', 'Verified', 'Completed'].includes(en.status);
+                const isVerifiedOrLater = ['Verified', 'Completed'].includes(en.status);
+                const isCompleted = en.status === 'Completed';
+
+                const cardHTML = \`
+                <div class="sub-card">
+                    <div class="sub-card-top">
+                        <div class="sct-left">
+                            <div class="sub-icon bg-dark-gray">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                            </div>
+                            <div class="sub-info">
+                                <h3>\${prog.title}</h3>
+                                <div class="sub-meta">
+                                    Enrolled \${en.enrollMonth} 2026 • Progress: \${en.progress}%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sct-right">
+                            <span class="status-badge \${badgeColor}">\${en.status}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-middle">
+                        <h4>Progress & Status</h4>
+                        <div class="status-timeline">
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Submitted</div>
+                            </div>
+                            <div class="st-line \${isUnderReviewOrLater ? 'completed' : ''}"></div>
+                            <div class="st-step \${isUnderReviewOrLater ? 'completed' : ''}">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="\${isUnderReviewOrLater ? '3' : '2'}">\${isUnderReviewOrLater ? '<polyline points="20 6 9 17 4 12"></polyline>' : '<circle cx="12" cy="12" r="10"></circle>'}</svg></div>
+                                <div class="st-label">Under Review</div>
+                            </div>
+                            <div class="st-line \${isVerifiedOrLater ? 'completed' : ''}"></div>
+                            <div class="st-step \${isVerifiedOrLater ? 'completed' : ''}">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
+                                <div class="st-label">Verified</div>
+                            </div>
+                            <div class="st-line \${isCompleted ? 'completed' : ''}"></div>
+                            <div class="st-step \${isCompleted ? 'completed' : ''}">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+                                <div class="st-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                \`;
+                list.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+    </script>
 </body>
 </html>

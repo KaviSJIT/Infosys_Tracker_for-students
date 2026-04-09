@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - CompanyConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <style>
+        /* Specific Overrides for Faculty Match while staying Desktop-First */
+        
+        /* Mobile Header only shows on small screens */
+        .mobile-header {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: #64748b;
+        }
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; }
+            .topbar { display: none !important; }
+        }
+
+        .mh-left, .mh-right {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .mh-icon {
+            cursor: pointer;
+        }
+        .mh-avatar {
+            width: 28px; height: 28px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 0.75rem; font-weight: bold;
+        }
+
+        /* Search Row Under Welcome */
+        .faculty-search-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            max-width: 800px; /* Looks neat on desktop without spanning entirely across */
+        }
+        .app-search {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .app-search input {
+            background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 0.95rem;
+        }
+        .app-search input::placeholder {
+            color: #64748b;
+        }
+        .app-search-icon {
+            width: 48px; height: 48px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex; justify-content: center; align-items: center; color: #94a3b8;
+        }
+        .app-avatar {
+            width: 48px; height: 48px; flex-shrink: 0;
+            background: linear-gradient(135deg, #a855f7, #c084fc);
+            border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: 600; font-size: 1.1rem;
+        }
+
+        /* Make Grids Adapt smoothly to Device screen */
+        .stats-grid {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .timeline-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+        }
+        .rec-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo" style="background:#a855f7;">C</div>
+                <div class="sidebar-brand">
+                    <h3>CompanyConnect</h3>
+                    <p>Track • Verify • Connect</p>
+                </div>
+            </div>
+
+            <!-- Custom Role Badge -->
+            <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #d8b4fe; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.8rem; margin-bottom: 2rem; align-self: flex-start; margin-left: 0.5rem; font-weight:500;">
+                Role: Faculty
+            </div>
+            
+            <ul class="nav-menu">
+                <li>
+                    <a href="faculty_dashboard.html" class="nav-item active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="faculty_programs.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        Programs
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Participation
+                    </a>
+                </li>
+                <li>
+                    <a href="faculty_settings.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-promo">
+                <h4>Switch to Focus Mode</h4>
+                <p>Minimize distractions while grading and reviewing coursework.</p>
+                <button class="promo-btn">Enable Mode</button>
+            </div>
+
+            <a href="login.html" class="nav-item logout">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Logout
+            </a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            
+            <!-- Mobile Header Top row (Hidden on desktop) -->
+            <div class="mobile-header">
+                <div class="mh-left">
+                    <svg class="mh-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <svg class="mh-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <div class="mh-right">
+                    <div style="position: relative;" class="mh-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span style="position:absolute; top:-2px; right:-2px; width:6px; height:6px; background:#ef4444; border-radius:50%;"></span>
+                    </div>
+                    <div class="mh-avatar">F</div>
+                </div>
+            </div>
+
+            <!-- Welcome Header -->
+            <div class="welcome-header" style="flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-bottom:0;">
+                <h1 style="font-size: 2.2rem; color: white; margin: 0; font-weight: 600;">Welcome back, Dr. Patel! 👋</h1>
+                <p style="color: #94a3b8; font-size: 1.05rem; margin: 0;">Continue your professional development journey</p>
+            </div>
+
+            <!-- Search Row (Mockup Style, adapted for Desktop width) -->
+            <div class="faculty-search-row">
+                <div class="app-search">
+                    <input type="text" placeholder="Search programs...">
+                </div>
+                <div class="app-search-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </div>
+                <div class="app-avatar">AP</div>
+            </div>
+
+            <!-- Stats Grid - Auto fitting for screen -->
+            <div class="stats-grid">
+                <!-- Card 1 -->
+                <div class="stat-card">
+                    <div class="stat-card-top" style="margin-bottom:1.5rem;">
+                        <div class="stat-icon purple">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stat-label">Enrolled Programs</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-badge green-badge" style="margin-top: 0.5rem; display: inline-block; align-self: flex-start; color: #4ade80; background: rgba(74, 222, 128, 0.1);">+1 this month</div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="stat-card">
+                    <div class="stat-card-top" style="margin-bottom:1.5rem;">
+                        <div class="stat-icon cyan">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="stat-label">Completed Programs</div>
+                    <div class="stat-value">1</div>
+                    <div class="stat-badge green-badge" style="margin-top: 0.5rem; display: inline-block; align-self: flex-start; color: #4ade80; background: rgba(74, 222, 128, 0.1);">33% completion</div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="stat-card">
+                    <div class="stat-card-top" style="margin-bottom:1.5rem;">
+                        <div class="stat-icon p-glow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="stat-label">Certificates</div>
+                    <div class="stat-value">1</div>
+                    <div class="stat-badge orange-badge" style="margin-top: 0.5rem; display: inline-block; align-self: flex-start; color: #fbbf24; background: rgba(251, 191, 36, 0.1);">2 pending</div>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="stat-card">
+                    <div class="stat-card-top" style="margin-bottom:1.5rem;">
+                        <div class="stat-icon cyan" style="box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="stat-label">Learning Hours</div>
+                    <div class="stat-value">86</div>
+                    <div class="stat-badge green-badge" style="margin-top: 0.5rem; display: inline-block; align-self: flex-start; color: #4ade80; background: rgba(74, 222, 128, 0.1);">+12 this week</div>
+                </div>
+            </div>
+
+            <!-- Active Programs Header -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>Active Programs</h2>
+                <a href="#" class="view-all">View All Programs &rarr;</a>
+            </div>
+
+            <!-- Active Program 1 -->
+            <div class="program-card">
+                    <div class="program-icon-title">
+                        <div class="p-icon p1">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </div>
+                        <div class="program-details">
+                            <h3>AWS Certified Solutions Architect</h3>
+                            <div class="program-progress-area">
+                                <div style="display: flex; align-items: center; gap: 1rem; width:100%;">
+                                    <div class="progress-text" style="font-size: 0.8rem; margin-top:0;">Overall Progress</div>
+                                    <div class="progress-container" style="flex: 1;">
+                                        <div class="progress-bar-bg" style="height: 6px;">
+                                            <div class="progress-bar-fill fill-purple" style="width: 65%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-value" style="color: #a855f7; font-weight: 600; font-size:1rem;">65%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="program-actions">
+                        <div style="display: flex; justify-content: space-between; align-items:center; gap: 1.5rem;">
+                             <div class="program-deadline" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <div>
+                                    <span style="font-size: 0.75rem; color: #64748b; display: block;">Deadline</span>
+                                    <strong style="color: #cbd5e1; font-size: 0.85rem;">Jun 30, 2026</strong>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:0.5rem;">
+                                 <span class="ptag purple-bg">Certification</span>
+                                 <span class="ptag orange-bg" style="color:#fbbf24; background:rgba(251,191,36,0.1);">In Progress</span>
+                            </div>
+                        </div>
+                        <button class="btn-action" style="background:#a855f7; color:white; border:none; padding: 0.8rem 1.2rem; min-width: 160px; font-weight: 600;">Continue Learning &rarr;</button>
+                    </div>
+            </div>
+
+            <!-- Active Program 2 -->
+            <div class="program-card">
+                    <div class="program-icon-title">
+                        <div class="p-icon p2" style="background:rgba(34,211,238,0.15); color:#22d3ee; border:none;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="program-details">
+                            <h3>Python for Data Science</h3>
+                            <div class="program-progress-area">
+                                <div style="display: flex; align-items: center; gap: 1rem; width:100%;">
+                                    <div class="progress-text" style="font-size: 0.8rem; margin-top:0;">Overall Progress</div>
+                                    <div class="progress-container" style="flex: 1;">
+                                        <div class="progress-bar-bg" style="height: 6px;">
+                                            <div class="progress-bar-fill fill-cyan" style="width: 100%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-value" style="color: #22d3ee; font-weight: 600; font-size:1rem;">100%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="program-actions">
+                        <div style="display: flex; justify-content: space-between; align-items:center; gap: 1.5rem;">
+                            <div class="program-deadline" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <div>
+                                    <span style="font-size: 0.75rem; color: #64748b; display: block;">Deadline</span>
+                                    <strong style="color: #cbd5e1; font-size: 0.85rem;">Mar 15, 2026</strong>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:0.5rem;">
+                                <span class="ptag blue-bg">Training</span>
+                                <span class="ptag green-bg">Completed</span>
+                            </div>
+                        </div>
+                        <button class="btn-action outline" style="padding: 0.8rem 1.2rem; min-width: 160px; font-weight: 600;">Review Certificate &rarr;</button>
+                    </div>
+            </div>
+
+            <!-- Active Program 3 -->
+            <div class="program-card">
+                    <div class="program-icon-title">
+                        <div class="p-icon p-glow">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        </div>
+                        <div class="program-details">
+                            <h3>Teaching Excellence Program</h3>
+                            <div class="program-progress-area">
+                                <div style="display: flex; align-items: center; gap: 1rem; width:100%;">
+                                    <div class="progress-text" style="font-size: 0.8rem; margin-top:0;">Overall Progress</div>
+                                    <div class="progress-container" style="flex: 1;">
+                                        <div class="progress-bar-bg" style="height: 6px;">
+                                            <div class="progress-bar-fill fill-purple" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-value" style="color: #a855f7; font-weight: 600; font-size:1rem;">80%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="program-actions">
+                        <div style="display: flex; justify-content: space-between; align-items:center; gap: 1.5rem;">
+                             <div class="program-deadline" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <div>
+                                    <span style="font-size: 0.75rem; color: #64748b; display: block;">Deadline</span>
+                                    <strong style="color: #cbd5e1; font-size: 0.85rem;">May 20, 2026</strong>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:0.5rem;">
+                                 <span class="ptag" style="background:#1e293b; color:#94a3b8; border:1px solid #334155;">Workshop</span>
+                                 <span class="ptag orange-bg" style="color:#fbbf24; background:rgba(251,191,36,0.1);">In Progress</span>
+                            </div>
+                        </div>
+                        <button class="btn-action" style="background:#a855f7; color:white; border:none; padding: 0.8rem 1.2rem; min-width: 160px; font-weight: 600;">Continue Learning &rarr;</button>
+                    </div>
+            </div>
+
+            <!-- Current Focus Tracker -->
+            <div class="internship-box" style="margin-top: 3rem;">
+                <div class="i-header" style="flex-direction:column; align-items:flex-start; gap:1.2rem; margin-bottom:1.5rem;">
+                    <div class="i-title" style="gap:1rem;">
+                        <div class="i-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+                        <div>
+                            <h3 style="font-size:1.1rem; margin-bottom:0.2rem;">Current Focus: Teaching Excellence Program</h3>
+                            <p style="color:#64748b; font-size:0.85rem; margin:0;">Week 6 of 8 • 80% Complete • Ends May 20, 2026</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 2rem; text-align:left;">
+                    <button class="btn-action" style="padding: 0.6rem 1.2rem; font-size:0.85rem; background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); border-radius:30px; font-weight: 500;">Continue Program &rarr;</button>
+                </div>
+                
+                <div class="timeline-grid">
+                    <!-- Week 1-2 -->
+                    <div class="t-card" style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div class="t-icon" style="background: rgba(34, 211, 238, 0.1); color: #22d3ee; margin: 0 auto 1rem auto; width:36px; height:36px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <h4 style="color: #f1f5f9; margin-bottom: 0.4rem; font-size:0.95rem;">Week 1-2</h4>
+                        <p style="color: #94a3b8; font-size: 0.8rem;">Teaching Fundamentals</p>
+                    </div>
+
+                    <!-- Week 3-4 -->
+                    <div class="t-card" style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div class="t-icon" style="background: rgba(34, 211, 238, 0.1); color: #22d3ee; margin: 0 auto 1rem auto; width:36px; height:36px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <h4 style="color: #f1f5f9; margin-bottom: 0.4rem; font-size:0.95rem;">Week 3-4</h4>
+                        <p style="color: #94a3b8; font-size: 0.8rem;">Curriculum Design</p>
+                    </div>
+
+                    <!-- Week 5-6 -->
+                    <div class="t-card" style="background: rgba(30, 27, 75, 0.4); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div class="t-icon" style="background: rgba(168, 85, 247, 0.1); color: #c084fc; margin: 0 auto 1rem auto; width:36px; height:36px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </div>
+                        <h4 style="color: #f1f5f9; margin-bottom: 0.4rem; font-size:0.95rem;">Week 5-6</h4>
+                        <p style="color: #94a3b8; font-size: 0.8rem;">Assessment Methods</p>
+                    </div>
+
+                    <!-- Week 7-8 -->
+                    <div class="t-card" style="background: rgba(15, 23, 42, 0.3); border: 1px solid #1e293b; border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div class="t-icon" style="background: #1e293b; color: #64748b; margin: 0 auto 1rem auto; width:36px; height:36px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </div>
+                        <h4 style="color: #94a3b8; margin-bottom: 0.4rem; font-size:0.95rem;">Week 7-8</h4>
+                        <p style="color: #64748b; font-size: 0.8rem;">Final Project</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Header -->
+            <div class="section-header" style="margin-top:4rem; margin-bottom:1.5rem;">
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                    <h2>Recommended For You</h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"></path></svg>
+                </div>
+                <a href="#" class="view-all">View All Recommendations &rarr;</a>
+            </div>
+
+            <!-- Recommendations Grid -->
+            <div class="rec-grid">
+                <!-- Rec Card 1 -->
+                <div class="rec-card">
+                    <div class="rec-top">
+                        <div class="r-badge purple-tag"><span class="plus-icon">+</span> Trending</div>
+                        <div class="match">
+                            <strong style="color:#4ade80;">92%</strong>
+                            <span>Match</span>
+                        </div>
+                    </div>
+                    <h3>Advanced Cloud Architecture</h3>
+                    <div class="rec-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 10 weeks • Advanced
+                    </div>
+                    <div class="rec-tags">
+                        <span class="rtag">AWS</span>
+                        <span class="rtag">Cloud</span>
+                        <span class="rtag">Architecture</span>
+                    </div>
+                    <div class="rec-action" style="background: rgba(168, 85, 247, 0.1); text-align: center; color: #c084fc; padding:0.8rem; border-radius:8px; font-weight: 500;">Enroll Now &rarr;</div>
+                </div>
+
+                <!-- Rec Card 2 -->
+                <div class="rec-card">
+                    <div class="rec-top">
+                        <div class="r-badge blue-tag"><span class="plus-icon">+</span> Popular</div>
+                        <div class="match">
+                            <strong style="color:#22d3ee;">88%</strong>
+                            <span>Match</span>
+                        </div>
+                    </div>
+                    <h3>Machine Learning for Educators</h3>
+                    <div class="rec-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 8 weeks • Intermediate
+                    </div>
+                    <div class="rec-tags">
+                        <span class="rtag">AI/ML</span>
+                        <span class="rtag">Teaching</span>
+                        <span class="rtag">Python</span>
+                    </div>
+                    <div class="rec-action" style="background: rgba(168, 85, 247, 0.1); text-align: center; color: #c084fc; padding:0.8rem; border-radius:8px; font-weight: 500;">Enroll Now &rarr;</div>
+                </div>
+
+                <!-- Rec Card 3 -->
+                <div class="rec-card">
+                    <div class="rec-top">
+                        <div class="r-badge green-tag">New</div>
+                        <div class="match">
+                            <strong style="color:#22d3ee;">85%</strong>
+                            <span>Match</span>
+                        </div>
+                    </div>
+                    <h3>Research Methodology Workshop</h3>
+                    <div class="rec-meta">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> 6 weeks • Advanced
+                    </div>
+                    <div class="rec-tags">
+                        <span class="rtag">Research</span>
+                        <span class="rtag">Academia</span>
+                    </div>
+                    <div class="rec-action" style="background: rgba(168, 85, 247, 0.1); text-align: center; color: #c084fc; padding:0.8rem; border-radius:8px; font-weight: 500;">Enroll Now &rarr;</div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    
+    <script src="dashboard.js"></script>
+</body>
+</html>

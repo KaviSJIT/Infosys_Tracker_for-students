@@ -454,11 +454,11 @@ body {
     }
 }
 
-.program-card:nth-child(1) { animation-delay: 0.1s; }
-.program-card:nth-child(2) { animation-delay: 0.2s; }
-.program-card:nth-child(3) { animation-delay: 0.3s; }
-.program-card:nth-child(4) { animation-delay: 0.4s; }
-.program-card:nth-child(5) { animation-delay: 0.5s; }
+.section-header + .program-card { animation-delay: 0.1s; }
+.section-header + .program-card + .program-card { animation-delay: 0.2s; }
+.section-header + .program-card + .program-card + .program-card { animation-delay: 0.3s; }
+.section-header + .program-card + .program-card + .program-card + .program-card { animation-delay: 0.4s; }
+.section-header + .program-card + .program-card + .program-card + .program-card + .program-card { animation-delay: 0.5s; }
 
 .program-icon-title {
     display: flex;
@@ -509,6 +509,7 @@ body {
 .fill-cyan { background: #22d3ee; }
 .fill-blue { background: #3b82f6; }
 .fill-cyan-dark { background: #0ea5e9; }
+.fill-purple { background: #a855f7; }
 
 .progress-value {
     color: #22d3ee;
@@ -679,10 +680,10 @@ body {
 }
 
 /* Include Programs Page Specific Styles from previous version */
-.programs-header { margin-bottom: 2rem; }
+.programs-header { margin-bottom: 2rem; opacity: 0; transform: translateY(20px); animation: fadeSlideUp 0.6s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
 .programs-header h1 { font-size: 2.2rem; color: white; margin-bottom: 0.5rem; }
 .programs-header p { color: #94a3b8; font-size: 1rem; }
-.filter-bar { display: flex; justify-content: space-between; align-items: center; background: #0a1128; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 3rem; }
+.filter-bar { display: flex; justify-content: space-between; align-items: center; background: #0a1128; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); animation: fadeSlideUp 0.6s cubic-bezier(0.1, 0.8, 0.2, 1) 0.1s forwards; }
 .filter-search { display: flex; align-items: center; background: transparent; width: 300px; }
 .filter-search input { background: transparent; border: none; color: white; margin-left: 0.8rem; width: 100%; outline: none; font-size: 0.95rem; }
 .filter-search svg { color: #64748b; }
@@ -691,7 +692,13 @@ body {
 .fpill:hover { background: rgba(255,255,255,0.05); color: white; }
 .fpill.active { background: #a855f7; color: white; border-color: #a855f7; }
 .programs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 4rem; }
-.p-card { background: #0a1128; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; }
+.p-card { background: #0a1128; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; opacity: 0; transform: translateY(20px); animation: fadeSlideUp 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
+.programs-grid .p-card:nth-child(1) { animation-delay: 0.2s; }
+.programs-grid .p-card:nth-child(2) { animation-delay: 0.3s; }
+.programs-grid .p-card:nth-child(3) { animation-delay: 0.4s; }
+.programs-grid .p-card:nth-child(4) { animation-delay: 0.5s; }
+.programs-grid .p-card:nth-child(5) { animation-delay: 0.6s; }
+.programs-grid .p-card:nth-child(6) { animation-delay: 0.7s; }
 .p-card-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
 .pc-icon { width: 50px; height: 50px; border-radius: 12px; background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%); display: flex; justify-content: center; align-items: center; color: white; box-shadow: 0 4px 15px rgba(168,85,247,0.3); }
 .p-card h3 { color: white; font-size: 1.3rem; margin-bottom: 0.5rem; }
@@ -701,3 +708,4 @@ body {
 .p-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 0 0 1.5rem 0; }
 .btn-full { width: 100%; background: #a855f7; color: white; border: none; padding: 0.9rem; border-radius: 30px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
 .btn-full:hover { background: #9333ea; }
+

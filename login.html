@@ -194,7 +194,12 @@
                         generateCaptcha();
                         captchaInput.value = '';
                     } else {
-                        window.location.href = 'dashboard.html';
+                        const activeRole = document.querySelector('.role-pill.active');
+                        if (activeRole && activeRole.textContent.trim().toLowerCase() === 'faculty') {
+                            window.location.href = 'faculty_dashboard.html';
+                        } else {
+                            window.location.href = 'dashboard.html';
+                        }
                     }
                 };
             }

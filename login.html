@@ -194,6 +194,21 @@
                         generateCaptcha();
                         captchaInput.value = '';
                     } else {
+
+                        // MOCK LOGIN LOGIC
+                        const activeRolePill = document.querySelector('.role-pill.active');
+                        const role = activeRolePill ? activeRolePill.textContent : 'Student';
+                        
+                        const user = Auth.loginByRole(role);
+                        if (user) {
+                            if (user.role === 'Admin') {
+                                window.location.href = 'reports.html';
+                            } else {
+                                window.location.href = 'dashboard.html';
+                            }
+                        } else {
+                            alert("Login failed");
+
                         const activeRole = document.querySelector('.role-pill.active');
                         if (activeRole && activeRole.textContent.trim().toLowerCase() === 'faculty') {
                             window.location.href = 'faculty_dashboard.html';
@@ -220,5 +235,8 @@
             }
         });
     </script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
 </body>
 </html>

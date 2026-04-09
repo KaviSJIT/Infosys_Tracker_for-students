@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Submissions - Infosys Springboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="participation.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">C</div>
+                <div class="sidebar-brand">
+                    <h3>CompanyConnect</h3>
+                    <p>Track • Verify • Connect</p>
+                </div>
+            </div>
+            
+            <div class="role-badge">Role: Student</div>
+            
+            <ul class="nav-menu">
+                <li>
+                    <a href="dashboard.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="programs.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        Programs
+                    </a>
+                </li>
+                <li>
+                    <a href="participation.html" class="nav-item active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Participation
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Settings
+                    </a>
+                </li>
+                
+                <li class="nav-item logout">
+                    <a href="login.html" class="nav-item" style="padding:0; width:100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="search-bar p-search" style="width: 400px; background: transparent;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search...">
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="top-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="notification-dot"></span>
+                    </div>
+                    <div class="profile-pill">S</div>
+                </div>
+            </header>
+
+            <!-- Participation Header -->
+            <div class="participation-header-top">
+                <div class="ph-text">
+                    <h1>My Submissions</h1>
+                    <p>Track your program submissions and status</p>
+                </div>
+                <div class="ph-actions">
+                    <div class="search-bar p-search" style="width: 280px; border-radius: 30px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" placeholder="Search submissions, programs..." style="font-size: 0.85rem;">
+                    </div>
+                    <button class="btn-action" style="border-radius: 30px; font-size: 0.9rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> 
+                        Submit New Participation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid for Participation -->
+            <div class="p-stats-grid">
+                <!-- Card 1 -->
+                <div class="p-stat-card bg-purple">
+                    <div class="p-stat-content">
+                        <div class="p-stat-label">Total Submissions</div>
+                        <div class="p-stat-value">4</div>
+                        <div class="p-stat-sub">All time</div>
+                    </div>
+                    <div class="p-stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="p-stat-card bg-orange">
+                    <div class="p-stat-content">
+                        <div class="p-stat-label">Under Review</div>
+                        <div class="p-stat-value">1</div>
+                        <div class="p-stat-sub">Pending verification</div>
+                    </div>
+                    <div class="p-stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="p-stat-card bg-blue">
+                    <div class="p-stat-content">
+                        <div class="p-stat-label">Verified</div>
+                        <div class="p-stat-value">1</div>
+                        <div class="p-stat-sub">Successfully verified</div>
+                    </div>
+                    <div class="p-stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="p-stat-card bg-green">
+                    <div class="p-stat-content">
+                        <div class="p-stat-label">Completed</div>
+                        <div class="p-stat-value">2</div>
+                        <div class="p-stat-sub">Certificates issued</div>
+                    </div>
+                    <div class="p-stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Proof Card -->
+            <div class="upload-proof-card">
+                <div class="up-left">
+                    <div class="up-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    </div>
+                    <div class="up-text">
+                        <h3>Internship Completion Proof</h3>
+                        <p>Upload your internship completion certificate or proof document to complete verification</p>
+                    </div>
+                </div>
+                <div class="up-right">
+                    <button class="btn-action" style="border-radius: 30px; font-size: 0.9rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Upload Completion Proof
+                    </button>
+                    <button class="btn-action outline border-gray" style="border-radius: 30px; font-size: 0.9rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        View Requirements
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submissions List -->
+            <div class="submissions-list">
+                
+                <!-- Submission 1 (Completed) -->
+                <div class="sub-card">
+                    <div class="sub-card-top">
+                        <div class="sct-left">
+                            <div class="sub-icon bg-dark-green">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                            </div>
+                            <div class="sub-info">
+                                <h3>Python Certification</h3>
+                                <div class="sub-meta">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Submitted Feb 10, 2026 • Register No: 4JK21CS001
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sct-right">
+                            <span class="status-badge green">Completed</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-middle">
+                        <h4>Progress & Status</h4>
+                        <div class="status-timeline">
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Submitted</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Under Review</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
+                                <div class="st-label">Verified</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+                                <div class="st-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-bottom">
+                        <button class="btn-sub-action dark-outline">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Details
+                        </button>
+                        <button class="btn-sub-action solid-green">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download Certificate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submission 2 (Under Review) -->
+                <div class="sub-card">
+                    <div class="sub-card-top">
+                        <div class="sct-left">
+                            <div class="sub-icon bg-dark-gray">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+                            </div>
+                            <div class="sub-info">
+                                <h3>AWS Cloud Practitioner</h3>
+                                <div class="sub-meta">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Submitted Jan 22, 2026 • Register No: 4JK21CS002
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sct-right">
+                            <span class="status-badge purple" style="border: 1px solid rgba(139,92,246,0.5);">Under Review</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-middle">
+                        <h4>Progress & Status</h4>
+                        <div class="status-timeline">
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Submitted</div>
+                            </div>
+                            <div class="st-line purple"></div>
+                            <div class="st-step active-purple">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                                <div class="st-label">Under Review</div>
+                            </div>
+                            <div class="st-line"></div>
+                            <div class="st-step">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                                <div class="st-label">Verified</div>
+                            </div>
+                            <div class="st-line"></div>
+                            <div class="st-step">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+                                <div class="st-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-bottom">
+                        <button class="btn-sub-action dark-outline">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Details
+                        </button>
+                        <button class="btn-sub-action solid-purple">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Upload Proof
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submission 3 (Verified) -->
+                <div class="sub-card">
+                    <div class="sub-card-top">
+                        <div class="sct-left">
+                            <div class="sub-icon bg-dark-gray">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                            </div>
+                            <div class="sub-info">
+                                <h3>Java Certification</h3>
+                                <div class="sub-meta">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Submitted Dec 05, 2025 • Register No: 4JK21CS003
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sct-right">
+                            <span class="status-badge blue" style="border: 1px solid rgba(59,130,246,0.5);">Verified</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-middle">
+                        <h4>Progress & Status</h4>
+                        <div class="status-timeline">
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Submitted</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Under Review</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
+                                <div class="st-label">Verified</div>
+                            </div>
+                            <div class="st-line"></div>
+                            <div class="st-step">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+                                <div class="st-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-bottom">
+                        <button class="btn-sub-action dark-outline">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Details
+                        </button>
+                        <button class="btn-sub-action solid-purple" style="opacity: 0.9;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Upload Proof
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submission 4 (Completed) -->
+                <div class="sub-card">
+                    <div class="sub-card-top">
+                        <div class="sct-left">
+                            <div class="sub-icon bg-dark-purple">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                            </div>
+                            <div class="sub-info">
+                                <h3>Data Science Internship</h3>
+                                <div class="sub-meta">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    Submitted Nov 18, 2025 • Register No: 4JK21CS004
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sct-right">
+                            <span class="status-badge green">Completed</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-middle">
+                        <h4>Progress & Status</h4>
+                        <div class="status-timeline">
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Submitted</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                                <div class="st-label">Under Review</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
+                                <div class="st-label">Verified</div>
+                            </div>
+                            <div class="st-line completed"></div>
+                            <div class="st-step completed">
+                                <div class="st-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div>
+                                <div class="st-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sub-card-bottom">
+                        <button class="btn-sub-action dark-outline">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View Details
+                        </button>
+                        <button class="btn-sub-action solid-green">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download Certificate
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End Submissions List -->
+            
+            <div style="height: 50px;"></div> <!-- Bottom padding -->
+
+        </main>
+    </div>
+</body>
+</html>

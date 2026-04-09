@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics - CompanyConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="reports.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">S</div>
+                <div class="sidebar-brand">
+                    <h3>CompanyConnect</h3>
+                    <p>Track • Verify • Connect</p>
+                </div>
+            </div>
+            
+            <div class="role-badge" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2);">Role: Admin</div>
+            
+            <ul class="nav-menu">
+                <li>
+                    <a href="dashboard.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="programs.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        Programs
+                    </a>
+                </li>
+                <li>
+                    <a href="reports.html" class="nav-item active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Reports
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Settings
+                    </a>
+                </li>
+                
+                <li class="nav-item logout">
+                    <a href="login.html" class="nav-item" style="padding:0; width:100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="search-bar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search...">
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="top-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="notification-dot"></span>
+                    </div>
+                    <div class="profile-pill" style="width: 32px; height: 32px; background: #ef4444; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; font-size: 1.2rem; cursor: pointer;">A</div>
+                </div>
+            </header>
+
+            <!-- Reports Header -->
+            <div class="welcome-header">
+                <div class="welcome-text">
+                    <h1>Reports & Analytics</h1>
+                    <p>Overview of student performance and program metrics</p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <!-- Card 1 -->
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <div class="stat-icon cyan">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div class="stat-badge cyan-badge">Total</div>
+                    </div>
+                    <div class="stat-value" id="stat-total">1,248</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <div class="stat-icon purple">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <div class="stat-badge purple-badge">↗ +12%</div>
+                    </div>
+                    <div class="stat-value" id="stat-completed">456</div>
+                    <div class="stat-label">Completed Courses</div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <div class="stat-icon cyan">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                        <div class="stat-badge cyan-badge">Active</div>
+                    </div>
+                    <div class="stat-value" id="stat-active">792</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+                
+                <!-- Card 4 -->
+                <div class="stat-card">
+                    <div class="stat-card-top">
+                        <div class="stat-icon purple">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                        </div>
+                        <div class="stat-badge purple-badge">↗ +850 hrs</div>
+                    </div>
+                    <div class="stat-value" id="stat-hours">12.5k</div>
+                    <div class="stat-label">Learning Hours</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <!-- Line Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Monthly Enrollment Trends</h3>
+                        <p>Student enrollments over the past 6 months</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="enrollmentChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bar Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Program-wise Performance</h3>
+                        <p>Average completion rates across top programs</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Bar for Table -->
+            <div class="reports-filter-bar">
+                <div class="filter-row-header">
+                    <div class="filter-search">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="table-search" placeholder="Search students...">
+                    </div>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <button class="btn-clear" id="btn-clear-filters">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            Clear Filters
+                        </button>
+                        <button class="btn-action" id="btn-export" style="padding: 0.6rem 1.2rem; font-size: 0.85rem; border-radius: 10px; display: flex; align-items: center; gap: 0.4rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filter-row">
+                    <div class="filter-label">Domain</div>
+                    <div class="toggle-group" id="tgg-domain">
+                        <button class="toggle-btn active" data-val="all">All</button>
+                        <button class="toggle-btn" data-val="engineering">Engineering</button>
+                        <button class="toggle-btn" data-val="tech">Tech</button>
+                    </div>
+                    
+                    <div class="filter-label" style="margin-left: 2rem;">Role</div>
+                    <div class="toggle-group" id="tgg-role">
+                        <button class="toggle-btn active" data-val="all">All</button>
+                        <button class="toggle-btn" data-val="student">Student</button>
+                        <button class="toggle-btn" data-val="faculty">Faculty</button>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-label">Dept</div>
+                    <div class="filter-pills" id="pill-group-dept">
+                        <div class="fpill active" data-val="all">All Depts</div>
+                        <div class="fpill" data-val="CSE">CSE</div>
+                        <div class="fpill" data-val="ISE">ISE</div>
+                        <div class="fpill" data-val="ECE">ECE</div>
+                        <div class="fpill" data-val="MECH">MECH</div>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-label">Filters</div>
+                    
+                    <select class="f-select clean-select" id="sel-status">
+                        <option value="all">Any Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="pending">Enrolled</option>
+                    </select>
+
+                    <select class="f-select clean-select" id="sel-program">
+                        <option value="all">Any Program</option>
+                        <option value="web">Web Dev</option>
+                        <option value="aws">AWS Cloud</option>
+                        <option value="ml">Machine Learning</option>
+                        <option value="uiux">UI/UX</option>
+                    </select>
+
+                    <select class="f-select clean-select" id="sel-year">
+                        <option value="all">Any Year</option>
+                        <option value="1st year">1st Year</option>
+                        <option value="2nd year">2nd Year</option>
+                        <option value="3rd year">3rd Year</option>
+                        <option value="4th year">4th Year</option>
+                    </select>
+
+                    <select class="f-select clean-select" id="sel-progress">
+                        <option value="all">Any Progress</option>
+                        <option value="0-25">0% - 25%</option>
+                        <option value="26-50">26% - 50%</option>
+                        <option value="51-75">51% - 75%</option>
+                        <option value="76-100">76% - 100%</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Participation Table -->
+            <div class="table-card">
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Register No</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Program</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Instantiated by JS -->
+                    </tbody>
+                </table>
+                
+                <!-- Pagination -->
+                <div class="pagination">
+                    <div class="page-info">Showing 1 to 5 of 1,248 entries</div>
+                    <div class="page-controls">
+                        <button class="btn-page"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                        <button class="btn-page active">1</button>
+                        <button class="btn-page">2</button>
+                        <button class="btn-page">3</button>
+                        <button class="btn-page"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Report Cards -->
+            <div class="section-header">
+                <h2>Quick Reports</h2>
+            </div>
+            
+            <div class="rec-grid quick-reports">
+                <!-- Card 1 -->
+                <div class="rec-card">
+                    <div class="rec-top">
+                        <div class="r-badge purple">Monthly</div>
+                    </div>
+                    <h3>Student Participation Report</h3>
+                    <div class="rec-meta">
+                        Detailed breakdown of active students and login frequency.
+                    </div>
+                    <button class="btn-enroll">Generate Report <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="rec-card">
+                    <div class="rec-top">
+                        <div class="r-badge cyan">Weekly</div>
+                    </div>
+                    <h3>Internship Tracking</h3>
+                    <div class="rec-meta">
+                        Status of all ongoing student internships across departments.
+                    </div>
+                    <button class="btn-enroll">Generate Report <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="rec-card">
+                    <div class="rec-top">
+                        <div class="r-badge green">Annual</div>
+                    </div>
+                    <h3>Department Analysis</h3>
+                    <div class="rec-meta">
+                        Comparative analysis of department-wise completion rates.
+                    </div>
+                    <button class="btn-enroll">Generate Report <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script for chart generation and dynamic table logic -->
+    <script src="reports.js"></script>
+</body>
+</html>

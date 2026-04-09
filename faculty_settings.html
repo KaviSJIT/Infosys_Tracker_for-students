@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompanyConnect - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <style>
+        /* Settings Page Specific Overrides & Layout */
+        .settings-sidebar {
+            background-color: #0c101a;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .settings-sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .settings-sidebar-logo {
+            width: 36px;
+            height: 36px;
+            background: #8b5cf6;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .settings-sidebar-brand h3 { font-size: 1.1rem; color: white; margin: 0; font-weight: 600;}
+        .settings-sidebar-brand p { font-size: 0.7rem; color: #94a3b8; margin: 0;}
+
+        .settings-role-badge {
+            background: #1e1b4b;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: #c084fc;
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+            align-self: flex-start;
+            font-weight: 500;
+        }
+
+        .settings-nav-item.active {
+            background: linear-gradient(90deg, #a855f7 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            border: none;
+        }
+        .settings-nav-item.active svg { color: white; }
+
+        .settings-main {
+            padding: 2rem 3rem;
+            background-color: #0b0d17;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Topbar adjust for settings */
+        .s-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            margin-top: -0.5rem;
+        }
+        
+        .s-search {
+            width: 350px;
+        }
+
+        .settings-header {
+            margin-bottom: 2rem;
+        }
+        .settings-header h1 {
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+            font-weight: 600;
+        }
+        .settings-header p {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* Settings Grid Layout */
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Generic Settings Card */
+        .settings-card {
+            background: #111424;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .settings-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        
+        .card-icon-box {
+            width: 48px;
+            height: 48px;
+            background: #a855f7;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+        }
+        
+        .card-title-group h2 {
+            font-size: 1.4rem;
+            color: white;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .btn-outline-purple {
+            background: transparent;
+            border: 1px solid rgba(168,85,247,0.5);
+            color: #c084fc;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .btn-outline-purple:hover {
+            background: rgba(168,85,247,0.1);
+        }
+        
+        .btn-solid-purple {
+            background: linear-gradient(135deg, #a855f7, #8b5cf6);
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .btn-solid-purple:hover {
+            opacity: 0.9;
+        }
+
+        /* Forms Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .admin-locked-text {
+            color: #475569;
+            font-size: 0.75rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .settings-input {
+            width: 100%;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: #64748b;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+        }
+        
+        .settings-input:focus {
+            border-color: rgba(168,85,247,0.5);
+            color: white;
+        }
+        
+        .locked-input {
+            background: transparent;
+            color: #475569;
+            pointer-events: none;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            color: #475569;
+        }
+
+        /* Account Security Layout */
+        .security-card {
+            margin-top: 2rem;
+        }
+        .security-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        .security-info h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin: 0 0 0.4rem 0;
+            font-weight: 500;
+        }
+        .security-info p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Notifications Panel */
+        .notification-item {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .notification-item:last-child {
+            margin-bottom: 0;
+        }
+        .notif-text {
+            flex: 1;
+        }
+        .notif-text h4 {
+            color: white;
+            font-size: 1rem;
+            margin: 0 0 0.4rem 0;
+            font-weight: 500;
+        }
+        .notif-text p {
+            color: #64748b;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #94a3b8;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #1e1b4b;
+            border-color: #8b5cf6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(22px);
+            background-color: #a855f7;
+            box-shadow: 0 0 10px rgba(168,85,247,0.5);
+        }
+
+        @media (max-width: 1200px) {
+            .settings-layout { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Subtle entrance animation */
+        .settings-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeSlideUp 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+        }
+        .security-card { animation-delay: 0.2s; }
+        .notifications-card { animation-delay: 0.4s; }
+    </style>
+</head>
+<body style="padding: 0; margin: 0; background-color: #0b0d17;">
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="settings-sidebar">
+            <div class="settings-sidebar-header">
+                <div class="settings-sidebar-logo">C</div>
+                <div class="settings-sidebar-brand">
+                    <h3>CompanyConnect</h3>
+                    <p>Track • Verify • Connect</p>
+                </div>
+            </div>
+            
+            <div class="settings-role-badge">Role: Faculty</div>
+            
+            <ul class="nav-menu">
+                <li>
+                    <a href="faculty_dashboard.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="faculty_programs.html" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        Programs
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Participation
+                    </a>
+                </li>
+                <li>
+                    <a href="faculty_settings.html" class="nav-item settings-nav-item active">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+
+            <a href="login.html" class="nav-item logout" style="margin-top:auto; margin-bottom: 2rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Logout
+            </a>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="settings-main">
+            
+            <!-- Topbar -->
+            <header class="s-topbar">
+                <div class="search-bar s-search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search...">
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="top-icon" style="position:relative;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span style="position:absolute; top:8px; right:10px; width:6px; height:6px; background:#ef4444; border-radius:50%;"></span>
+                    </div>
+                    <div class="top-icon" style="background: linear-gradient(135deg, #a855f7, #c084fc); border-color:transparent; color:white;">
+                        AP
+                    </div>
+                </div>
+            </header>
+
+            <!-- Settings Header -->
+            <div class="settings-header">
+                <h1>Settings</h1>
+                <p>Manage your account and preferences</p>
+            </div>
+
+            <div class="settings-layout">
+                <!-- Left Column -->
+                <div class="left-col">
+                    
+                    <!-- Profile Settings Card -->
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="card-title-group">
+                                <div class="card-icon-box">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                </div>
+                                <h2>Profile Settings</h2>
+                            </div>
+                            <button class="btn-outline-purple">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                Request Edits
+                            </button>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <!-- Full Name -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Full Name</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input" value="Dr. Patel" readonly>
+                                </div>
+                            </div>
+                            
+                            <!-- University Email -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">University Email</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="email" class="settings-input locked-input" value="dr.patel@educator.edu" readonly>
+                                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                </div>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Phone Number</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input" value="+91 98765 43210" readonly>
+                                </div>
+                            </div>
+                            
+                            <!-- Personal Email -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Personal Email</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="email" class="settings-input" value="rahul.personal@email.com" readonly>
+                                </div>
+                            </div>
+
+                            <!-- University ID -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">University ID</label>
+                                    <span class="admin-locked-text">Admin-Locked</span>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input locked-input" value="STUDENT_ID_1234" readonly>
+                                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                </div>
+                            </div>
+                            
+                            <!-- Academic Status -->
+                            <div class="form-group" style="display:none;"></div> <!-- Filler for grid alignment if needed, wait the image shows Academic Status in row 3 with Univ ID? No, University ID left, Academic Status? Let's check image... Ah, University ID is alone on row? No, 
+                            Row 1: Full Name | University Email
+                            Row 2: Phone Number | Personal Email
+                            Row 3: University ID | Academic Status? No, let's see. Left is University ID, Academic Status is below it?
+                            Image 2:
+                            Full Name | University Email
+                            Phone Number | Personal Email
+                            University ID | Academic Status? Wait, looking at image 1:
+                            University ID is left, Academic Status is left. Department is left.
+                            Wait, the columns in image 1:
+                            Row 3: University ID | Enrollment Date
+                            Row 4: Academic Status | Domain/Specialization??
+                            Let me look at the image really closely.
+                            Image 2:
+                            Left col: Full Name, Phone Number, University ID, Academic Status.
+                            Right col: University Email, Personal Email, Enrollment Date...
+                            Let's arrange carefully.
+                            Full Name | University Email
+                            Phone Number | Personal Email
+                            University ID | Enrollment Date
+                            Academic Status | ?
+                            Department | Domain/Specialization
+                            Let's just use regular grid items sequentially, CSS Grid left-to-right fills.
+                            -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Academic Status</label>
+                                    <span class="admin-locked-text">Admin-Locked</span>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input locked-input" value="Enrolled - Good Standing" readonly>
+                                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                </div>
+                            </div>
+
+                            <!-- Enrollment Date -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Enrollment Date</label>
+                                    <span class="admin-locked-text">Admin-Locked</span>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input locked-input" value="Aug 15, 2024" readonly>
+                                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                </div>
+                            </div>
+                            
+                            <!-- Department -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Department</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input locked-input" value="Computer Science" readonly>
+                                </div>
+                            </div>
+                            
+                            <!-- Domain/Specialization -->
+                            <div class="form-group">
+                                <div class="form-label-row">
+                                    <label class="form-label">Domain/Specialization</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="text" class="settings-input locked-input" value="Full Stack Development" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Security Card -->
+                    <div class="settings-card security-card">
+                        <div class="settings-card-header" style="margin-bottom: 2rem; justify-content: flex-start;">
+                            <div class="card-title-group">
+                                <div class="card-icon-box">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <h2>Account Security</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="security-row">
+                            <div class="security-info">
+                                <h4>Change Password</h4>
+                                <p>Update your password regularly</p>
+                            </div>
+                            <button class="btn-solid-purple">Manage Password</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-col">
+                    
+                    <!-- Notifications Card -->
+                    <div class="settings-card notifications-card" style="position: sticky; top: 2rem;">
+                        <div class="settings-card-header" style="margin-bottom: 3rem; justify-content: flex-start;">
+                            <div class="card-title-group">
+                                <div class="card-icon-box">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                                </div>
+                                <h2>Manage Notifications</h2>
+                            </div>
+                        </div>
+
+                        <div class="notification-item">
+                            <div class="notif-text">
+                                <h4>Program Activity Emails</h4>
+                                <p>Program Activity Emails update your program activities and verifications.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="notification-item" style="margin-top: 3rem;">
+                            <div class="notif-text">
+                                <h4>New Certificate Alerts</h4>
+                                <p>New certificate your comprehensive progress report for the current semester.</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="settings.js"></script>
+</body>
+</html>

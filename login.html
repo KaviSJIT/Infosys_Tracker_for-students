@@ -7,23 +7,35 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Specific overrides for login page layout to prevent inherited top padding */
         body { padding-top: 0 !important; }
-        
-        /* Subtle Grid Pattern overlay for the right panel */
         .grid-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: 0;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
         }
+        .captcha-row {
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .captcha-display {
+            display: flex; align-items: center; gap: 4px;
+            background: #0a0f1e; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 0.6rem 1rem;
+            font-family: 'Courier New', monospace; letter-spacing: 4px;
+            user-select: none; min-width: 130px;
+        }
+        .captcha-char {
+            display: inline-block; font-size: 1.2rem; font-weight: 700;
+            color: #a78bfa;
+            text-shadow: 0 0 8px rgba(167,139,250,0.5);
+        }
+        .captcha-refresh {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8; border-radius: 8px; padding: 0.5rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .captcha-refresh:hover { background: rgba(255,255,255,0.1); color: white; }
+        .captcha-input { flex: 1; }
     </style>
 </head>
 <body class="login-body">
@@ -130,38 +142,35 @@
         </div>
     </div>
     
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Role pills
             const rolePills = document.querySelectorAll('.role-pill');
-            
-            // Check if URL specifies a role to pre-select
             const urlParams = new URLSearchParams(window.location.search);
             const initialRole = urlParams.get('role');
-            
             if (initialRole) {
                 rolePills.forEach(p => p.classList.remove('active'));
                 rolePills.forEach(p => {
-                    if (p.textContent.trim().toLowerCase() === initialRole.toLowerCase()) {
+                    if (p.textContent.trim().toLowerCase() === initialRole.toLowerCase())
                         p.classList.add('active');
-                    }
                 });
             }
-            
             rolePills.forEach(pill => {
                 pill.addEventListener('click', () => {
-                    // Remove active class from all pills
                     rolePills.forEach(p => p.classList.remove('active'));
-                    // Add active class to the clicked pill
                     pill.classList.add('active');
                 });
             });
 
-            // Captcha Generator
+            // Captcha
             const captchaDisplay = document.querySelector('.captcha-display');
             const refreshBtn = document.querySelector('.captcha-refresh');
             const captchaInput = document.querySelector('.captcha-input');
             const loginForm = document.querySelector('.login-form');
-            
+
             function generateCaptcha() {
                 if (!captchaDisplay) return;
                 const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
@@ -173,53 +182,42 @@
                     const span = document.createElement('span');
                     span.textContent = char;
                     span.className = 'captcha-char';
-                    const rotation = (Math.random() - 0.5) * 40; // -20 to 20 deg
-                    span.style.transform = `rotate(${rotation}deg)`;
+                    span.style.transform = `rotate(${(Math.random() - 0.5) * 40}deg)`;
                     captchaDisplay.appendChild(span);
                 }
                 captchaDisplay.dataset.captcha = captcha;
             }
-            
-            if (captchaDisplay && refreshBtn) {
-                generateCaptcha();
-                refreshBtn.addEventListener('click', generateCaptcha);
-            }
 
-            // Simple validation on submit
-            if (loginForm && captchaInput) {
-                loginForm.onsubmit = function(e) {
+            generateCaptcha();
+            if (refreshBtn) refreshBtn.addEventListener('click', generateCaptcha);
+
+            // Form submit
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
                     e.preventDefault();
-                    if (captchaInput.value !== captchaDisplay.dataset.captcha) {
-                        alert("Invalid captcha! Please try again.");
+                    if (!captchaInput || captchaInput.value.trim() !== captchaDisplay.dataset.captcha) {
+                        alert('Invalid captcha! Please try again.');
                         generateCaptcha();
-                        captchaInput.value = '';
-                    } else {
-
-                        // MOCK LOGIN LOGIC
-                        const activeRolePill = document.querySelector('.role-pill.active');
-                        const role = activeRolePill ? activeRolePill.textContent : 'Student';
-                        
-                        const user = Auth.loginByRole(role);
-                        if (user) {
-                            if (user.role === 'Admin') {
-                                window.location.href = 'reports.html';
-                            } else {
-                                window.location.href = 'dashboard.html';
-                            }
-                        } else {
-                            alert("Login failed");
-
-                        const activeRole = document.querySelector('.role-pill.active');
-                        if (activeRole && activeRole.textContent.trim().toLowerCase() === 'faculty') {
-                            window.location.href = 'faculty_dashboard.html';
-                        } else {
-                            window.location.href = 'dashboard.html';
-                        }
+                        if (captchaInput) captchaInput.value = '';
+                        return;
                     }
-                };
+                    const role = document.querySelector('.role-pill.active')?.textContent.trim() || 'Student';
+                    const user = Auth.loginByRole(role);
+                    if (!user) {
+                        alert('Login failed. No user found for this role.');
+                        return;
+                    }
+                    if (role === 'Faculty') {
+                        window.location.href = 'faculty_dashboard.html';
+                    } else if (role === 'Admin') {
+                        window.location.href = 'reports.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                });
             }
-            
-            // Password toggle functionality
+
+            // Password toggle
             const eyeIcon = document.querySelector('.eye-icon');
             const passwordInput = document.querySelector('.password-wrapper input');
             if (eyeIcon && passwordInput) {
@@ -235,8 +233,5 @@
             }
         });
     </script>
-    <script src="data.js"></script>
-    <script src="auth.js"></script>
-    <script src="theme.js"></script>
 </body>
 </html>

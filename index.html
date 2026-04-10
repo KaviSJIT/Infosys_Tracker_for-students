@@ -7,7 +7,7 @@
     <title>CompanyConnect - Track Infosys Springboard</title>
     <meta name="description"
         content="A centralized platform for students, placement coordinators, and faculty to manage programs, certificates, and verification workflows.">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
             <a href="#features">Features</a>
         </div>
         <div class="nav-actions">
-            <button class="btn-signin" onclick="window.location.href='login.html'">Sign In</button>
+            <button class="btn-signin" onclick="window.location.href='pages/login.html'">Sign In</button>
         </div>
     </nav>
 
@@ -57,14 +57,14 @@
         </p>
 
         <div class="cta-buttons">
-            <button class="btn-primary" onclick="window.location.href='login.html'">
+            <button class="btn-primary" onclick="window.location.href='pages/login.html'">
                 Student Login
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
             </button>
-            <button class="btn-secondary" onclick="window.location.href='login.html?role=admin'">
+            <button class="btn-secondary" onclick="window.location.href='pages/login.html?role=admin'">
                 Admin Panel
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -339,7 +339,19 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        document.querySelectorAll('.card-btn').forEach(btn => {
+            btn.addEventListener('click', () => { window.location.href = 'pages/programs.html'; });
+        });
+    </script>
 </body>
 
 </html>

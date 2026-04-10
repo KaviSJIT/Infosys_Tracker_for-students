@@ -195,24 +195,32 @@
             if (loginForm) {
                 loginForm.addEventListener('submit', (e) => {
                     e.preventDefault();
-                    if (!captchaInput || captchaInput.value.trim() !== captchaDisplay.dataset.captcha) {
-                        alert('Invalid captcha! Please try again.');
+                    if (!captchaInput || !captchaInput.value.trim()) {
+                        alert("Please enter the verification code.");
+                        return;
+                    }
+                    if (captchaInput.value.trim().toLowerCase() !== captchaDisplay.dataset.captcha.toLowerCase()) {
+                        alert("Invalid captcha! Please try again.");
                         generateCaptcha();
                         if (captchaInput) captchaInput.value = '';
                         return;
                     }
-                    const role = document.querySelector('.role-pill.active')?.textContent.trim() || 'Student';
+
+                    // MOCK LOGIN LOGIC
+                    const activeRolePill = document.querySelector('.role-pill.active');
+                    const role = activeRolePill ? activeRolePill.textContent.trim() : 'Student';
+                    
                     const user = Auth.loginByRole(role);
-                    if (!user) {
-                        alert('Login failed. No user found for this role.');
-                        return;
-                    }
-                    if (role === 'Faculty') {
-                        window.location.href = 'faculty_dashboard.html';
-                    } else if (role === 'Admin') {
-                        window.location.href = 'reports.html';
+                    if (user) {
+                        if (user.role === 'Admin') {
+                            window.location.href = 'admin_dashboard.html';
+                        } else if (user.role === 'Faculty') {
+                            window.location.href = 'faculty_dashboard.html';
+                        } else {
+                            window.location.href = 'student_dashboard.html';
+                        }
                     } else {
-                        window.location.href = 'dashboard.html';
+                        alert("Login failed. Identity not found.");
                     }
                 });
             }

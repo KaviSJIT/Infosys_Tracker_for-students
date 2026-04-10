@@ -41,9 +41,10 @@ const Auth = {
             return;
         }
         if (allowedRoles && !allowedRoles.includes(user.role)) {
-            // Redirect based on role
-            if (user.role === 'Admin') window.location.href = 'reports.html';
-            else window.location.href = 'dashboard.html';
+            // Strict precise redirection
+            if (user.role === 'Admin') window.location.href = 'admin_dashboard.html';
+            else if (user.role === 'Faculty') window.location.href = 'faculty_dashboard.html';
+            else window.location.href = 'student_dashboard.html';
         }
         return user;
     },
@@ -88,19 +89,8 @@ const Auth = {
         // Conditionally show/hide navigation
         const navMenu = document.querySelector('.nav-menu');
         if (navMenu) {
-            if (user.role === 'Admin') {
-                // Ensure reports is visible, maybe hide programs or modify links
-                // Admin might not need "Participation" standard view
-                const participationLink = document.querySelector('a[href="participation.html"]');
-                if (participationLink) participationLink.parentElement.style.display = 'none';
-
-                // Ensure Dashboard points to Reports conceptually, or leave standard
-                // Actually they want admin to see charts on dashboard.
-            } else {
-                // Student/Faculty - Hide Reports
-                const reportsLink = document.querySelector('a[href="reports.html"]');
-                if (reportsLink) reportsLink.parentElement.style.display = 'none';
-            }
+            // Code dynamically hiding links has been intentionally removed
+            // since each role now has rigidly separated html shells.
         }
         
         // Hide/Show role specific elements via classes

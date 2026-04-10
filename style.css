@@ -1400,3 +1400,23 @@ body.role-faculty .faculty-only-block { display: block !important; }
     transform: translateY(0);
     opacity: 1;
 }
+
+/* Smooth Page Transitions */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    animation: pageEnter 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

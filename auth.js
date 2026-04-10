@@ -91,14 +91,14 @@ const Auth = {
             if (user.role === 'Admin') {
                 // Ensure reports is visible, maybe hide programs or modify links
                 // Admin might not need "Participation" standard view
-                const participationLink = document.querySelector('a[href="student_participation.html"]');
+                const participationLink = document.querySelector('a[href="participation.html"]');
                 if (participationLink) participationLink.parentElement.style.display = 'none';
 
                 // Ensure Dashboard points to Reports conceptually, or leave standard
                 // Actually they want admin to see charts on dashboard.
             } else {
                 // Student/Faculty - Hide Reports
-                const reportsLink = document.querySelector('a[href="admin_reports.html"]');
+                const reportsLink = document.querySelector('a[href="reports.html"]');
                 if (reportsLink) reportsLink.parentElement.style.display = 'none';
             }
         }
@@ -118,4 +118,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-

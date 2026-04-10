@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Programs - Infosys Springboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -14,36 +14,36 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-logo">C</div>
+                <div class="sidebar-logo">S</div>
                 <div class="sidebar-brand">
                     <h3>CompanyConnect</h3>
                     <p>Track • Verify • Connect</p>
                 </div>
             </div>
             
-            <div class="role-badge">Role: Faculty</div>
+            <div class="role-badge">Role: Student</div>
             
             <ul class="nav-menu">
                 <li>
-                    <a href="faculty_dashboard.html" class="nav-item">
+                    <a href="dashboard.html" class="nav-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="faculty_programs.html" class="nav-item active">
+                    <a href="programs.html" class="nav-item active">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                         Programs
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-item">
+                    <a href="participation.html" class="nav-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                         Participation
                     </a>
                 </li>
                 <li>
-                    <a href="faculty_settings.html" class="nav-item">
+                    <a href="settings.html" class="nav-item">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                         Settings
                     </a>
@@ -72,7 +72,7 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                         <span class="notification-dot"></span>
                     </div>
-                    <div class="profile-pill" style="background: linear-gradient(135deg, #a855f7, #c084fc);">AP</div>
+                    <div class="profile-pill">S</div>
                 </div>
             </header>
 
@@ -252,7 +252,90 @@
             </div>
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="theme.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = Auth.requireAuth(['Student', 'Faculty']);
+            if (user) {
+                Auth.updateUI();
+                renderProgramsList();
+            }
+        });
+
+        // Simple Toast fn
+        function showToast(msg) {
+            let toast = document.querySelector('.toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function renderProgramsList() {
+            const user = Auth.getUser();
+            const programs = DB.getPrograms();
+            const enrollments = DB.getEnrollments().filter(e => e.userId === user.id);
+            const enrolledIds = enrollments.map(e => e.programId);
+            
+            const grid = document.querySelector('.programs-grid');
+            if(!grid) return;
+            
+            grid.innerHTML = '';
+            
+            programs.forEach(prog => {
+                const isEnrolled = enrolledIds.includes(prog.id);
+                
+                const card = document.createElement('div');
+                card.className = 'p-card';
+                card.innerHTML = `
+                    <div class="p-card-top">
+                        <div class="pc-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6"></path><path d="M8 6l-6 6 6 6"></path></svg>
+                        </div>
+                        <span class="ptag blue">${prog.type}</span>
+                        ${isEnrolled ? '<span class="ptag green">Enrolled</span>' : '<span class="ptag cyan" style="background: rgba(6,182,212,0.2); color: #22d3ee;">Active</span>'}
+                    </div>
+                    <h3>${prog.title}</h3>
+                    <p class="p-desc">${prog.desc}</p>
+                    <div class="p-meta">
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            ${prog.duration}
+                        </div>
+                        <div class="p-meta-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            ${prog.enrollments} enrolled
+                        </div>
+                    </div>
+                    <div class="p-divider"></div>
+                    <button class="btn-full enroll-btn" data-id="${prog.id}" ${isEnrolled ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                        ${isEnrolled ? 'Already Enrolled' : 'Enroll Now'}
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            
+            // Attach event listeners to newly created buttons
+            document.querySelectorAll('.enroll-btn').forEach(btn => {
+                if(!btn.disabled) {
+                    btn.addEventListener('click', (e) => {
+                        const pid = e.target.getAttribute('data-id');
+                        if (DB.enrollUser(user.id, pid)) {
+                            showToast('Successfully enrolled!');
+                            renderProgramsList(); // re-render to update btn state
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
-
-

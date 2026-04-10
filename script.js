@@ -181,4 +181,3 @@ document.addEventListener('DOMContentLoaded', () => {
         resetAutoplay(); // start autoplay immediately on load
     }
 });
-

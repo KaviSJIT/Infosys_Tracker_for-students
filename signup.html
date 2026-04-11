@@ -4,33 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - Infosys Springboard</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Specific overrides for login page layout to prevent inherited top padding */
         body { padding-top: 0 !important; }
-        
-        /* Subtle Grid Pattern overlay for the right panel */
         .grid-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-            z-index: 0;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
         }
-        
-        /* Form specific scroll area if needed for smaller height screens */
-        .login-right {
-            overflow-y: auto;
-            padding: 4rem 5%; /* padding internally to buffer card on small screens */
-        }
+        .login-right { overflow-y: auto; padding: 4rem 5%; }
     </style>
 </head>
 <body class="login-body">
@@ -124,7 +107,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="login-submit-btn">Create Account</button>
+                    <button type="submit" class="login-submit-btn" id="signup-btn">Create Account</button>
                 </form>
 
                 <p class="signup-prompt">
@@ -134,22 +117,61 @@
         </div>
     </div>
     
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Scope active pill toggling to specific groups
             const pillGroups = document.querySelectorAll('.role-pills');
-            
             pillGroups.forEach(group => {
                 const pills = group.querySelectorAll('.role-pill');
                 pills.forEach(pill => {
                     pill.addEventListener('click', () => {
-                        // Remove active class from all pills in THIS group
                         pills.forEach(p => p.classList.remove('active'));
-                        // Add active class to the clicked pill
                         pill.classList.add('active');
                     });
                 });
             });
+
+            const form = document.querySelector('.login-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = form.querySelector('input[type="text"]').value.trim();
+                    const email = form.querySelector('input[type="email"]').value.trim();
+                    const password = form.querySelector('input[type="password"]').value.trim();
+                    const role = document.querySelector('.role-pills:first-of-type .role-pill.active')?.textContent.trim() || 'Student';
+
+                    if (!name || !email || !password) {
+                        alert('Please fill in all fields.');
+                        return;
+                    }
+
+                    const users = DB.getUsers();
+                    if (users.find(u => u.email === email)) {
+                        alert('An account with this email already exists.');
+                        return;
+                    }
+
+                    const newUser = {
+                        id: 'u' + Date.now(),
+                        name, email, password, role,
+                        initial: name.charAt(0).toUpperCase(),
+                        regNo: '', dept: '', year: '', domain: ''
+                    };
+                    users.push(newUser);
+                    localStorage.setItem('db_users', JSON.stringify(users));
+                    alert('Account created! Please sign in.');
+                    window.location.href = 'login.html';
+                });
+            }
+
+            const eyeIcon = document.querySelector('.eye-icon');
+            const passwordInput = document.querySelector('.password-wrapper input');
+            if (eyeIcon && passwordInput) {
+                eyeIcon.addEventListener('click', () => {
+                    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+                });
+            }
         });
     </script>
 </body>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - Infosys Springboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { padding-top: 0 !important; }
+        .grid-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
+        }
+        .captcha-row {
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .captcha-display {
+            display: flex; align-items: center; gap: 4px;
+            background: #0a0f1e; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 0.6rem 1rem;
+            font-family: 'Courier New', monospace; letter-spacing: 4px;
+            user-select: none; min-width: 130px;
+        }
+        .captcha-char {
+            display: inline-block; font-size: 1.2rem; font-weight: 700;
+            color: #a78bfa;
+            text-shadow: 0 0 8px rgba(167,139,250,0.5);
+        }
+        .captcha-refresh {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8; border-radius: 8px; padding: 0.5rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .captcha-refresh:hover { background: rgba(255,255,255,0.1); color: white; }
+        .captcha-input { flex: 1; }
+    </style>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <!-- Left Side: Informational Content -->
+        <div class="login-left">
+            <a href="index.html" class="back-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="back-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Home
+            </a>
+
+            <div class="login-branding">
+                <div class="brand-logo-circle">S</div>
+                <div class="brand-text">
+                    <h2>StudentsConnect</h2>
+                    <p>Track &bull; Verify &bull; Connect</p>
+                </div>
+            </div>
+
+            <h1 class="login-headline">Track. Verify. <span class="text-gradient">Analyze.</span></h1>
+            <p class="login-desc">Centralized platform for managing Infosys Springboard participation, internships, and certifications.</p>
+
+            <ul class="login-features">
+                <li>
+                    <div class="icon-circle icon-purple">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <span>Real-time tracking & analytics</span>
+                </li>
+                <li>
+                    <div class="icon-circle icon-cyan">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <span>Automated verification system</span>
+                </li>
+                <li>
+                    <div class="icon-circle icon-green">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <span>Comprehensive reporting</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right Side: Interactive Form -->
+        <div class="login-right">
+            <div class="grid-bg"></div>
+            
+            <div class="login-card">
+                <h2 class="card-headline">Welcome Back</h2>
+                <p class="card-sub">Sign in to access your dashboard</p>
+
+                <div class="role-selector">
+                    <p class="input-label">Select Role</p>
+                    <div class="role-pills">
+                        <div class="role-pill active">Student</div>
+                        <div class="role-pill">Faculty</div>
+                        <div class="role-pill">Admin</div>
+                    </div>
+                </div>
+
+                <form class="login-form">
+                    <div class="input-group">
+                        <label class="input-label">Email Address</label>
+                        <input type="email" placeholder="you@example.com" value="jjoswa.05@gmail.com" class="login-input">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" placeholder="••••••••" value="••••••••" class="login-input" id="password-input">
+                            <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                    </div>
+
+    <div class="input-group">
+                        <label class="input-label">Security Verification</label>
+                        <div class="captcha-row">
+                            <div class="captcha-display" onselectstart="return false" title="Captcha Code">
+                                <!-- Captcha characters will be generated by JS -->
+                            </div>
+                            <button type="button" class="captcha-refresh" aria-label="Refresh Captcha" title="Refresh">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                            </button>
+                            <input type="text" placeholder="Enter code" class="login-input captcha-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox">
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="login-submit-btn">Sign In</button>
+                </form>
+
+                <p class="signup-prompt">
+                    Don't have an account? <a href="signup.html">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Role pills
+            const rolePills = document.querySelectorAll('.role-pill');
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialRole = urlParams.get('role');
+            if (initialRole) {
+                rolePills.forEach(p => p.classList.remove('active'));
+                rolePills.forEach(p => {
+                    if (p.textContent.trim().toLowerCase() === initialRole.toLowerCase())
+                        p.classList.add('active');
+                });
+            }
+            rolePills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    rolePills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                });
+            });
+
+            // Captcha
+            const captchaDisplay = document.querySelector('.captcha-display');
+            const refreshBtn = document.querySelector('.captcha-refresh');
+            const captchaInput = document.querySelector('.captcha-input');
+            const loginForm = document.querySelector('.login-form');
+
+            function generateCaptcha() {
+                if (!captchaDisplay) return;
+                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+                let captcha = '';
+                captchaDisplay.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const char = chars.charAt(Math.floor(Math.random() * chars.length));
+                    captcha += char;
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    span.className = 'captcha-char';
+                    span.style.transform = `rotate(${(Math.random() - 0.5) * 40}deg)`;
+                    captchaDisplay.appendChild(span);
+                }
+                captchaDisplay.dataset.captcha = captcha;
+            }
+
+            generateCaptcha();
+            if (refreshBtn) refreshBtn.addEventListener('click', generateCaptcha);
+
+            // Form submit
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (!captchaInput || captchaInput.value.trim() !== captchaDisplay.dataset.captcha) {
+                        alert('Invalid captcha! Please try again.');
+                        generateCaptcha();
+                        if (captchaInput) captchaInput.value = '';
+                        return;
+                    }
+                    const role = document.querySelector('.role-pill.active')?.textContent.trim() || 'Student';
+                    const user = Auth.loginByRole(role);
+                    if (!user) {
+                        alert('Login failed. No user found for this role.');
+                        return;
+                    }
+                    if (role === 'Faculty') {
+                        window.location.href = 'faculty_dashboard.html';
+                    } else if (role === 'Admin') {
+                        window.location.href = 'reports.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                });
+            }
+
+            // Password toggle
+            const eyeIcon = document.querySelector('.eye-icon');
+            const passwordInput = document.querySelector('.password-wrapper input');
+            if (eyeIcon && passwordInput) {
+                eyeIcon.addEventListener('click', () => {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+                    } else {
+                        passwordInput.type = 'password';
+                        eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

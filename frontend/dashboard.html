@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CompanyConnect – Student Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  :root {
+    --bg-base: #0a0b14;
+    --bg-card: #10121f;
+    --bg-card2: #141628;
+    --bg-sidebar: #0d0e1c;
+    --border: rgba(255,255,255,0.07);
+    --border-active: rgba(139,92,246,0.5);
+    --purple: #8b5cf6;
+    --purple-light: #a78bfa;
+    --purple-dark: #6d28d9;
+    --cyan: #06b6d4;
+    --cyan-light: #22d3ee;
+    --green: #10b981;
+    --orange: #f59e0b;
+    --pink: #ec4899;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+    --gradient-purple: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    --gradient-cyan: linear-gradient(135deg, #06b6d4, #0891b2);
+    --gradient-green: linear-gradient(135deg, #10b981, #059669);
+    --gradient-orange: linear-gradient(135deg, #f59e0b, #d97706);
+    --glow-purple: 0 0 20px rgba(139,92,246,0.3);
+    --glow-cyan: 0 0 20px rgba(6,182,212,0.3);
+    --sidebar-w: 220px;
+    --topbar-h: 60px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── LAYOUT ── */
+  #app { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    padding: 20px 0;
+    position: fixed; left: 0; top: 0; bottom: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--gradient-purple);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px;
+    box-shadow: var(--glow-purple);
+  }
+  .logo-text h2 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .logo-text p { font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; }
+
+  .role-badge {
+    margin: 8px 16px 16px;
+    padding: 5px 12px; border-radius: 6px;
+    background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.25);
+    font-size: 11px; font-weight: 600; color: var(--purple-light);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .role-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--purple-light); animation: pulse 2s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .nav-section { padding: 0 8px; flex: 1; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s;
+    color: var(--text-secondary); font-size: 13.5px; font-weight: 500;
+    margin-bottom: 2px; position: relative; overflow: hidden;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+  .nav-item.active {
+    background: rgba(139,92,246,0.15);
+    color: var(--purple-light);
+    border: 1px solid rgba(139,92,246,0.2);
+  }
+  .nav-item.active::before {
+    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 60%; background: var(--purple); border-radius: 0 3px 3px 0;
+  }
+  .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
+  .nav-chevron { margin-left: auto; width: 14px; height: 14px; opacity: 0.5; }
+
+  .sidebar-footer { padding: 16px; border-top: 1px solid var(--border); margin-top: auto; }
+  .logout-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px;
+    cursor: pointer; color: var(--text-muted); font-size: 13px;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover { color: #ef4444; background: rgba(239,68,68,0.08); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1; display: flex; flex-direction: column; min-height: 100vh;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    height: var(--topbar-h); background: rgba(10,11,20,0.8);
+    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 28px; gap: 16px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .search-bar {
+    flex: 1; max-width: 320px;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 14px;
+    transition: all 0.2s;
+  }
+  .search-bar:focus-within { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.06); }
+  .search-bar input {
+    background: none; border: none; outline: none;
+    color: var(--text-primary); font-size: 13px; font-family: inherit;
+    flex: 1;
+  }
+  .search-bar input::placeholder { color: var(--text-muted); }
+  .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); }
+  .notif-dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--purple); border: 1.5px solid var(--bg-base);
+  }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--gradient-purple); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+    box-shadow: var(--glow-purple);
+  }
+
+  /* ── CONTENT ── */
+  .content { padding: 28px; flex: 1; }
+  .page { display: none; animation: fadeSlideUp 0.4s ease; }
+  .page.active { display: block; }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header { margin-bottom: 28px; }
+  .page-header h1 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; }
+  .page-header p { color: var(--text-secondary); font-size: 14px; margin-top: 3px; }
+  .greeting-wave { display: inline-block; animation: wave 2s ease-in-out infinite; transform-origin: 70% 70%; }
+  @keyframes wave { 0%,100%{transform:rotate(0)} 25%{transform:rotate(20deg)} 75%{transform:rotate(-5deg)} }
+
+  /* ── STAT CARDS ── */
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px 22px;
+    position: relative; overflow: hidden; cursor: default;
+    transition: all 0.3s; group: true;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at top right, var(--card-glow, rgba(139,92,246,0.08)), transparent 70%);
+    pointer-events: none;
+  }
+  .stat-card:hover { border-color: var(--border-active); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .stat-badge {
+    position: absolute; top: 14px; right: 14px;
+    padding: 3px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 600;
+    background: rgba(16,185,129,0.15); color: #10b981;
+    border: 1px solid rgba(16,185,129,0.2);
+  }
+  .stat-badge.pending { background: rgba(245,158,11,0.15); color: var(--orange); border-color: rgba(245,158,11,0.2); }
+  .stat-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-header h2 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; }
+  .view-all { font-size: 12px; color: var(--purple-light); cursor: pointer; transition: opacity 0.2s; }
+  .view-all:hover { opacity: 0.7; }
+
+  /* ── PROGRAM PROGRESS CARDS ── */
+  .programs-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .prog-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 18px 22px;
+    display: flex; align-items: center; gap: 16px;
+    transition: all 0.3s; cursor: pointer;
+  }
+  .prog-card:hover { border-color: rgba(139,92,246,0.3); background: var(--bg-card2); transform: translateX(4px); }
+  .prog-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .prog-info { flex: 1; min-width: 0; }
+  .prog-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .prog-tags { display: flex; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .tag-cert { background: rgba(139,92,246,0.15); color: var(--purple-light); border: 1px solid rgba(139,92,246,0.2); }
+  .tag-train { background: rgba(6,182,212,0.15); color: var(--cyan-light); border: 1px solid rgba(6,182,212,0.2); }
+  .tag-week { background: rgba(245,158,11,0.15); color: var(--orange); border: 1px solid rgba(245,158,11,0.2); }
+  .tag-done { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+  .prog-progress-label { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+  .progress-bar { height: 5px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 99px; transition: width 1s cubic-bezier(0.4,0,0.2,1); }
+  .prog-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+  .prog-pct { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; }
+  .prog-deadline { font-size: 10px; color: var(--text-muted); text-align: right; }
+  .prog-btn {
+    padding: 7px 14px; border-radius: 8px; font-size: 11px; font-weight: 600;
+    cursor: pointer; border: none; white-space: nowrap;
+    transition: all 0.2s; font-family: inherit;
+  }
+  .prog-btn-primary { background: var(--gradient-purple); color: white; box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
+  .prog-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.4); }
+  .prog-btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border); }
+
+  /* ── INTERNSHIP SECTION ── */
+  .internship-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px;
+  }
+  .intern-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .intern-title { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .intern-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .intern-btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; background: rgba(139,92,246,0.15); color: var(--purple-light); border: 1px solid rgba(139,92,246,0.3); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+  .intern-btn:hover { background: rgba(139,92,246,0.25); }
+  .weeks-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .week-card {
+    border-radius: 14px; padding: 16px; display: flex; flex-direction: column;
+    align-items: center; gap: 8px; transition: all 0.3s; cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .week-card.done { background: rgba(6,182,212,0.08); border-color: rgba(6,182,212,0.2); }
+  .week-card.active { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.3); box-shadow: 0 4px 20px rgba(139,92,246,0.15); }
+  .week-card.locked { background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.05); opacity: 0.5; }
+  .week-icon-wrap { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .week-card.done .week-icon-wrap { background: var(--gradient-cyan); }
+  .week-card.active .week-icon-wrap { background: var(--gradient-purple); }
+  .week-card.locked .week-icon-wrap { background: rgba(255,255,255,0.06); }
+  .week-label { font-size: 12px; font-weight: 600; text-align: center; }
+  .week-sub { font-size: 10px; color: var(--text-muted); text-align: center; }
+  .week-status { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 20px; }
+  .week-card.active .week-status { background: rgba(139,92,246,0.2); color: var(--purple-light); }
+
+  /* ══════════════════════════════════
+     PROGRAMS PAGE
+  ══════════════════════════════════ */
+  .filter-bar {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+  }
+  .filter-search { flex: 1; display: flex; align-items: center; gap: 8px; }
+  .filter-search input { background: none; border: none; outline: none; color: var(--text-primary); font-size: 13px; font-family: inherit; flex: 1; }
+  .filter-search input::placeholder { color: var(--text-muted); }
+  .filter-tabs { display: flex; gap: 6px; }
+  .filter-tab {
+    padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; border: 1px solid transparent;
+    color: var(--text-muted);
+  }
+  .filter-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+  .filter-tab.active { background: var(--gradient-purple); color: white; border-color: transparent; box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
+
+  .prog-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .prog-grid-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; cursor: pointer;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .prog-grid-card::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, var(--card-accent, rgba(139,92,246,0.12)), transparent 70%);
+    pointer-events: none;
+  }
+  .prog-grid-card:hover { border-color: rgba(139,92,246,0.3); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .prog-grid-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .prog-grid-tags { display: flex; gap: 6px; margin-bottom: 10px; }
+  .prog-grid-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .prog-grid-desc { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5; }
+  .prog-grid-meta { display: flex; gap: 16px; margin-bottom: 16px; }
+  .prog-grid-meta span { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+  .prog-view-btn {
+    width: 100%; padding: 11px; border-radius: 10px;
+    background: rgba(139,92,246,0.12); color: var(--purple-light);
+    border: 1px solid rgba(139,92,246,0.25); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; font-family: inherit;
+  }
+  .prog-view-btn:hover { background: rgba(139,92,246,0.25); border-color: rgba(139,92,246,0.5); }
+
+  /* ══════════════════════════════════
+     PARTICIPATION PAGE
+  ══════════════════════════════════ */
+  .parti-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .submit-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 10px;
+    background: var(--gradient-purple); color: white;
+    border: none; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; font-family: inherit;
+    box-shadow: 0 4px 16px rgba(139,92,246,0.3);
+  }
+  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.4); }
+
+  .parti-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
+  .parti-stat {
+    border-radius: 16px; padding: 20px 22px;
+    position: relative; overflow: hidden;
+  }
+  .parti-stat-label { font-size: 12px; font-weight: 600; margin-bottom: 10px; opacity: 0.85; }
+  .parti-stat-num { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; }
+  .parti-stat-sub { font-size: 11px; opacity: 0.7; margin-top: 4px; }
+  .parti-stat-icon { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); opacity: 0.3; }
+  .ps-purple { background: linear-gradient(135deg,rgba(139,92,246,0.3),rgba(109,40,217,0.2)); border: 1px solid rgba(139,92,246,0.3); }
+  .ps-orange { background: linear-gradient(135deg,rgba(245,158,11,0.3),rgba(217,119,6,0.2)); border: 1px solid rgba(245,158,11,0.3); color: var(--orange); }
+  .ps-blue { background: linear-gradient(135deg,rgba(59,130,246,0.3),rgba(37,99,235,0.2)); border: 1px solid rgba(59,130,246,0.3); color: #93c5fd; }
+  .ps-green { background: linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.2)); border: 1px solid rgba(16,185,129,0.3); color: var(--green); }
+
+  /* upload proof banner */
+  .proof-banner {
+    background: var(--bg-card); border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 16px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+  .proof-banner::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--gradient-purple);
+  }
+  .proof-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(139,92,246,0.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .proof-info h3 { font-weight: 600; font-size: 14px; }
+  .proof-info p { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+  .proof-actions { margin-left: auto; display: flex; gap: 10px; }
+  .proof-upload-btn { padding: 8px 16px; border-radius: 8px; background: var(--gradient-purple); color: white; border: none; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+  .proof-view-btn { padding: 8px 16px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+
+  /* Upload banner styles - matching faculty dashboard */
+  .upload-banner {
+    background: var(--bg-card);
+    border: 1px solid rgba(124, 92, 252, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .upload-banner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(135deg, #7c5cfc, #a78bfa);
+  }
+  .upload-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(124, 92, 252, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .upload-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #7c5cfc;
+  }
+  .upload-text {
+    flex: 1;
+  }
+  .upload-text h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    font-family: 'Syne', sans-serif;
+  }
+  .upload-text p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .upload-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .btn-upload {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7c5cfc, #a78bfa);
+    color: white;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(124, 92, 252, 0.25);
+  }
+  .btn-upload:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 92, 252, 0.35);
+  }
+  .btn-upload svg {
+    width: 14px;
+    height: 14px;
+  }
+  .btn-ghost-req {
+    padding: 10px 18px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-ghost-req:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+  }
+  .btn-ghost-req svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* submission cards */
+  .submission-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; margin-bottom: 14px;
+    transition: all 0.3s;
+  }
+  .submission-card:hover { border-color: rgba(139,92,246,0.2); }
+  .sub-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .sub-icon { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--bg-card2); border: 1px solid var(--border); }
+  .sub-info { flex: 1; }
+  .sub-title { font-weight: 600; font-size: 15px; }
+  .sub-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; gap: 12px; }
+  .sub-status { margin-left: auto; }
+  .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .status-completed { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+  .status-review { background: rgba(245,158,11,0.15); color: var(--orange); border: 1px solid rgba(245,158,11,0.25); }
+  .status-verified { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.25); }
+  .status-pending { background: rgba(139,92,246,0.15); color: var(--purple); border: 1px solid rgba(139,92,246,0.25); }
+
+  /* progress stepper */
+  .stepper { display: flex; align-items: center; margin-bottom: 18px; }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .step-dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+  .step-dot.done { background: var(--gradient-green); box-shadow: 0 0 12px rgba(16,185,129,0.3); }
+  .step-dot.current { background: rgba(139,92,246,0.2); border: 2px solid var(--purple); color: var(--purple); }
+  .step-dot.pending { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.08); color: var(--text-muted); }
+  .step-label { font-size: 10px; color: var(--text-muted); white-space: nowrap; }
+  .step-line { flex: 1; height: 2px; margin-bottom: 20px; border-radius: 2px; }
+  .step-line.done { background: var(--gradient-green); }
+  .step-line.partial { background: linear-gradient(90deg, var(--green) 0%, rgba(255,255,255,0.08) 100%); }
+  .step-line.empty { background: rgba(255,255,255,0.08); }
+
+  .sub-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sub-view-btn { padding: 11px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .sub-view-btn:hover { background: rgba(255,255,255,0.07); }
+  .sub-dl-btn { padding: 11px; border-radius: 10px; background: var(--gradient-green); color: white; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.25); }
+  .sub-dl-btn:hover { transform: translateY(-1px); }
+  .sub-upload-btn { padding: 11px; border-radius: 10px; background: var(--gradient-purple); color: white; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(139,92,246,0.25); }
+
+  /* Stage-based progress styles */
+  .stage-stepper { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding: 8px 0; }
+  .stage-step { display: flex; flex-direction: column; align-items: center; min-width: 80px; position: relative; }
+  .stage-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-bottom: 6px; border: 2px solid; transition: all 0.3s; }
+  .stage-dot-pending { background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--text-muted); }
+  .stage-dot-current { background: var(--purple); border-color: var(--purple); color: white; box-shadow: 0 0 12px rgba(139,92,246,0.4); }
+  .stage-dot-active { background: rgba(139,92,246,0.2); border-color: var(--purple); color: var(--purple); }
+  .stage-dot-completed { background: var(--green); border-color: var(--green); color: white; }
+  .stage-dot-rejected { background: var(--red); border-color: var(--red); color: white; }
+  .stage-dot-review { background: var(--orange); border-color: var(--orange); color: white; }
+  .stage-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--text-secondary); line-height: 1.2; }
+  .stage-meta { font-size: 9px; color: var(--text-muted); margin-top: 2px; text-align: center; }
+  .stage-line { width: 40px; height: 2px; background: var(--border); margin: 0 4px; align-self: center; }
+  .stage-line-active { background: var(--purple); }
+  .stage-step.stage-completed .stage-label { color: var(--green); }
+  .stage-step.stage-rejected .stage-label { color: var(--red); }
+  .stage-step.stage-review .stage-label { color: var(--orange); }
+  .stage-step.stage-active .stage-label { color: var(--purple); }
+
+  /* Stage submission modal */
+  .stage-requirements-section { background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.2); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .stage-requirements-section h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--purple); }
+  .stage-requirements-section p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* ══════════════════════════════════
+     SETTINGS PAGE
+  ══════════════════════════════════ */
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .settings-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .settings-card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: 13.5px; font-weight: 500; }
+  .setting-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .toggle { width: 40px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.08); border: 1px solid var(--border); cursor: pointer; position: relative; transition: all 0.3s; flex-shrink: 0; }
+  .toggle.on { background: var(--purple); border-color: var(--purple); }
+  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: white; transition: transform 0.3s; }
+  .toggle.on::after { transform: translateX(18px); }
+  .profile-section { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .profile-avatar { width: 64px; height: 64px; border-radius: 18px; background: var(--gradient-purple); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; box-shadow: var(--glow-purple); }
+  .profile-info h3 { font-weight: 700; font-size: 16px; }
+  .profile-info p { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+  .profile-edit { margin-left: auto; padding: 7px 14px; border-radius: 8px; background: rgba(139,92,246,0.12); color: var(--purple-light); border: 1px solid rgba(139,92,246,0.25); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .input-field { width: 100%; padding: 10px 14px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-primary); font-size: 13px; font-family: inherit; outline: none; transition: all 0.2s; margin-bottom: 12px; }
+  .input-field:focus { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.06); }
+  .save-btn { width: 100%; padding: 11px; border-radius: 10px; background: var(--gradient-purple); color: white; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 4px; transition: all 0.2s; box-shadow: 0 4px 16px rgba(139,92,246,0.25); }
+  .save-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,92,246,0.35); }
+
+  /* Profile Details Styles */
+  .profile-details-section { margin-top: 20px; }
+  .profile-section-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .profile-section-title svg { opacity: 0.8; }
+  .profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .profile-field { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .field-input { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text-primary); font-family: inherit; font-size: 13px; outline: none; cursor: not-allowed; opacity: 0.9; }
+  .field-input:read-only { background: var(--bg-card); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px; width: 480px; max-width: 90vw;
+    transform: translateY(20px) scale(0.97); transition: all 0.3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .modal-header h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
+  .modal-close { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .upload-zone {
+    border: 2px dashed rgba(139,92,246,0.3); border-radius: 14px; padding: 40px;
+    text-align: center; margin-bottom: 20px; cursor: pointer; transition: all 0.3s;
+    background: rgba(139,92,246,0.04);
+  }
+  .upload-zone:hover { border-color: rgba(139,92,246,0.6); background: rgba(139,92,246,0.08); }
+  .upload-zone-icon { font-size: 36px; margin-bottom: 12px; }
+  .upload-zone p { color: var(--text-secondary); font-size: 13px; }
+  .upload-zone strong { color: var(--purple-light); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--bg-card2); border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 12px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 2000; transform: translateY(80px); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .toast.show { transform: translateY(0); }
+  .toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .toast span { font-size: 13px; font-weight: 500; }
+
+  /* ── SVG ICONS (inline) ── */
+  svg { display: block; }
+
+  @media (max-width: 1100px) {
+    .stats-grid, .parti-stats { grid-template-columns: repeat(2,1fr); }
+    .prog-grid { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr; }
+    .weeks-grid { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">C</div>
+      <div class="logo-text">
+        <h2>CompanyConnect</h2>
+        <p>Track • Verify • Connect</p>
+      </div>
+    </div>
+
+    <div class="role-badge">Role: Student</div>
+
+    <nav class="nav-section">
+      <div class="nav-item active" data-page="dashboard">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Dashboard
+        <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </div>
+      <div class="nav-item" data-page="programs">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        Programs
+      </div>
+      <div class="nav-item" data-page="participation">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Participation
+      </div>
+      <div class="nav-item" data-page="settings">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        Settings
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="logout-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="search-bar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search programs..."/>
+      </div>
+      <div class="topbar-actions">
+        <div class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="icon-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+          </svg>
+        </div>
+        <div class="avatar">SC</div>
+      </div>
+    </header>
+
+    <!-- ═══ DASHBOARD PAGE ═══ -->
+    <div class="content">
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <h1>Welcome back, Sarah! <span class="greeting-wave">👋</span></h1>
+          <p>Continue your learning journey</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card" style="--card-glow:rgba(139,92,246,0.1)">
+            <div class="stat-badge">+2 this month</div>
+            <div class="stat-icon" style="background:rgba(139,92,246,0.15)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+            </div>
+            <div class="stat-num">3</div>
+            <div class="stat-label">Enrolled Programs</div>
+          </div>
+          <div class="stat-card" style="--card-glow:rgba(6,182,212,0.1)">
+            <div class="stat-badge">+3 this week</div>
+            <div class="stat-icon" style="background:rgba(6,182,212,0.15)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2">
+                <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </div>
+            <div class="stat-num">12</div>
+            <div class="stat-label">Completed Courses</div>
+          </div>
+          <div class="stat-card" style="--card-glow:rgba(245,158,11,0.1)">
+            <div class="stat-badge pending">2 pending</div>
+            <div class="stat-icon" style="background:rgba(245,158,11,0.15)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+              </svg>
+            </div>
+            <div class="stat-num">8</div>
+            <div class="stat-label">Certificates</div>
+          </div>
+          <div class="stat-card" style="--card-glow:rgba(16,185,129,0.1)">
+            <div class="stat-badge">+24 this week</div>
+            <div class="stat-icon" style="background:rgba(16,185,129,0.15)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="stat-num">156</div>
+            <div class="stat-label">Learning Hours</div>
+          </div>
+        </div>
+
+        <!-- Active Programs -->
+        <div class="section-header">
+          <h2>Active Programs</h2>
+          <span class="view-all">View All Programs →</span>
+        </div>
+        <div class="programs-list">
+          <!-- Full Stack -->
+          <div class="prog-card">
+            <div class="prog-icon" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div class="prog-info">
+              <div class="prog-title">Full Stack Web Development</div>
+              <div class="prog-tags">
+                <span class="tag tag-cert">Certification</span>
+                <span class="tag tag-week">Week 6/8</span>
+              </div>
+              <div class="prog-progress-label">Overall Progress</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#8b5cf6,#06b6d4)" data-target="75"></div>
+              </div>
+            </div>
+            <div class="prog-right">
+              <div class="prog-pct" style="color:#a78bfa">75%</div>
+              <div class="prog-deadline">📅 Deadline<br>May 15, 2026</div>
+              <button class="prog-btn prog-btn-primary">Continue Learning →</button>
+            </div>
+          </div>
+          <!-- AWS -->
+          <div class="prog-card">
+            <div class="prog-icon" style="background:linear-gradient(135deg,#f59e0b,#ea580c)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            </div>
+            <div class="prog-info">
+              <div class="prog-title">AWS Cloud Practitioner</div>
+              <div class="prog-tags">
+                <span class="tag tag-train">Training</span>
+                <span class="tag tag-done">Completed</span>
+              </div>
+              <div class="prog-progress-label">Overall Progress</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#10b981,#06b6d4)" data-target="100"></div>
+              </div>
+            </div>
+            <div class="prog-right">
+              <div class="prog-pct" style="color:#10b981">100%</div>
+              <div class="prog-deadline">📅 Deadline<br>Mar 20, 2026</div>
+              <button class="prog-btn prog-btn-secondary">Review Certificate →</button>
+            </div>
+          </div>
+          <!-- ML -->
+          <div class="prog-card">
+            <div class="prog-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="prog-info">
+              <div class="prog-title">Machine Learning with Python</div>
+              <div class="prog-tags">
+                <span class="tag tag-cert">Certification</span>
+                <span class="tag tag-week">Week 3/10</span>
+              </div>
+              <div class="prog-progress-label">Overall Progress</div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#8b5cf6,#ec4899)" data-target="30"></div>
+              </div>
+            </div>
+            <div class="prog-right">
+              <div class="prog-pct" style="color:#ec4899">30%</div>
+              <div class="prog-deadline">📅 Deadline<br>Jun 30, 2026</div>
+              <button class="prog-btn prog-btn-primary">Continue Learning →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Internship -->
+        <div class="internship-card">
+          <div class="intern-header">
+            <div>
+              <div class="intern-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                Current Internship: Web Development
+              </div>
+              <div class="intern-meta">Week 6 of 8 • 75% Complete • Ends May 15, 2026</div>
+            </div>
+            <button class="intern-btn">Continue Internship →</button>
+          </div>
+          <div class="weeks-grid">
+            <div class="week-card done">
+              <div class="week-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="week-label">Week 1-2</div>
+              <div class="week-sub">HTML & CSS</div>
+            </div>
+            <div class="week-card done">
+              <div class="week-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="week-label">Week 3-4</div>
+              <div class="week-sub">JavaScript</div>
+            </div>
+            <div class="week-card active">
+              <div class="week-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <div class="week-label">Week 5-6</div>
+              <div class="week-sub">React Fundamentals</div>
+              <div class="week-status">In Progress</div>
+            </div>
+            <div class="week-card locked">
+              <div class="week-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="week-label">Week 7-8</div>
+              <div class="week-sub">Final Project</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PROGRAMS PAGE ═══ -->
+      <div class="page" id="page-programs">
+        <div class="page-header">
+          <h1>Programs</h1>
+          <p>Browse and manage all available programs</p>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Search programs..."/>
+          </div>
+          <div class="filter-tabs">
+            <div class="filter-tab active">All</div>
+            <div class="filter-tab">Certification</div>
+            <div class="filter-tab">Training</div>
+            <div class="filter-tab">Internship</div>
+            <div class="filter-tab">Workshop</div>
+          </div>
+        </div>
+
+        <div class="prog-grid">
+          <!-- Card 1 -->
+          <div class="prog-grid-card" style="--card-accent:rgba(16,185,129,0.15)">
+            <div class="prog-grid-icon" style="background:linear-gradient(135deg,#10b981,#059669)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div class="prog-grid-tags">
+              <span class="tag tag-cert">Certification</span>
+              <span class="tag tag-done">Active</span>
+            </div>
+            <div class="prog-grid-title">Infosys Springboard – Python Programming</div>
+            <div class="prog-grid-desc">Comprehensive Python programming course with hands-on projects</div>
+            <div class="prog-grid-meta">
+              <span>⏱ 8 weeks</span>
+              <span>👥 142 enrolled</span>
+            </div>
+            <button class="prog-view-btn">View Details</button>
+          </div>
+          <!-- Card 2 -->
+          <div class="prog-grid-card" style="--card-accent:rgba(245,158,11,0.12)">
+            <div class="prog-grid-icon" style="background:linear-gradient(135deg,#f59e0b,#ea580c)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            </div>
+            <div class="prog-grid-tags">
+              <span class="tag tag-train">Training</span>
+              <span class="tag tag-done">Active</span>
+            </div>
+            <div class="prog-grid-title">AWS Cloud Practitioner</div>
+            <div class="prog-grid-desc">Learn AWS fundamentals and cloud computing basics</div>
+            <div class="prog-grid-meta">
+              <span>⏱ 6 weeks</span>
+              <span>👥 98 enrolled</span>
+            </div>
+            <button class="prog-view-btn">View Details</button>
+          </div>
+          <!-- Card 3 -->
+          <div class="prog-grid-card" style="--card-accent:rgba(139,92,246,0.15)">
+            <div class="prog-grid-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="prog-grid-tags">
+              <span class="tag tag-cert">Certification</span>
+              <span class="tag tag-done">Active</span>
+            </div>
+            <div class="prog-grid-title">Data Science with Python</div>
+            <div class="prog-grid-desc">Master data analysis, visualization, and machine learning</div>
+            <div class="prog-grid-meta">
+              <span>⏱ 10 weeks</span>
+              <span>👥 54 enrolled</span>
+            </div>
+            <button class="prog-view-btn">View Details</button>
+          </div>
+          <!-- Card 4 -->
+          <div class="prog-grid-card" style="--card-accent:rgba(6,182,212,0.12)">
+            <div class="prog-grid-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="prog-grid-tags">
+              <span class="tag tag-train">Training</span>
+              <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.2)">Completed</span>
+            </div>
+            <div class="prog-grid-title">Faculty Development Program</div>
+            <div class="prog-grid-desc">Advanced teaching methodologies and curriculum development</div>
+            <div class="prog-grid-meta">
+              <span>⏱ 6 weeks</span>
+              <span>👥 32 enrolled</span>
+            </div>
+            <button class="prog-view-btn">View Details</button>
+          </div>
+          <!-- Card 5 -->
+          <div class="prog-grid-card" style="--card-accent:rgba(236,72,153,0.12)">
+            <div class="prog-grid-icon" style="background:linear-gradient(135deg,#ec4899,#be185d)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="prog-grid-tags">
+              <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(236,72,153,0.15);color:#f9a8d4;border:1px solid rgba(236,72,153,0.2)">Internship</span>
+              <span class="tag tag-done">Active</span>
+            </div>
+            <div class="prog-grid-title">Web Development Internship</div>
+            <div class="prog-grid-desc">Real-world web development experience with industry mentors</div>
+            <div class="prog-grid-meta">
+              <span>⏱ 8 weeks</span>
+              <span>👥 28 enrolled</span>
+            </div>
+            <button class="prog-view-btn">View Details</button>
+          </div>
+          <!-- Card 6 -->
+          <div class="prog-grid-card" style="--card-accent:rgba(245,158,11,0.12)">
+            <div class="prog-grid-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="prog-grid-tags">
+              <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.2)">Workshop</span>
+              <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.2)">Upcoming</span>
+            </div>
+            <div class="prog-grid-title">AI & Prompt Engineering Workshop</div>
+            <div class="prog-grid-desc">Hands-on workshop on generative AI tools and prompt crafting</div>
+            <div class="prog-grid-meta">
+              <span>⏱ 2 weeks</span>
+              <span>👥 87 enrolled</span>
+            </div>
+            <button class="prog-view-btn">View Details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PARTICIPATION PAGE ═══ -->
+      <div class="page" id="page-participation">
+        <div class="parti-header-row">
+          <div class="page-header" style="margin-bottom:0">
+            <h1>My Submissions</h1>
+            <p>Track your program submissions and status</p>
+          </div>
+          <button class="submit-btn" onclick="openModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Submit New Participation
+          </button>
+        </div>
+
+        <!-- Parti Stats -->
+        <div class="parti-stats">
+          <div class="parti-stat ps-purple" style="color:var(--text-primary)">
+            <div class="parti-stat-label">Total Submissions</div>
+            <div class="parti-stat-num">4</div>
+            <div class="parti-stat-sub">All time</div>
+            <div class="parti-stat-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+          </div>
+          <div class="parti-stat ps-orange">
+            <div class="parti-stat-label">Under Review</div>
+            <div class="parti-stat-num">1</div>
+            <div class="parti-stat-sub">Pending verification</div>
+            <div class="parti-stat-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+          <div class="parti-stat ps-blue">
+            <div class="parti-stat-label">Verified</div>
+            <div class="parti-stat-num">1</div>
+            <div class="parti-stat-sub">Successfully verified</div>
+            <div class="parti-stat-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+          </div>
+          <div class="parti-stat ps-green">
+            <div class="parti-stat-label">Completed</div>
+            <div class="parti-stat-num">2</div>
+            <div class="parti-stat-sub">Certificates issued</div>
+            <div class="parti-stat-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload proof banner -->
+        <div class="upload-banner">
+          <div class="upload-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </div>
+          <div class="upload-text">
+            <h3>Internship Completion Proof</h3>
+            <p>Upload your internship completion certificate or proof document to complete verification</p>
+          </div>
+          <div class="upload-actions">
+            <button class="btn-upload" onclick="openModal()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 16 12 12 8 16" />
+                <line x1="12" y1="12" x2="12" y2="21" />
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+              </svg>
+              Upload Completion Proof
+            </button>
+            <button class="btn-ghost-req" onclick="showToast('Viewing requirements…','info')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              View Requirements
+            </button>
+          </div>
+        </div>
+
+        <!-- Program Progress Cards -->
+        <div id="program-progress-container">
+          <!-- Dynamic program cards will be inserted here -->
+        </div>
+
+        <!-- Upload proof banner - Hidden by default, shown when student can submit -->
+        <div class="upload-banner" id="proof-banner" style="display: none;">
+          <div class="upload-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </div>
+          <div class="upload-text">
+            <h3 id="proof-banner-title">Stage Proof Required</h3>
+            <p id="proof-banner-desc">Submit your proof document to continue to the next stage</p>
+          </div>
+          <div class="upload-actions">
+            <button class="btn-upload" onclick="openStageSubmissionModal()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 16 12 12 8 16" />
+                <line x1="12" y1="12" x2="12" y2="21" />
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+              </svg>
+              Upload Proof
+            </button>
+            <button class="btn-ghost-req" onclick="showStageRequirements()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              View Requirements
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SETTINGS PAGE ═══ -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <h1>Settings</h1>
+          <p>Manage your account preferences</p>
+        </div>
+        <div class="settings-grid">
+          <!-- Profile -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <div class="profile-section">
+              <div class="profile-avatar">SC</div>
+              <div class="profile-info">
+                <h3>Sarah Chen</h3>
+                <p>sarah.chen@student.edu • ID: STU2021CS004</p>
+              </div>
+            </div>
+
+            <div class="profile-details-section">
+              <h4 class="profile-section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Personal Information
+              </h4>
+              <div class="profile-details-grid">
+                <div class="profile-field">
+                  <label class="field-label">Roll Number</label>
+                  <input type="text" class="field-input" value="CS2021001" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Register Number</label>
+                  <input type="text" class="field-input" value="4JK21CS001" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Name</label>
+                  <input type="text" class="field-input" value="Sarah Chen" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Department</label>
+                  <input type="text" class="field-input" value="Computer Science" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Section</label>
+                  <input type="text" class="field-input" value="A" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Gender</label>
+                  <input type="text" class="field-input" value="Female" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Mobile Number</label>
+                  <input type="text" class="field-input" value="+91 98765 43210" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Email ID</label>
+                  <input type="email" class="field-input" value="sarah.chen@student.edu" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Blood Group</label>
+                  <input type="text" class="field-input" value="O+" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Batch</label>
+                  <input type="text" class="field-input" value="2021-2025" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Course</label>
+                  <input type="text" class="field-input" value="B.Tech Computer Science" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Food</label>
+                  <input type="text" class="field-input" value="Vegetarian" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Accommodation</label>
+                  <input type="text" class="field-input" value="Hostel Block A" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="settings-card">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              Notifications
+            </h3>
+            <div class="setting-row">
+              <div><div class="setting-label">Program Updates</div><div class="setting-sub">Get notified about program changes</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-label">Submission Status</div><div class="setting-sub">Updates on your submissions</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-label">Certificate Ready</div><div class="setting-sub">When your certificate is available</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-label">Weekly Digest</div><div class="setting-sub">Summary of your weekly activity</div></div>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-label">Marketing Emails</div><div class="setting-sub">New programs and opportunities</div></div>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+
+          <!-- Privacy & Security -->
+          <div class="settings-card">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Privacy & Security
+            </h3>
+            <div class="setting-row">
+              <div><div class="setting-label">Two-Factor Auth</div><div class="setting-sub">Extra security for your account</div></div>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-label">Public Profile</div><div class="setting-sub">Make your profile visible to others</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="setting-label">Show Certificates</div><div class="setting-sub">Display certificates on profile</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div style="margin-top:16px">
+              <input class="input-field" type="password" placeholder="Current Password"/>
+              <input class="input-field" type="password" placeholder="New Password"/>
+              <input class="input-field" type="password" placeholder="Confirm New Password"/>
+              <button class="save-btn">Update Password</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end content -->
+  </main>
+</div><!-- end app -->
+
+<!-- ── UPLOAD MODAL ── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Submit New Participation</h3>
+      <div class="modal-close" onclick="closeModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <select class="input-field" style="margin-bottom:14px;cursor:pointer">
+      <option value="" disabled selected>Select Program...</option>
+      <option>Infosys Springboard – Python Programming</option>
+      <option>AWS Cloud Practitioner</option>
+      <option>Data Science with Python</option>
+      <option>Web Development Internship</option>
+    </select>
+    <input class="input-field" type="text" placeholder="Register / Roll Number"/>
+    <div class="upload-zone" onclick="showToast('File selected!')">
+      <div class="upload-zone-icon">📄</div>
+      <p><strong>Click to upload</strong> or drag and drop</p>
+      <p style="margin-top:6px;font-size:11px;color:var(--text-muted)">PDF, PNG, JPG up to 10MB</p>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="sub-view-btn" style="flex:1" onclick="closeModal()">Cancel</button>
+      <button class="sub-upload-btn" style="flex:2" onclick="closeModal();showToast('Submission successful!')">Submit for Review</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── STAGE SUBMISSION MODAL ── -->
+<div class="modal-overlay" id="stageSubmissionModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="stage-modal-title">Stage Proof Submission</h3>
+      <div class="modal-close" onclick="closeStageSubmissionModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <div class="stage-requirements-section">
+      <h4>📋 Requirements</h4>
+      <p id="stage-requirements">Please submit the required proof document for this stage.</p>
+    </div>
+    <input type="file" id="stageFileInput" class="input-field" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip" style="margin-bottom:16px"/>
+    <div style="display:flex;gap:10px">
+      <button class="sub-view-btn" style="flex:1" onclick="closeStageSubmissionModal()">Cancel</button>
+      <button class="sub-upload-btn" style="flex:2" onclick="submitStageProof()">Submit Proof</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toast-msg">Action completed!</span>
+</div>
+
+<script>
+  // ── STAGE-BASED PROGRAM MANAGEMENT ──
+  let currentStudentSubmissions = [];
+  let currentStageSubmission = null;
+
+  // Load student submissions on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    loadStudentSubmissions();
+  });
+
+  function loadStudentSubmissions() {
+    // Get current user
+    const user = Auth.getUser();
+    if (!user) return;
+
+    // Get student's submissions
+    currentStudentSubmissions = DB.getStudentSubmissions().filter(sub => sub.studentId === user.id);
+    renderProgramProgress();
+  }
+
+  function renderProgramProgress() {
+    const container = document.getElementById('program-progress-container');
+    if (!currentStudentSubmissions.length) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)">No program enrollments found. Start by submitting a new participation.</div>';
+      return;
+    }
+
+    container.innerHTML = currentStudentSubmissions.map(submission => {
+      const program = DB.getPrograms().find(p => p.id === submission.programId);
+      if (!program) return '';
+
+      const currentStageIndex = submission.currentStage - 1;
+      const currentStage = program.stages[currentStageIndex];
+      const nextStage = program.stages[currentStageIndex + 1];
+
+      // Check if student can submit for next stage
+      const canSubmitNext = currentStageIndex < program.stages.length - 1 &&
+                           submission.submissions.every(s => s.status === 'Approved');
+
+      // Show proof banner if student can submit next stage
+      if (canSubmitNext) {
+        showProofBanner(program, nextStage);
+      }
+
+      return `
+        <div class="submission-card">
+          <div class="sub-header">
+            <div class="sub-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <div class="sub-info">
+              <div class="sub-title">${program.name}</div>
+              <div class="sub-meta">
+                <span>📅 Enrolled ${submission.submissions[0]?.submittedDate || 'Recently'}</span>
+                <span>• ${program.type}</span>
+              </div>
+            </div>
+            <div class="sub-status">
+              <span class="status-badge ${getProgramStatusClass(submission, program)}">
+                ${getProgramStatusText(submission, program)}
+              </span>
+            </div>
+          </div>
+
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-weight:600;">
+            Stage Progress (${submission.currentStage}/${program.stages.length})
+          </div>
+
+          <div class="stage-stepper">
+            ${program.stages.map((stage, index) => {
+              const submissionForStage = submission.submissions.find(s => s.stage === stage);
+              const stageStatus = getStageStatus(submissionForStage, index, currentStageIndex);
+              return `
+                <div class="stage-step ${stageStatus.class}">
+                  <div class="stage-dot ${stageStatus.dotClass}">
+                    ${stageStatus.icon}
+                  </div>
+                  <div class="stage-label">${stage}</div>
+                  ${submissionForStage ? `
+                    <div class="stage-meta">
+                      ${submissionForStage.status === 'Approved' ? '✓ Verified' :
+                        submissionForStage.status === 'Rejected' ? '✗ Rejected' : '⏳ Pending'}
+                    </div>
+                  ` : ''}
+                </div>
+                ${index < program.stages.length - 1 ? `<div class="stage-line ${stageStatus.lineClass}"></div>` : ''}
+              `;
+            }).join('')}
+          </div>
+
+          <div class="sub-actions">
+            <button class="sub-view-btn" onclick="viewProgramDetails(${submission.id})">👁 View Details</button>
+            ${canSubmitNext ? `<button class="sub-upload-btn" onclick="prepareStageSubmission(${submission.id}, '${nextStage}')">⬆ Submit ${nextStage} Proof</button>` : ''}
+            ${submission.submissions.some(s => s.status === 'Approved' && program.stages.indexOf(s.stage) === program.stages.length - 1) ?
+              `<button class="sub-dl-btn" onclick="downloadCertificate(${submission.id})">⬇ Download Certificate</button>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getProgramStatusClass(submission, program) {
+    const completedStages = submission.submissions.filter(s => s.status === 'Approved').length;
+    if (completedStages === program.stages.length) return 'status-completed';
+    if (submission.submissions.some(s => s.status === 'Pending')) return 'status-review';
+    if (completedStages > 0) return 'status-verified';
+    return 'status-pending';
+  }
+
+  function getProgramStatusText(submission, program) {
+    const completedStages = submission.submissions.filter(s => s.status === 'Approved').length;
+    if (completedStages === program.stages.length) return 'Completed';
+    if (submission.submissions.some(s => s.status === 'Pending')) return 'Under Review';
+    if (completedStages > 0) return 'In Progress';
+    return 'Enrolled';
+  }
+
+  function getStageStatus(submissionForStage, index, currentStageIndex) {
+    if (!submissionForStage) {
+      return {
+        class: index <= currentStageIndex ? 'stage-active' : 'stage-pending',
+        dotClass: index < currentStageIndex ? 'stage-dot-active' : index === currentStageIndex ? 'stage-dot-current' : 'stage-dot-pending',
+        lineClass: index < currentStageIndex ? 'stage-line-active' : 'stage-line-pending',
+        icon: index < currentStageIndex ? '✓' : index === currentStageIndex ? '○' : '○'
+      };
+    }
+
+    if (submissionForStage.status === 'Approved') {
+      return {
+        class: 'stage-completed',
+        dotClass: 'stage-dot-completed',
+        lineClass: index < program.stages.length - 1 ? 'stage-line-active' : '',
+        icon: '✓'
+      };
+    } else if (submissionForStage.status === 'Rejected') {
+      return {
+        class: 'stage-rejected',
+        dotClass: 'stage-dot-rejected',
+        lineClass: 'stage-line-pending',
+        icon: '✗'
+      };
+    } else {
+      return {
+        class: 'stage-review',
+        dotClass: 'stage-dot-review',
+        lineClass: 'stage-line-pending',
+        icon: '⏳'
+      };
+    }
+  }
+
+  function showProofBanner(program, nextStage) {
+    const banner = document.getElementById('proof-banner');
+    const title = document.getElementById('proof-banner-title');
+    const desc = document.getElementById('proof-banner-desc');
+
+    title.textContent = `${nextStage} Proof Required`;
+    desc.textContent = program.stageRequirements[nextStage] || `Submit your proof document for ${nextStage} to continue.`;
+
+    banner.style.display = 'flex';
+  }
+
+  function prepareStageSubmission(submissionId, stage) {
+    currentStageSubmission = { submissionId, stage };
+    openStageSubmissionModal();
+  }
+
+  function openStageSubmissionModal() {
+    if (!currentStageSubmission) return;
+
+    const submission = currentStudentSubmissions.find(s => s.id === currentStageSubmission.submissionId);
+    const program = DB.getPrograms().find(p => p.id === submission.programId);
+
+    // Update modal content
+    document.getElementById('stage-modal-title').textContent = `${program.name} - ${currentStageSubmission.stage}`;
+    document.getElementById('stage-requirements').textContent = program.stageRequirements[currentStageSubmission.stage] || 'Please submit the required proof document.';
+
+    document.getElementById('stageSubmissionModal').classList.add('open');
+  }
+
+  function closeStageSubmissionModal() {
+    document.getElementById('stageSubmissionModal').classList.remove('open');
+    currentStageSubmission = null;
+  }
+
+  function submitStageProof() {
+    if (!currentStageSubmission) return;
+
+    const fileInput = document.getElementById('stageFileInput');
+    const file = fileInput.files[0];
+    if (!file) {
+      showToast('Please select a file to upload.', 'error');
+      return;
+    }
+
+    // In a real implementation, this would upload the file
+    // For now, we'll simulate adding the submission
+    const submission = currentStudentSubmissions.find(s => s.id === currentStageSubmission.submissionId);
+    const newSubmission = {
+      stage: currentStageSubmission.stage,
+      status: 'Pending',
+      submittedDate: new Date().toISOString().split('T')[0],
+      fileName: file.name,
+      fileType: getFileType(file.name),
+      adminComment: ''
+    };
+
+    submission.submissions.push(newSubmission);
+    submission.currentStage = Math.min(submission.currentStage + 1, submission.program.stages.length);
+
+    // Save to localStorage (in real app, this would be an API call)
+    saveStudentSubmissions();
+
+    showToast('Proof submitted successfully! Awaiting admin verification.', 'success');
+    closeStageSubmissionModal();
+    renderProgramProgress();
+  }
+
+  function getFileType(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const typeMap = {
+      'pdf': 'Certificate',
+      'doc': 'Document', 'docx': 'Document',
+      'jpg': 'Image', 'jpeg': 'Image', 'png': 'Image',
+      'zip': 'Project Files'
+    };
+    return typeMap[ext] || 'File';
+  }
+
+  function saveStudentSubmissions() {
+    // In a real app, this would save to a database
+    localStorage.setItem('studentSubmissions', JSON.stringify(currentStudentSubmissions));
+  }
+
+  function viewProgramDetails(submissionId) {
+    const submission = currentStudentSubmissions.find(s => s.id === submissionId);
+    const program = DB.getPrograms().find(p => p.id === submission.programId);
+
+    let details = `Program: ${program.name}\nType: ${program.type}\n\nStages:\n`;
+    program.stages.forEach((stage, index) => {
+      const sub = submission.submissions.find(s => s.stage === stage);
+      const status = sub ? sub.status : 'Not Started';
+      details += `${index + 1}. ${stage}: ${status}\n`;
+    });
+
+    alert(details); // In a real app, this would open a detailed modal
+  }
+
+  function downloadCertificate(submissionId) {
+    showToast('Certificate downloaded successfully!', 'success');
+  }
+
+  function showStageRequirements() {
+    if (!currentStageSubmission) return;
+
+    const submission = currentStudentSubmissions.find(s => s.id === currentStageSubmission.submissionId);
+    const program = DB.getPrograms().find(p => p.id === submission.programId);
+
+    alert(`Requirements for ${currentStageSubmission.stage}:\n\n${program.stageRequirements[currentStageSubmission.stage]}`);
+  }
+
+  // ── PAGE NAVIGATION ──
+  const navItems = document.querySelectorAll('.nav-item[data-page]');
+  const pages = document.querySelectorAll('.page');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.dataset.page;
+      navItems.forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      pages.forEach(p => {
+        p.classList.remove('active');
+        if (p.id === 'page-' + target) {
+          p.classList.add('active');
+          // Animate progress bars on dashboard
+          if (target === 'dashboard') animateBars();
+        }
+      });
+    });
+  });
+
+  // ── PROGRESS BAR ANIMATION ──
+  function animateBars() {
+    document.querySelectorAll('.progress-fill').forEach(bar => {
+      const target = bar.dataset.target;
+      bar.style.width = '0%';
+      setTimeout(() => { bar.style.width = target + '%'; }, 100);
+    });
+  }
+  // Initial animation
+  setTimeout(animateBars, 300);
+
+  // ── FILTER TABS ──
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tab.closest('.filter-tabs').querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── MODAL ──
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal')) closeModal();
+  });
+
+  // ── TOAST ──
+  let toastTimer;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // ── STAT CARD HOVER GLOW ──
+  document.querySelectorAll('.stat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--mouse-x', x + '%');
+      card.style.setProperty('--mouse-y', y + '%');
+    });
+  });
+
+  // ── LOGOUT ──
+  // Handled by auth.js
+
+  // ── SAVE SETTINGS ──
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', () => showToast('Changes saved successfully!'));
+  });
+</script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Check authentication on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    Auth.requireAuth(['Student']);
+    Auth.updateUI();
+  });
+</script>
+</body>
+</html>

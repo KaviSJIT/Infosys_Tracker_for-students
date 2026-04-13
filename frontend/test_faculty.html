@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Dashboard Test</title>
+</head>
+<body>
+    <h1>Faculty Dashboard Test</h1>
+    <div id="test-output"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Simulate faculty dashboard loading
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Auto-login as faculty
+                let user = Auth.getUser();
+                if (!user) {
+                    user = Auth.loginByRole('Faculty');
+                }
+
+                console.log('Logged in user:', user);
+
+                // Load faculty submissions like the dashboard does
+                const facultySubs = DB.getFacultySubmissions().filter(sub => sub.facultyId === user.id);
+                const programs = DB.getPrograms();
+
+                document.getElementById('test-output').innerHTML = `
+                    <h2>Current User</h2>
+                    <pre>${JSON.stringify(user, null, 2)}</pre>
+
+                    <h2>Faculty Submissions (${facultySubs.length})</h2>
+                    <pre>${JSON.stringify(facultySubs, null, 2)}</pre>
+
+                    <h2>Faculty Programs</h2>
+                    <pre>${JSON.stringify(programs.filter(p => p.id >= 6), null, 2)}</pre>
+                `;
+
+                console.log('Faculty submissions loaded successfully:', facultySubs.length);
+            } catch (error) {
+                document.getElementById('test-output').innerHTML = `<h2>Error: ${error.message}</h2><pre>${error.stack}</pre>`;
+                console.error('Error loading faculty submissions:', error);
+            }
+        });
+    </script>
+</body>
+</html>

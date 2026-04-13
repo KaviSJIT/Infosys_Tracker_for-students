@@ -1,0 +1,3471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompanyConnect – Faculty Portal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --bg-base: #0a0c14;
+            --bg-surface: #0f1221;
+            --bg-card: #131729;
+            --bg-card-hover: #181e32;
+            --bg-elevated: #1a2038;
+            --border: rgba(255, 255, 255, 0.06);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --accent-primary: #7c5cfc;
+            --accent-secondary: #5b8af5;
+            --accent-glow: rgba(124, 92, 252, 0.3);
+            --accent-cyan: #38e5c5;
+            --accent-orange: #f5a623;
+            --text-primary: #e8ecf5;
+            --text-secondary: #7b8aaa;
+            --text-muted: #4a5470;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --blue: #5b8af5;
+            --radius: 14px;
+            --radius-sm: 8px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --sidebar-w: 220px;
+            --topbar-h: 60px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--accent-primary), transparent);
+            opacity: 0.4;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
+            flex-shrink: 0;
+        }
+
+        .brand-text h2 {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text p {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .role-badge {
+            margin: 14px 18px 8px;
+            padding: 6px 12px;
+            background: rgba(56, 229, 197, 0.1);
+            border: 1px solid rgba(56, 229, 197, 0.25);
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 8px 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            font-weight: 500;
+            position: relative;
+            user-select: none;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.2), rgba(91, 138, 245, 0.1));
+            color: var(--text-primary);
+            border: 1px solid rgba(124, 92, 252, 0.2);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            border-radius: 0 3px 3px 0;
+        }
+
+        .nav-item svg {
+            flex-shrink: 0;
+            opacity: 0.8;
+        }
+
+        .nav-item.active svg {
+            opacity: 1;
+        }
+
+        .nav-chevron {
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active .nav-chevron {
+            transform: rotate(90deg);
+        }
+
+        .sidebar-footer {
+            padding: 14px 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: var(--red);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            height: var(--topbar-h);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-surface);
+            flex-shrink: 0;
+        }
+
+        .search-wrap {
+            flex: 1;
+            max-width: 380px;
+            position: relative;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 14px 8px 36px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-wrap input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .notif-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .notif-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .notif-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--red);
+            border-radius: 50%;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            border: 1.5px solid var(--bg-surface);
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-cyan), #1d9e75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 0 14px rgba(56, 229, 197, 0.3);
+            transition: box-shadow 0.2s;
+        }
+
+        .avatar:hover {
+            box-shadow: 0 0 24px rgba(56, 229, 197, 0.5);
+        }
+
+        .topbar-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .topbar-user-role {
+            font-size: 11px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* PAGES */
+        .page {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            margin-top: 4px;
+        }
+
+        /* WELCOME BANNER */
+        .welcome-banner {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(56, 229, 197, 0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 30%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(124, 92, 252, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        .welcome-text h2 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-text p {
+            color: var(--text-secondary);
+            font-size: 13.5px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary-sm {
+            padding: 9px 18px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(124, 92, 252, 0.3);
+        }
+
+        .btn-primary-sm:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(124, 92, 252, 0.4);
+        }
+
+        .btn-ghost-sm {
+            padding: 9px 18px;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-ghost-sm:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            background: rgba(124, 92, 252, 0.05);
+        }
+
+        /* STAT CARDS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.04), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(124, 92, 252, 0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(124, 92, 252, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            color: var(--accent-primary);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--green);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: rgba(56, 229, 197, 0.1);
+            color: var(--accent-cyan);
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            background: rgba(245, 166, 35, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .stat-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .stat-badge.pending {
+            background: rgba(245, 166, 35, 0.1);
+            color: var(--accent-orange);
+            border-color: rgba(245, 166, 35, 0.2);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -1px;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* CHARTS ROW */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .chart-card:hover {
+            border-color: rgba(124, 92, 252, 0.2);
+        }
+
+        .chart-title {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* ACTIVE PROGRAMS LIST */
+        .programs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .program-row {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            display: grid;
+            grid-template-columns: 46px 1fr auto 160px auto;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+
+        .program-row:hover {
+            border-color: rgba(124, 92, 252, 0.25);
+            background: var(--bg-card-hover);
+        }
+
+        .prog-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .prog-icon-cert {
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.2), rgba(91, 138, 245, 0.15));
+        }
+
+        .prog-icon-train {
+            background: linear-gradient(135deg, rgba(56, 229, 197, 0.18), rgba(29, 158, 117, 0.12));
+        }
+
+        .prog-icon-work {
+            background: linear-gradient(135deg, rgba(245, 166, 35, 0.16), rgba(186, 117, 23, 0.1));
+        }
+
+        .prog-info h3 {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .prog-info-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prog-tag {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tag-cert {
+            background: rgba(124, 92, 252, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(124, 92, 252, 0.25);
+        }
+
+        .tag-training {
+            background: rgba(56, 229, 197, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 229, 197, 0.2);
+        }
+
+        .tag-workshop {
+            background: rgba(245, 166, 35, 0.1);
+            color: var(--accent-orange);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+        }
+
+        .tag-active {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .tag-completed {
+            background: rgba(107, 114, 128, 0.15);
+            color: #9ca3af;
+            border: 1px solid rgba(107, 114, 128, 0.2);
+        }
+
+        .tag-upcoming {
+            background: rgba(245, 166, 35, 0.1);
+            color: var(--accent-orange);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+        }
+
+        .prog-deadline {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .prog-progress-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .prog-pct {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prog-pct-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .prog-pct-num {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--font-display);
+        }
+
+        .prog-track {
+            height: 6px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .prog-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prog-fill.fill-green {
+            background: linear-gradient(to right, #22c55e, #4ade80);
+        }
+
+        .prog-fill.fill-cyan {
+            background: linear-gradient(to right, var(--accent-cyan), #67e8f9);
+        }
+
+        .prog-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        .prog-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-continue {
+            padding: 8px 16px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 12.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-continue:hover {
+            box-shadow: 0 0 16px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-review {
+            padding: 8px 16px;
+            border-radius: 9px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            color: var(--green);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-review:hover {
+            background: rgba(34, 197, 94, 0.22);
+        }
+
+        /* CURRENT FOCUS CARD */
+        .focus-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .focus-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 92, 252, 0.06), transparent 70%);
+            pointer-events: none;
+        }
+
+        .focus-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .focus-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .focus-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: rgba(245, 166, 35, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .focus-title h3 {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .focus-title p {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .focus-stages {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stage-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-card:hover {
+            border-color: rgba(124, 92, 252, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .stage-card.done {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.25);
+        }
+
+        .stage-card.active {
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.15), rgba(91, 138, 245, 0.08));
+            border-color: rgba(124, 92, 252, 0.3);
+            box-shadow: 0 0 20px rgba(124, 92, 252, 0.12);
+        }
+
+        .stage-card.locked {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .stage-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+
+        .stage-icon.done {
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .stage-icon.active {
+            background: rgba(124, 92, 252, 0.2);
+        }
+
+        .stage-icon.locked {
+            background: var(--bg-card);
+        }
+
+        .stage-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .stage-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* RECOMMENDATIONS */
+        .reco-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .reco-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reco-card:hover {
+            border-color: rgba(124, 92, 252, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .reco-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-trending {
+            background: rgba(124, 92, 252, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(124, 92, 252, 0.25);
+        }
+
+        .badge-popular {
+            background: rgba(56, 229, 197, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 229, 197, 0.2);
+        }
+
+        .badge-new {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .match-pct {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .match-pct.high {
+            color: var(--accent-cyan);
+        }
+
+        .match-pct.mid {
+            color: var(--accent-secondary);
+        }
+
+        .match-pct-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: -4px;
+        }
+
+        .reco-title {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            margin: 36px 0 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .reco-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .reco-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .reco-tag {
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(91, 138, 245, 0.1);
+            color: var(--accent-secondary);
+            border: 1px solid rgba(91, 138, 245, 0.2);
+        }
+
+        .btn-enroll {
+            width: 100%;
+            padding: 10px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-enroll:hover {
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        /* PROGRAMS PAGE */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-search {
+            flex: 1;
+            max-width: 440px;
+            position: relative;
+        }
+
+        .filter-search input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 9px 14px 9px 36px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-search input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .filter-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .filter-tab.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .program-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.04), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .program-card:hover {
+            border-color: rgba(124, 92, 252, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .program-card:hover::before {
+            opacity: 1;
+        }
+
+        .program-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .prog-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.2), rgba(91, 138, 245, 0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 22px;
+        }
+
+        .program-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .program-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .program-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        .program-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .btn-view-full {
+            width: 100%;
+            padding: 11px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-view-full:hover {
+            box-shadow: 0 0 24px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        /* PARTICIPATION PAGE */
+        .subm-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .subm-stat {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s;
+        }
+
+        .subm-stat:hover {
+            border-color: rgba(124, 92, 252, 0.25);
+        }
+
+        .subm-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .si-purple {
+            background: rgba(124, 92, 252, 0.12);
+        }
+
+        .si-orange {
+            background: rgba(245, 166, 35, 0.1);
+        }
+
+        .si-blue {
+            background: rgba(91, 138, 245, 0.12);
+        }
+
+        .si-green {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .subm-stat-num {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .subm-stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Upload/Submit section */
+        .upload-banner {
+            background: linear-gradient(135deg, rgba(124, 92, 252, 0.1), rgba(91, 138, 245, 0.06));
+            border: 1px solid rgba(124, 92, 252, 0.2);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .upload-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(124, 92, 252, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .upload-text h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .upload-text p {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .btn-upload {
+            padding: 9px 18px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-upload:hover {
+            box-shadow: 0 0 18px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-ghost-req {
+            padding: 9px 18px;
+            border-radius: 9px;
+            background: transparent;
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ghost-req:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        /* Submission cards */
+        .submission-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .subm-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            transition: all 0.2s;
+        }
+
+        .subm-card:hover {
+            border-color: rgba(124, 92, 252, 0.2);
+        }
+
+        .subm-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .subm-prog-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .subm-prog-info {
+            flex: 1;
+        }
+
+        .subm-prog-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .subm-prog-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subm-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .subm-completed {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .subm-reviewing {
+            background: rgba(91, 138, 245, 0.12);
+            color: var(--accent-secondary);
+            border: 1px solid rgba(91, 138, 245, 0.2);
+        }
+
+        .subm-verified {
+            background: rgba(56, 229, 197, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 229, 197, 0.2);
+        }
+
+        /* Progress stages tracker */
+        .stage-tracker {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stage-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .stage-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .stage-circle.s-done {
+            background: var(--green);
+            border-color: var(--green);
+            color: white;
+        }
+
+        .stage-circle.s-active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .stage-circle.s-locked {
+            background: var(--bg-elevated);
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+
+        .stage-name-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            max-width: 70px;
+        }
+
+        .stage-name-label.active-lbl {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .stage-name-label.done-lbl {
+            color: var(--green);
+        }
+
+        .stage-connector {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin-bottom: 17px;
+        }
+
+        .stage-connector.done-conn {
+            background: var(--green);
+        }
+
+        .subm-card-footer {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-view-det {
+            padding: 9px 0;
+            border-radius: 9px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-view-det:hover {
+            border-color: var(--border-light);
+            color: var(--text-primary);
+        }
+
+        .btn-dl-cert {
+            padding: 9px 0;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--green), #4ade80);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-dl-cert:hover {
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-upload-proof {
+            padding: 9px 0;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-upload-proof:hover {
+            box-shadow: 0 0 16px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        /* SETTINGS PAGE */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+        }
+
+        .settings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .settings-section-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+        }
+
+        .settings-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(56, 229, 197, 0.2), rgba(29, 158, 117, 0.12));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .form-sublabel {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            margin-top: -3px;
+        }
+
+        .form-input {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(56, 229, 197, 0.1);
+        }
+
+        .form-input[disabled] {
+            color: var(--text-muted);
+            cursor: not-allowed;
+            background: var(--bg-card);
+        }
+
+        .form-input-icon {
+            position: relative;
+        }
+
+        .form-input-icon .lock-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .admin-locked-label {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .save-btn {
+            margin-top: 20px;
+            padding: 11px 24px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover {
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .req-edits-btn {
+            padding: 8px 16px;
+            border-radius: 9px;
+            background: rgba(56, 229, 197, 0.1);
+            border: 1px solid rgba(56, 229, 197, 0.25);
+            color: var(--accent-cyan);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .req-edits-btn:hover {
+            background: rgba(56, 229, 197, 0.2);
+        }
+
+        /* Profile Details Styles */
+        .profile-details-section {
+            margin-top: 10px;
+        }
+
+        .profile-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .profile-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-input {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .field-input:read-only {
+            background: var(--bg-card);
+        }
+
+        .notif-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+
+        .notif-item:last-child {
+            border-bottom: none;
+        }
+
+        .notif-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .notif-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .toggle {
+            position: relative;
+            width: 42px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-elevated);
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            background: white;
+            transform: translateX(18px);
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .security-item:last-child {
+            border-bottom: none;
+        }
+
+        .security-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .security-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .btn-manage {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            font-size: 12.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-body);
+        }
+
+        .btn-manage:hover {
+            box-shadow: 0 0 16px var(--accent-glow);
+        }
+
+        /* MINI CHART */
+        .mini-donut-wrap {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+        }
+
+        .donut-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .donut-label {
+            color: var(--text-secondary);
+        }
+
+        .donut-pct {
+            margin-left: auto;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+
+        /* LEARNING HOURS BAR */
+        .hours-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 80px;
+        }
+
+        .hour-bar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .hour-bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            background: linear-gradient(to top, var(--accent-cyan), #67e8f9);
+            min-height: 4px;
+            transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .hour-label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13.5px;
+            color: var(--text-primary);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-success {
+            border-left: 3px solid var(--green);
+        }
+
+        .toast-success .toast-icon {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--green);
+        }
+
+        .toast-error {
+            border-left: 3px solid var(--red);
+        }
+
+        .toast-error .toast-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--red);
+        }
+
+        .toast-info {
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .toast-info .toast-icon {
+            background: rgba(56, 229, 197, 0.1);
+            color: var(--accent-cyan);
+        }
+
+        /* PROGRESS ring animation */
+        .ring-svg {
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: var(--bg-elevated);
+            stroke-width: 10;
+        }
+
+        .ring-fill {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .ring-text {
+            transform: rotate(90deg);
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">C</div>
+                <div class="brand-text">
+                    <h2>CompanyConnect</h2>
+                    <p>Track • Verify • Connect</p>
+                </div>
+            </div>
+            <div class="role-badge">Role: Faculty</div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-page="dashboard">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    Dashboard
+                    <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </div>
+                <div class="nav-item" data-page="programs">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                    Programs
+                </div>
+                <div class="nav-item" data-page="participation">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    Participation
+                </div>
+                <div class="nav-item" data-page="settings">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                    </svg>
+                    Settings
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="logout-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Logout
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="main">
+            <!-- TOPBAR -->
+            <div class="topbar">
+                <div class="search-wrap">
+                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" placeholder="Search programs...">
+                </div>
+                <div class="topbar-actions">
+                    <div class="notif-btn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <div class="notif-dot"></div>
+                    </div>
+                    <div class="topbar-user">
+                        <div class="avatar">AP</div>
+                        <div class="topbar-user-info">
+                            <div class="topbar-user-name">Dr. Amit Patel</div>
+                            <div class="topbar-user-role">Faculty</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD PAGE -->
+            <div class="page active" id="dashboard">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h2>Welcome back, Dr. Patel! 👋</h2>
+                        <p>Continue your professional development journey</p>
+                    </div>
+                    <div class="welcome-actions">
+                        <button class="btn-ghost-sm" onclick="showToast('Searching programs…','info')">Search
+                            programs…</button>
+                        <button class="btn-primary-sm" onclick="navigateTo('programs')">Browse All Programs →</button>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                            </svg>
+                        </div>
+                        <div class="stat-badge">+1 this month</div>
+                        <div class="stat-value" data-target="3">0</div>
+                        <div class="stat-label">Enrolled Programs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </div>
+                        <div class="stat-badge">33% completion</div>
+                        <div class="stat-value" data-target="1">0</div>
+                        <div class="stat-label">Completed Programs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="8" r="6" />
+                                <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                            </svg>
+                        </div>
+                        <div class="stat-badge pending">2 pending</div>
+                        <div class="stat-value" data-target="1">0</div>
+                        <div class="stat-label">Certificates</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                        </div>
+                        <div class="stat-badge">+12 this week</div>
+                        <div class="stat-value" data-target="86">0</div>
+                        <div class="stat-label">Learning Hours</div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <!-- Progress Overview -->
+                    <div class="chart-card">
+                        <div class="chart-title">
+                            My Progress Overview
+                            <span style="font-size:12px;font-weight:400;color:var(--text-muted)">This Semester</span>
+                        </div>
+                        <div class="mini-donut-wrap">
+                            <svg class="ring-svg" width="110" height="110" viewBox="0 0 110 110">
+                                <circle class="ring-bg" cx="55" cy="55" r="44" />
+                                <circle class="ring-fill" cx="55" cy="55" r="44" stroke="#7c5cfc"
+                                    stroke-dasharray="0 276.46" id="ring1"
+                                    style="filter:drop-shadow(0 0 8px rgba(124,92,252,0.5))" />
+                                <text class="ring-text" x="55" y="55" text-anchor="middle" dominant-baseline="middle"
+                                    fill="var(--text-primary)" id="ringText">0%</text>
+                            </svg>
+                            <div class="donut-legend">
+                                <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px">
+                                    Overall Completion</div>
+                                <div class="donut-legend-item">
+                                    <div class="donut-dot" style="background:#7c5cfc"></div><span
+                                        class="donut-label">AWS Solutions Architect</span><span
+                                        class="donut-pct">65%</span>
+                                </div>
+                                <div class="donut-legend-item">
+                                    <div class="donut-dot" style="background:#22c55e"></div><span
+                                        class="donut-label">Python for Data Science</span><span
+                                        class="donut-pct">100%</span>
+                                </div>
+                                <div class="donut-legend-item">
+                                    <div class="donut-dot" style="background:#f5a623"></div><span
+                                        class="donut-label">Teaching Excellence</span><span class="donut-pct">80%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Learning Hours -->
+                    <div class="chart-card">
+                        <div class="chart-title">Weekly Learning Hours</div>
+                        <div style="display:flex;gap:6px;align-items:flex-end;height:100px;margin-bottom:8px">
+                            <div
+                                style="display:flex;flex-direction:column;justify-content:space-between;height:100px;margin-right:4px">
+                                <span style="font-size:10px;color:var(--text-muted)">8h</span>
+                                <span style="font-size:10px;color:var(--text-muted)">6h</span>
+                                <span style="font-size:10px;color:var(--text-muted)">4h</span>
+                                <span style="font-size:10px;color:var(--text-muted)">2h</span>
+                                <span style="font-size:10px;color:var(--text-muted)">0</span>
+                            </div>
+                            <div style="flex:1;display:flex;gap:8px;align-items:flex-end;height:100px">
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="38%"></div>
+                                    <div class="hour-label">Mon</div>
+                                </div>
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="62%"></div>
+                                    <div class="hour-label">Tue</div>
+                                </div>
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="50%"></div>
+                                    <div class="hour-label">Wed</div>
+                                </div>
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="88%"></div>
+                                    <div class="hour-label">Thu</div>
+                                </div>
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="75%"></div>
+                                    <div class="hour-label">Fri</div>
+                                </div>
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="44%"></div>
+                                    <div class="hour-label">Sat</div>
+                                </div>
+                                <div
+                                    style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end">
+                                    <div class="hour-bar" style="height:0%;width:100%" data-h="20%"></div>
+                                    <div class="hour-label">Sun</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:4px">Peak:
+                            Thursday • 8h this week</div>
+                    </div>
+                </div>
+
+                <!-- Active Programs -->
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                    <div style="font-family:var(--font-display);font-size:17px;font-weight:700">Active Programs</div>
+                    <button class="btn-ghost-sm" onclick="navigateTo('programs')">View All Programs →</button>
+                </div>
+                <div class="programs-list">
+                    <!-- Program 1 -->
+                    <div class="program-row">
+                        <div class="prog-icon prog-icon-cert"
+                            style="background:linear-gradient(135deg,rgba(91,138,245,0.2),rgba(124,92,252,0.12))">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a78bfa"
+                                stroke-width="1.8">
+                                <polyline points="16 18 22 12 16 6" />
+                                <polyline points="8 6 2 12 8 18" />
+                            </svg>
+                        </div>
+                        <div class="prog-info">
+                            <h3>AWS Certified Solutions Architect</h3>
+                            <div class="prog-info-meta">
+                                <span class="prog-tag tag-cert">Certification</span>
+                                <span class="prog-tag tag-active">In Progress</span>
+                                <span class="prog-deadline">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+                                    Deadline: Jun 30, 2026
+                                </span>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div class="prog-progress-wrap">
+                            <div class="prog-pct">
+                                <span class="prog-pct-label">Overall Progress</span>
+                                <span class="prog-pct-num">65%</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill" style="width:0%" data-w="65%"></div>
+                            </div>
+                        </div>
+                        <div class="prog-actions">
+                            <button class="btn-continue"
+                                onclick="showToast('Opening AWS Solutions Architect…','success')">
+                                Continue Learning
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Program 2 -->
+                    <div class="program-row">
+                        <div class="prog-icon prog-icon-train"
+                            style="background:linear-gradient(135deg,rgba(56,229,197,0.18),rgba(29,158,117,0.1))">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38e5c5"
+                                stroke-width="1.8">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </div>
+                        <div class="prog-info">
+                            <h3>Python for Data Science</h3>
+                            <div class="prog-info-meta">
+                                <span class="prog-tag tag-training">Training</span>
+                                <span class="prog-tag tag-completed">Completed</span>
+                                <span class="prog-deadline">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+                                    Deadline: Mar 15, 2026
+                                </span>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div class="prog-progress-wrap">
+                            <div class="prog-pct">
+                                <span class="prog-pct-label">Overall Progress</span>
+                                <span class="prog-pct-num" style="color:var(--green)">100%</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill fill-green" style="width:0%" data-w="100%"></div>
+                            </div>
+                        </div>
+                        <div class="prog-actions">
+                            <button class="btn-review" onclick="showToast('Opening certificate…','success')">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="8" r="6" />
+                                    <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                                </svg>
+                                Review Certificate
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Program 3 -->
+                    <div class="program-row">
+                        <div class="prog-icon prog-icon-work">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f5a623"
+                                stroke-width="1.8">
+                                <rect x="2" y="3" width="20" height="14" rx="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg>
+                        </div>
+                        <div class="prog-info">
+                            <h3>Teaching Excellence Program</h3>
+                            <div class="prog-info-meta">
+                                <span class="prog-tag tag-workshop">Workshop</span>
+                                <span class="prog-tag tag-active">In Progress</span>
+                                <span class="prog-deadline">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                        <line x1="16" y1="2" x2="16" y2="6" />
+                                        <line x1="8" y1="2" x2="8" y2="6" />
+                                        <line x1="3" y1="10" x2="21" y2="10" />
+                                    </svg>
+                                    Deadline: May 20, 2026
+                                </span>
+                            </div>
+                        </div>
+                        <div></div>
+                        <div class="prog-progress-wrap">
+                            <div class="prog-pct">
+                                <span class="prog-pct-label">Overall Progress</span>
+                                <span class="prog-pct-num" style="color:var(--accent-orange)">80%</span>
+                            </div>
+                            <div class="prog-track">
+                                <div class="prog-fill"
+                                    style="width:0%;background:linear-gradient(to right,var(--accent-orange),#fcd34d)"
+                                    data-w="80%"></div>
+                            </div>
+                        </div>
+                        <div class="prog-actions">
+                            <button class="btn-continue" onclick="openFocusSection()">
+                                Continue Learning
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Focus Card -->
+                <div class="focus-card" id="focusCard">
+                    <div class="focus-header">
+                        <div class="focus-title-wrap">
+                            <div class="focus-icon">🏫</div>
+                            <div class="focus-title">
+                                <h3>Current Focus: Teaching Excellence Program</h3>
+                                <p>Week 6 of 8 • 80% Complete • Ends May 20, 2026</p>
+                            </div>
+                        </div>
+                        <button class="btn-primary-sm" onclick="showToast('Opening program…','success')">Continue
+                            Program →</button>
+                    </div>
+                    <div class="focus-stages">
+                        <div class="stage-card done" onclick="showToast('Week 1-2 completed!','success')">
+                            <div class="stage-icon done">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e"
+                                    stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </div>
+                            <div class="stage-name">Week 1-2</div>
+                            <div class="stage-sub">Teaching Fundamentals</div>
+                        </div>
+                        <div class="stage-card done" onclick="showToast('Week 3-4 completed!','success')">
+                            <div class="stage-icon done">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e"
+                                    stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </div>
+                            <div class="stage-name">Week 3-4</div>
+                            <div class="stage-sub">Curriculum Design</div>
+                        </div>
+                        <div class="stage-card active" onclick="showToast('Currently in Week 5-6','info')">
+                            <div class="stage-icon active">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc"
+                                    stroke-width="2">
+                                    <polyline points="16 18 22 12 16 6" />
+                                    <polyline points="8 6 2 12 8 18" />
+                                </svg>
+                            </div>
+                            <div class="stage-name">Week 5-6</div>
+                            <div class="stage-sub">Assessment Methods</div>
+                        </div>
+                        <div class="stage-card locked">
+                            <div class="stage-icon locked">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)"
+                                    stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                            </div>
+                            <div class="stage-name">Week 7-8</div>
+                            <div class="stage-sub">Final Project</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Programs -->
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                    <div>
+                        <div style="font-family:var(--font-display);font-size:17px;font-weight:700">Recommended For You
+                            ✨</div>
+                        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">Based on your progress
+                            and interests</div>
+                    </div>
+                    <button class="btn-ghost-sm" onclick="showToast('Loading all recommendations…','info')">View All
+                        Recommendations →</button>
+                </div>
+                <div class="reco-grid">
+                    <div class="reco-card">
+                        <span class="reco-badge badge-trending">🔥 Trending</span>
+                        <div style="text-align:right">
+                            <div class="match-pct high">92%</div>
+                            <div class="match-pct-label">Match</div>
+                        </div>
+                        <div class="reco-title">Advanced Cloud Architecture</div>
+                        <div class="reco-meta">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            10 weeks
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                            </svg>
+                            Advanced
+                        </div>
+                        <div class="reco-tags">
+                            <span class="reco-tag">AWS</span>
+                            <span class="reco-tag">Cloud</span>
+                            <span class="reco-tag">Architecture</span>
+                        </div>
+                        <button class="btn-enroll"
+                            onclick="showToast('Enrolling in Advanced Cloud Architecture…','success')">
+                            Enroll Now →
+                        </button>
+                    </div>
+                    <div class="reco-card">
+                        <span class="reco-badge badge-popular">Popular</span>
+                        <div style="text-align:right">
+                            <div class="match-pct" style="color:var(--accent-secondary)">88%</div>
+                            <div class="match-pct-label">Match</div>
+                        </div>
+                        <div class="reco-title">Machine Learning for Educators</div>
+                        <div class="reco-meta">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            8 weeks
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                            </svg>
+                            Intermediate
+                        </div>
+                        <div class="reco-tags">
+                            <span class="reco-tag">AI/ML</span>
+                            <span class="reco-tag">Teaching</span>
+                            <span class="reco-tag">Python</span>
+                        </div>
+                        <button class="btn-enroll" onclick="showToast('Enrolling in ML for Educators…','success')">
+                            Enroll Now →
+                        </button>
+                    </div>
+                    <div class="reco-card">
+                        <span class="reco-badge badge-new">New</span>
+                        <div style="text-align:right">
+                            <div class="match-pct" style="color:#a78bfa">85%</div>
+                            <div class="match-pct-label">Match</div>
+                        </div>
+                        <div class="reco-title">Research Methodology Workshop</div>
+                        <div class="reco-meta">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            6 weeks
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                            </svg>
+                            Advanced
+                        </div>
+                        <div class="reco-tags">
+                            <span class="reco-tag">Research</span>
+                            <span class="reco-tag">Academia</span>
+                        </div>
+                        <button class="btn-enroll" onclick="showToast('Enrolling in Research Methodology…','success')">
+                            Enroll Now →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROGRAMS PAGE -->
+            <div class="page" id="programs">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+                    <div class="page-header" style="margin-bottom:0">
+                        <h1>Programs</h1>
+                        <p>Browse and manage all available programs</p>
+                    </div>
+                </div>
+                <div class="filter-bar">
+                    <div class="filter-search">
+                        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" placeholder="Search programs..." oninput="filterProgs(this.value)">
+                    </div>
+                    <div class="filter-tabs">
+                        <div class="filter-tab active" onclick="filterProgType('All',this)">All</div>
+                        <div class="filter-tab" onclick="filterProgType('Certification',this)">Certification</div>
+                        <div class="filter-tab" onclick="filterProgType('Training',this)">Training</div>
+                        <div class="filter-tab" onclick="filterProgType('Internship',this)">Internship</div>
+                        <div class="filter-tab" onclick="filterProgType('Workshop',this)">Workshop</div>
+                    </div>
+                </div>
+                <div class="programs-grid" id="progsGrid">
+                    <div class="program-card" data-type="Certification"
+                        data-title="Infosys Springboard – Python Programming">
+                        <div class="program-card-header">
+                            <div class="prog-card-icon">🐍</div>
+                            <div class="program-tags"><span class="prog-tag tag-cert">Certification</span><span
+                                    class="prog-tag tag-active">Active</span></div>
+                        </div>
+                        <div class="program-title">Infosys Springboard – Python Programming</div>
+                        <div class="program-desc">Comprehensive Python programming course with hands-on projects and
+                            real-world applications.</div>
+                        <div class="program-meta">
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> 8 weeks</div>
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg> 142 enrolled</div>
+                        </div>
+                        <button class="btn-view-full" onclick="showToast('Opening program details…','success')">View
+                            Details</button>
+                    </div>
+                    <div class="program-card" data-type="Training" data-title="AWS Cloud Practitioner">
+                        <div class="program-card-header">
+                            <div class="prog-card-icon">☁️</div>
+                            <div class="program-tags"><span class="prog-tag tag-training">Training</span><span
+                                    class="prog-tag tag-active">Active</span></div>
+                        </div>
+                        <div class="program-title">AWS Cloud Practitioner</div>
+                        <div class="program-desc">Learn AWS fundamentals and cloud computing basics with hands-on lab
+                            exercises.</div>
+                        <div class="program-meta">
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> 6 weeks</div>
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg> 98 enrolled</div>
+                        </div>
+                        <button class="btn-view-full" onclick="showToast('Opening program details…','success')">View
+                            Details</button>
+                    </div>
+                    <div class="program-card" data-type="Certification" data-title="Data Science with Python">
+                        <div class="program-card-header">
+                            <div class="prog-card-icon">📊</div>
+                            <div class="program-tags"><span class="prog-tag tag-cert">Certification</span><span
+                                    class="prog-tag tag-active">Active</span></div>
+                        </div>
+                        <div class="program-title">Data Science with Python</div>
+                        <div class="program-desc">Master data analysis, visualization, and machine learning with
+                            industry-grade tools.</div>
+                        <div class="program-meta">
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> 10 weeks</div>
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg> 54 enrolled</div>
+                        </div>
+                        <button class="btn-view-full" onclick="showToast('Opening program details…','success')">View
+                            Details</button>
+                    </div>
+                    <div class="program-card" data-type="Training" data-title="Faculty Development Program">
+                        <div class="program-card-header">
+                            <div class="prog-card-icon">🎓</div>
+                            <div class="program-tags"><span class="prog-tag tag-training">Training</span><span
+                                    class="prog-tag tag-completed">Completed</span></div>
+                        </div>
+                        <div class="program-title">Faculty Development Program</div>
+                        <div class="program-desc">Advanced teaching methodologies and curriculum development for faculty
+                            members.</div>
+                        <div class="program-meta">
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> 6 weeks</div>
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg> 32 enrolled</div>
+                        </div>
+                        <button class="btn-view-full" onclick="showToast('Opening program details…','success')">View
+                            Details</button>
+                    </div>
+                    <div class="program-card" data-type="Internship" data-title="Virtual Internship – Web Development">
+                        <div class="program-card-header">
+                            <div class="prog-card-icon">💻</div>
+                            <div class="program-tags"><span class="prog-tag"
+                                    style="background:rgba(91,138,245,0.12);color:var(--accent-secondary);border:1px solid rgba(91,138,245,0.2)">Internship</span><span
+                                    class="prog-tag tag-active">Active</span></div>
+                        </div>
+                        <div class="program-title">Virtual Internship – Web Development</div>
+                        <div class="program-desc">Build real-world web applications with modern technologies and
+                            frameworks.</div>
+                        <div class="program-meta">
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> 8 weeks</div>
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg> 76 enrolled</div>
+                        </div>
+                        <button class="btn-view-full" onclick="showToast('Opening program details…','success')">View
+                            Details</button>
+                    </div>
+                    <div class="program-card" data-type="Workshop" data-title="HackWithInfy 2026">
+                        <div class="program-card-header">
+                            <div class="prog-card-icon">⚡</div>
+                            <div class="program-tags"><span class="prog-tag tag-workshop">Workshop</span><span
+                                    class="prog-tag tag-upcoming">Upcoming</span></div>
+                        </div>
+                        <div class="program-title">HackWithInfy 2026</div>
+                        <div class="program-desc">Competitive coding workshop and hackathon preparation with mentorship
+                            from experts.</div>
+                        <div class="program-meta">
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg> 2 days</div>
+                            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg> 125 enrolled</div>
+                        </div>
+                        <button class="btn-view-full" onclick="showToast('Opening program details…','success')">View
+                            Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTICIPATION PAGE (My Submissions) -->
+            <div class="page" id="participation">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+                    <div class="page-header" style="margin-bottom:0">
+                        <h1>My Submissions</h1>
+                        <p>Track your program submissions and status</p>
+                    </div>
+                    <button class="btn-primary-sm" onclick="showToast('Opening submission form…','success')"
+                        style="display:flex;align-items:center;gap:7px">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="16 16 12 12 8 16" />
+                            <line x1="12" y1="12" x2="12" y2="21" />
+                            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+                        </svg>
+                        Submit New Participation
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="subm-stats">
+                    <div class="subm-stat">
+                        <div class="subm-stat-icon si-purple" style="font-size:20px">📁</div>
+                        <div>
+                            <div class="subm-stat-num" data-target="4">0</div>
+                            <div class="subm-stat-label">Total Submissions<br><span
+                                    style="font-size:10.5px;color:var(--text-muted)">All time</span></div>
+                        </div>
+                    </div>
+                    <div class="subm-stat">
+                        <div class="subm-stat-icon si-orange" style="font-size:20px">⏱️</div>
+                        <div>
+                            <div class="subm-stat-num" data-target="1">0</div>
+                            <div class="subm-stat-label">Under Review<br><span
+                                    style="font-size:10.5px;color:var(--text-muted)">Pending verification</span></div>
+                        </div>
+                    </div>
+                    <div class="subm-stat">
+                        <div class="subm-stat-icon si-blue" style="font-size:20px">🛡️</div>
+                        <div>
+                            <div class="subm-stat-num" data-target="1">0</div>
+                            <div class="subm-stat-label">Verified<br><span
+                                    style="font-size:10.5px;color:var(--text-muted)">Successfully verified</span></div>
+                        </div>
+                    </div>
+                    <div class="subm-stat">
+                        <div class="subm-stat-icon si-green" style="font-size:20px">🏅</div>
+                        <div>
+                            <div class="subm-stat-num" data-target="2">0</div>
+                            <div class="subm-stat-label">Completed<br><span
+                                    style="font-size:10.5px;color:var(--text-muted)">Certificates issued</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Banner -->
+                <div class="upload-banner">
+                    <div class="upload-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                    </div>
+                    <div class="upload-text">
+                        <h3>Internship Completion Proof</h3>
+                        <p>Upload your internship completion certificate or proof document to complete verification</p>
+                    </div>
+                    <div class="upload-actions">
+                        <button class="btn-upload" onclick="showToast('Opening file upload…','success')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="16 16 12 12 8 16" />
+                                <line x1="12" y1="12" x2="12" y2="21" />
+                                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+                            </svg>
+                            Upload Completion Proof
+                        </button>
+                        <button class="btn-ghost-req" onclick="showToast('Viewing requirements…','info')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg>
+                            View Requirements
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Faculty Program Progress Cards -->
+                <div id="faculty-submissions-container">
+                  <!-- Dynamic faculty submission cards will be inserted here -->
+                </div>
+            </div>
+            </div>
+
+            <!-- SETTINGS PAGE -->
+            <div class="page" id="settings">
+                <div class="page-header">
+                    <h1>Settings</h1>
+                    <p>Manage your account and preferences</p>
+                </div>
+                <div class="settings-grid">
+                    <div>
+                        <div class="settings-card" style="margin-bottom:16px">
+                            <div class="settings-section-title">
+                                <div style="display:flex;align-items:center;gap:12px">
+                                    <div class="settings-icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38e5c5"
+                                            stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                            <circle cx="12" cy="7" r="4" />
+                                        </svg>
+                                    </div>
+                                    Profile Information
+                                </div>
+                            </div>
+
+                            <div class="profile-details-section">
+                                <div class="profile-details-grid">
+                                    <div class="profile-field">
+                                        <label class="field-label">Roll Number</label>
+                                        <input type="text" class="field-input" value="FAC2020001" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Register Number</label>
+                                        <input type="text" class="field-input" value="4JK20CS001" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Name</label>
+                                        <input type="text" class="field-input" value="Dr. Michael Johnson" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Department</label>
+                                        <input type="text" class="field-input" value="Computer Science" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Section</label>
+                                        <input type="text" class="field-input" value="N/A" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Gender</label>
+                                        <input type="text" class="field-input" value="Male" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Mobile Number</label>
+                                        <input type="text" class="field-input" value="+91 98765 12345" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Email ID</label>
+                                        <input type="email" class="field-input" value="michael.johnson@faculty.edu" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Blood Group</label>
+                                        <input type="text" class="field-input" value="A+" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Batch</label>
+                                        <input type="text" class="field-input" value="N/A" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Course</label>
+                                        <input type="text" class="field-input" value="Ph.D. Computer Science" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Food</label>
+                                        <input type="text" class="field-input" value="Non-Vegetarian" readonly>
+                                    </div>
+                                    <div class="profile-field">
+                                        <label class="field-label">Accommodation</label>
+                                        <input type="text" class="field-input" value="Faculty Quarters" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+                                <button class="req-edits-btn" onclick="showToast('Request sent to admin…','info')">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                                    </svg>
+                                    Request Profile Edits
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <div class="settings-section-title" style="margin-bottom:18px">
+                                <div style="display:flex;align-items:center;gap:12px">
+                                    <div class="settings-icon"
+                                        style="background:linear-gradient(135deg,rgba(239,68,68,0.18),rgba(245,166,35,0.1))">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171"
+                                            stroke-width="2">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                        </svg>
+                                    </div>
+                                    Account Security
+                                </div>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-text">
+                                    <h4>Change Password</h4>
+                                    <p>Update your password regularly for security</p>
+                                </div>
+                                <button class="btn-manage"
+                                    onclick="showToast('Opening password manager…','success')">Manage Password</button>
+                            </div>
+                            <div class="security-item">
+                                <div class="security-text">
+                                    <h4>Two-Factor Authentication</h4>
+                                    <p>Add an extra layer of account security</p>
+                                </div>
+                                <button class="btn-manage" onclick="showToast('2FA setup initiated…','success')">Enable
+                                    2FA</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="settings-card">
+                            <div class="settings-section-title" style="margin-bottom:18px">
+                                <div style="display:flex;align-items:center;gap:12px">
+                                    <div class="settings-icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38e5c5"
+                                            stroke-width="2">
+                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                                        </svg>
+                                    </div>
+                                    Manage Notifications
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-text">
+                                    <h4>Program Activity Emails</h4>
+                                    <p>Updates on your program activities and verifications.</p>
+                                </div>
+                                <label class="toggle"><input type="checkbox" checked><span
+                                        class="toggle-slider"></span></label>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-text">
+                                    <h4>New Certificate Alerts</h4>
+                                    <p>Get notified when new certificates are available.</p>
+                                </div>
+                                <label class="toggle"><input type="checkbox" checked><span
+                                        class="toggle-slider"></span></label>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-text">
+                                    <h4>Submission Reminders</h4>
+                                    <p>Reminders before submission deadlines.</p>
+                                </div>
+                                <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-text">
+                                    <h4>Weekly Digest</h4>
+                                    <p>Weekly summary of your progress and activities.</p>
+                                </div>
+                                <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <svg id="toast-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+        </div>
+        <span id="toast-msg">Done!</span>
+    </div>
+
+    <script>
+        // NAV
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', () => navigateTo(item.dataset.page));
+        });
+
+        function navigateTo(page) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const navItem = document.querySelector(`.nav-item[data-page="${page}"]`);
+            if (navItem) navItem.classList.add('active');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(page);
+            if (target) target.classList.add('active');
+            animatePage(page);
+        }
+
+        // FILTER TABS
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                tab.closest('.filter-tabs').querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        function filterProgs(val) {
+            const q = val.toLowerCase();
+            document.querySelectorAll('#progsGrid .program-card').forEach(c => {
+                c.style.display = (c.dataset.title || '').toLowerCase().includes(q) ? '' : 'none';
+            });
+        }
+
+        function filterProgType(type, el) {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('#progsGrid .program-card').forEach(c => {
+                c.style.display = (type === 'All' || c.dataset.type === type) ? '' : 'none';
+            });
+        }
+
+        // COUNTER
+        function animateCounter(el, target) {
+            let start = 0;
+            const dur = 1400;
+            const step = ts => {
+                if (!start) start = ts;
+                const p = Math.min((ts - start) / dur, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.floor(ease * target);
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = target;
+            };
+            requestAnimationFrame(step);
+        }
+
+        // RING ANIMATION
+        function animateRing(pct) {
+            const circumference = 2 * Math.PI * 44;
+            const ring = document.getElementById('ring1');
+            const text = document.getElementById('ringText');
+            if (!ring) return;
+            const target = (pct / 100) * circumference;
+            let start = null;
+            const dur = 1400;
+            const step = ts => {
+                if (!start) start = ts;
+                const p = Math.min((ts - start) / dur, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                const val = ease * target;
+                ring.setAttribute('stroke-dasharray', `${val} ${circumference - val}`);
+                if (text) text.textContent = Math.round(ease * pct) + '%';
+                if (p < 1) requestAnimationFrame(step);
+                else { ring.setAttribute('stroke-dasharray', `${target} ${circumference - target}`); if (text) text.textContent = pct + '%'; }
+            };
+            requestAnimationFrame(step);
+        }
+
+        function animateProgressBars() {
+            setTimeout(() => {
+                document.querySelectorAll('.prog-fill[data-w]').forEach(f => f.style.width = f.dataset.w);
+                document.querySelectorAll('.hour-bar[data-h]').forEach(b => b.style.height = b.dataset.h);
+            }, 200);
+        }
+
+        function animatePage(page) {
+            if (page === 'dashboard') {
+                document.querySelectorAll('[data-target]').forEach(el => {
+                    animateCounter(el, parseInt(el.dataset.target));
+                });
+                setTimeout(() => animateRing(82), 300);
+                animateProgressBars();
+            }
+            if (page === 'participation') {
+                document.querySelectorAll('[data-target]').forEach(el => {
+                    animateCounter(el, parseInt(el.dataset.target));
+                });
+            }
+        }
+
+        // TOAST
+        function showToast(msg, type) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            const iconEl = document.getElementById('toast-icon-svg');
+            msgEl.textContent = msg;
+            toast.className = 'toast toast-' + type;
+            if (type === 'error') iconEl.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+            else if (type === 'info') iconEl.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+            else iconEl.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function openFocusSection() {
+            document.getElementById('focusCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('Week 5-6: Assessment Methods is your current module', 'info');
+        }
+
+        // INIT
+        window.addEventListener('load', () => animatePage('dashboard'));
+    </script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // ── FACULTY SUBMISSIONS MANAGEMENT ──
+  let currentFacultySubmissions = [];
+
+  // Load faculty submissions on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    // Auto-login as faculty for testing if no user is logged in
+    let user = Auth.getUser();
+    if (!user) {
+      user = Auth.loginByRole('Faculty');
+    }
+
+    Auth.requireAuth(['Faculty']);
+    Auth.updateUI();
+    loadFacultySubmissions();
+  });
+
+  function loadFacultySubmissions() {
+    // Get current faculty user
+    const user = Auth.getUser();
+    if (!user) return;
+
+    // Get faculty's submissions
+    currentFacultySubmissions = DB.getFacultySubmissions().filter(sub => sub.facultyId === user.id);
+    renderFacultySubmissions();
+  }
+
+  function renderFacultySubmissions() {
+    const container = document.getElementById('faculty-submissions-container');
+    if (!container) return;
+
+    if (!currentFacultySubmissions.length) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)">No program enrollments found. Start by submitting a new participation.</div>';
+      return;
+    }
+
+    container.innerHTML = currentFacultySubmissions.map(submission => {
+      const program = DB.getPrograms().find(p => p.id === submission.programId);
+      if (!program) return '';
+
+      const currentStageIndex = submission.currentStage - 1;
+      const currentStage = program.stages[currentStageIndex];
+      const nextStage = program.stages[currentStageIndex + 1];
+
+      // Check if faculty can submit for next stage
+      const canSubmitNext = currentStageIndex < program.stages.length - 1 &&
+                           submission.submissions.every(s => s.status === 'Approved');
+
+      return `
+        <div class="subm-card">
+          <div class="subm-card-header">
+            <div class="subm-prog-icon" style="background:rgba(124,92,252,0.15)">📚</div>
+            <div class="subm-prog-info">
+              <div class="subm-prog-name">${program.name}</div>
+              <div class="subm-prog-meta">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Enrolled ${submission.submissions[0]?.submittedDate || 'Recently'}
+                <span>•</span>
+                ${program.type}
+              </div>
+            </div>
+            <span class="subm-status ${getFacultyProgramStatusClass(submission, program)}">${getFacultyProgramStatusText(submission, program)}</span>
+          </div>
+
+          <div style="margin-bottom:6px;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px">
+            Stage Progress (${submission.currentStage}/${program.stages.length})
+          </div>
+
+          <div class="stage-tracker">
+            ${program.stages.map((stage, index) => {
+              const submissionForStage = submission.submissions.find(s => s.stage === stage);
+              const stageStatus = getFacultyStageStatus(submissionForStage, index, currentStageIndex, program.stages.length);
+              return `
+                <div class="stage-node">
+                  <div class="stage-circle ${stageStatus.class}">${stageStatus.icon}</div>
+                  <div class="stage-name-label ${stageStatus.labelClass}">${stage}</div>
+                </div>
+                ${index < program.stages.length - 1 ? `<div class="stage-connector ${stageStatus.connectorClass}"></div>` : ''}
+              `;
+            }).join('')}
+          </div>
+
+          <div class="subm-card-footer" style="grid-template-columns:1fr ${canSubmitNext ? '1fr' : ''}">
+            <button class="btn-view-det" onclick="viewFacultyProgramDetails(${submission.id})">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              View Details
+            </button>
+            ${canSubmitNext ? `<button class="btn-upload" onclick="prepareFacultyStageSubmission(${submission.id}, '${nextStage}')">⬆ Submit ${nextStage} Proof</button>` : ''}
+            ${submission.submissions.some(s => s.status === 'Approved' && program.stages.indexOf(s.stage) === program.stages.length - 1) ?
+              `<button class="btn-dl-cert" onclick="downloadFacultyCertificate(${submission.id})">⬇ Download Certificate</button>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getFacultyProgramStatusClass(submission, program) {
+    const completedStages = submission.submissions.filter(s => s.status === 'Approved').length;
+    if (completedStages === program.stages.length) return 'subm-completed';
+    if (submission.submissions.some(s => s.status === 'Pending')) return 'subm-reviewing';
+    if (completedStages > 0) return 'subm-verified';
+    return 'subm-pending';
+  }
+
+  function getFacultyProgramStatusText(submission, program) {
+    const completedStages = submission.submissions.filter(s => s.status === 'Approved').length;
+    if (completedStages === program.stages.length) return 'Completed';
+    if (submission.submissions.some(s => s.status === 'Pending')) return 'Under Review';
+    if (completedStages > 0) return 'In Progress';
+    return 'Enrolled';
+  }
+
+  function getFacultyStageStatus(submissionForStage, index, currentStageIndex, totalStages) {
+    if (!submissionForStage) {
+      return {
+        class: index <= currentStageIndex ? 's-active' : 's-locked',
+        labelClass: index < currentStageIndex ? 'done-lbl' : index === currentStageIndex ? 'active-lbl' : '',
+        connectorClass: index < currentStageIndex ? 'done-conn' : '',
+        icon: index < currentStageIndex ? '✓' : index === currentStageIndex ? '○' : '○'
+      };
+    }
+
+    if (submissionForStage.status === 'Approved') {
+      return {
+        class: 's-done',
+        labelClass: 'done-lbl',
+        connectorClass: index < totalStages - 1 ? 'done-conn' : '',
+        icon: '✓'
+      };
+    } else if (submissionForStage.status === 'Rejected') {
+      return {
+        class: 's-rejected',
+        labelClass: 'rejected-lbl',
+        connectorClass: '',
+        icon: '✗'
+      };
+    } else {
+      return {
+        class: 's-reviewing',
+        labelClass: 'review-lbl',
+        connectorClass: '',
+        icon: '⏳'
+      };
+    }
+  }
+
+  function prepareFacultyStageSubmission(submissionId, stage) {
+    showToast(`Preparing submission for ${stage}...`, 'info');
+    // In a real implementation, this would open a modal similar to the student one
+  }
+
+  function viewFacultyProgramDetails(submissionId) {
+    const submission = currentFacultySubmissions.find(s => s.id === submissionId);
+    const program = DB.getPrograms().find(p => p.id === submission.programId);
+
+    let details = `Program: ${program.name}\nType: ${program.type}\n\nStages:\n`;
+    program.stages.forEach((stage, index) => {
+      const sub = submission.submissions.find(s => s.stage === stage);
+      const status = sub ? sub.status : 'Not Started';
+      details += `${index + 1}. ${stage}: ${status}\n`;
+    });
+
+    alert(details);
+  }
+
+  function downloadFacultyCertificate(submissionId) {
+    showToast('Certificate downloaded successfully!', 'success');
+  }
+</script>
+</body>
+
+</html>

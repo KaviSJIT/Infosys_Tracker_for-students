@@ -1,0 +1,2926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompanyConnect – Track • Verify • Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  :root {
+    --bg-base: #0a0c14;
+    --bg-surface: #0f1221;
+    --bg-card: #131729;
+    --bg-card-hover: #181e32;
+    --bg-elevated: #1a2038;
+    --border: rgba(255,255,255,0.06);
+    --border-light: rgba(255,255,255,0.1);
+    --accent-primary: #7c5cfc;
+    --accent-secondary: #5b8af5;
+    --accent-glow: rgba(124,92,252,0.3);
+    --accent-cyan: #38e5c5;
+    --accent-orange: #f5a623;
+    --text-primary: #e8ecf5;
+    --text-secondary: #7b8aaa;
+    --text-muted: #4a5470;
+    --green: #22c55e;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --blue: #5b8af5;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --sidebar-w: 220px;
+    --topbar-h: 60px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 4px; }
+
+  /* ── LAYOUT ── */
+  .app { display: flex; height: 100vh; overflow: hidden; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--accent-primary), transparent);
+    opacity: 0.4;
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 0 20px var(--accent-glow);
+    flex-shrink: 0;
+  }
+
+  .brand-text h2 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+  }
+
+  .brand-text p {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .role-badge {
+    margin: 14px 18px 8px;
+    padding: 6px 12px;
+    background: rgba(124,92,252,0.1);
+    border: 1px solid rgba(124,92,252,0.25);
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--accent-primary);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 8px 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    font-weight: 500;
+    position: relative;
+    user-select: none;
+  }
+
+  .nav-item:hover {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+  }
+
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(124,92,252,0.2), rgba(91,138,245,0.1));
+    color: var(--text-primary);
+    border: 1px solid rgba(124,92,252,0.2);
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 3px; height: 60%;
+    background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+    border-radius: 0 3px 3px 0;
+  }
+
+  .nav-item svg { flex-shrink: 0; opacity: 0.8; }
+  .nav-item.active svg { opacity: 1; }
+
+  .nav-chevron { margin-left: auto; transition: transform 0.2s; }
+  .nav-item.active .nav-chevron { transform: rotate(90deg); }
+
+  .sidebar-footer {
+    padding: 14px 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+
+  .logout-btn:hover { color: var(--red); background: rgba(239,68,68,0.08); }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    height: var(--topbar-h);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+    flex-shrink: 0;
+  }
+
+  .search-wrap {
+    flex: 1;
+    max-width: 380px;
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px 8px 36px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input::placeholder { color: var(--text-muted); }
+  .search-wrap input:focus { border-color: var(--accent-primary); }
+
+  .search-icon {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+  .notif-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .notif-btn:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+
+  .notif-dot {
+    width: 7px; height: 7px;
+    background: var(--red);
+    border-radius: 50%;
+    position: absolute;
+    top: 6px; right: 6px;
+    border: 1.5px solid var(--bg-surface);
+  }
+
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 14px var(--accent-glow);
+    transition: box-shadow 0.2s;
+  }
+
+  .avatar:hover { box-shadow: 0 0 24px var(--accent-glow); }
+
+  /* ── PAGE ── */
+  .page {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 28px;
+    display: none;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .page.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .page-header p { color: var(--text-secondary); font-size: 13.5px; margin-top: 4px; }
+
+  /* ── STAT CARDS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(124,92,252,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stat-card:hover { border-color: rgba(124,92,252,0.3); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .stat-card:hover::before { opacity: 1; }
+
+  .stat-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: rgba(124,92,252,0.12);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    color: var(--accent-primary);
+  }
+
+  .stat-card:nth-child(2) .stat-icon { background: rgba(56,229,197,0.1); color: var(--accent-cyan); }
+  .stat-card:nth-child(3) .stat-icon { background: rgba(91,138,245,0.12); color: var(--accent-secondary); }
+  .stat-card:nth-child(4) .stat-icon { background: rgba(245,166,35,0.1); color: var(--accent-orange); }
+
+  .stat-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(34,197,94,0.12);
+    color: var(--green);
+    border: 1px solid rgba(34,197,94,0.2);
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label { font-size: 12.5px; color: var(--text-secondary); font-weight: 500; }
+
+  /* ── CHARTS ROW ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .chart-card:hover { border-color: rgba(124,92,252,0.2); }
+
+  .chart-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+  }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 14px; height: 120px; }
+
+  .bar-group { flex: 1; display: flex; gap: 3px; align-items: flex-end; flex-direction: column; }
+  .bar-label { font-size: 10.5px; color: var(--text-muted); margin-top: 6px; text-align: center; width: 100%; }
+
+  .bar-wrap { display: flex; gap: 3px; align-items: flex-end; width: 100%; }
+
+  .bar {
+    flex: 1;
+    border-radius: 5px 5px 0 0;
+    min-height: 4px;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+
+  .bar.enrolled { background: linear-gradient(to top, var(--accent-primary), #a78bfa); }
+  .bar.completed { background: linear-gradient(to top, #3b82f6, #93c5fd); opacity: 0.7; }
+
+  .bar-chart-wrap { position: relative; }
+  .y-axis { display: flex; flex-direction: column; justify-content: space-between; height: 120px; margin-right: 8px; }
+  .y-label { font-size: 10px; color: var(--text-muted); }
+
+  .chart-legend { display: flex; gap: 14px; margin-top: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-secondary); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* Year chart */
+  .year-bars { display: flex; gap: 14px; align-items: flex-end; height: 120px; }
+  .year-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+  .year-bar {
+    width: 100%;
+    background: linear-gradient(to top, var(--accent-secondary), #93c5fd);
+    border-radius: 6px 6px 0 0;
+    transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .year-label { font-size: 10px; color: var(--text-muted); }
+
+  /* ── BOTTOM ROW ── */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* Pie Chart */
+  .pie-wrapper { display: flex; align-items: center; gap: 24px; }
+  .pie-svg { flex-shrink: 0; filter: drop-shadow(0 0 20px rgba(124,92,252,0.4)); }
+  .pie-legend { display: flex; flex-direction: column; gap: 10px; }
+  .pie-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .pie-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .pie-legend-label { color: var(--text-secondary); }
+  .pie-legend-pct { margin-left: auto; font-weight: 600; color: var(--text-primary); font-size: 12px; }
+
+  /* Funnel */
+  .funnel-list { display: flex; flex-direction: column; gap: 12px; }
+  .funnel-item {}
+  .funnel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .funnel-label { font-size: 12.5px; color: var(--text-secondary); }
+  .funnel-count { font-size: 13px; font-weight: 600; color: var(--text-primary); font-family: var(--font-display); }
+  .funnel-track { height: 8px; background: var(--bg-elevated); border-radius: 10px; overflow: hidden; }
+  .funnel-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+    transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .funnel-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+  @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  .funnel-pct {
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Completion */
+  .completion-list { display: flex; flex-direction: column; gap: 14px; }
+  .completion-item {}
+  .completion-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .completion-name { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+  .completion-pct { font-size: 12px; color: var(--text-secondary); }
+  .completion-track { height: 6px; background: var(--bg-elevated); border-radius: 10px; overflow: hidden; }
+  .completion-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Live Activity */
+  .live-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .live-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); } 50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(34,197,94,0); } }
+
+  .activity-list { display: flex; flex-direction: column; gap: 12px; }
+  .activity-item { display: flex; align-items: flex-start; gap: 10px; }
+  .activity-avatar {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--bg-elevated);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    position: relative;
+  }
+  .activity-status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -1px; right: -1px;
+    border: 1.5px solid var(--bg-card);
+  }
+  .activity-info { flex: 1; min-width: 0; }
+  .activity-name { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+  .activity-action { font-size: 11.5px; color: var(--text-secondary); }
+  .activity-time { font-size: 10.5px; color: var(--text-muted); margin-top: 1px; }
+
+  /* Department Table */
+  .dept-table { width: 100%; border-collapse: collapse; }
+  .dept-table th { font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 16px 12px; text-align: left; }
+  .dept-table td { padding: 13px 16px; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border); }
+  .dept-table tr:hover td { background: var(--bg-elevated); color: var(--text-primary); }
+  .dept-name { font-weight: 600; color: var(--text-primary) !important; font-size: 13.5px !important; }
+  .pct-badge { font-weight: 700; color: var(--green) !important; }
+  .status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+
+  /* ── PROGRAMS PAGE ── */
+  .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .filter-search { flex: 1; max-width: 440px; position: relative; }
+  .filter-search input { width: 100%; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 9px 14px 9px 36px; color: var(--text-primary); font-family: var(--font-body); font-size: 13px; outline: none; transition: border-color 0.2s; }
+  .filter-search input:focus { border-color: var(--accent-primary); }
+  .filter-search input::placeholder { color: var(--text-muted); }
+  .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-tab { padding: 7px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card); transition: all 0.2s; }
+  .filter-tab:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+  .filter-tab.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); box-shadow: 0 0 16px var(--accent-glow); }
+
+  .programs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .program-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .program-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(124,92,252,0.04), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .program-card:hover { border-color: rgba(124,92,252,0.3); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .program-card:hover::before { opacity: 1; }
+
+  .program-card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+  .program-icon { width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(135deg, rgba(124,92,252,0.2), rgba(91,138,245,0.15)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22px; }
+  .program-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .tag-cert { background: rgba(124,92,252,0.15); color: #a78bfa; border: 1px solid rgba(124,92,252,0.25); }
+  .tag-training { background: rgba(56,229,197,0.1); color: var(--accent-cyan); border: 1px solid rgba(56,229,197,0.2); }
+  .tag-intern { background: rgba(91,138,245,0.12); color: var(--accent-secondary); border: 1px solid rgba(91,138,245,0.2); }
+  .tag-workshop { background: rgba(245,166,35,0.1); color: var(--accent-orange); border: 1px solid rgba(245,166,35,0.2); }
+  .tag-active { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .tag-completed { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.2); }
+  .tag-upcoming { background: rgba(245,166,35,0.1); color: var(--accent-orange); border: 1px solid rgba(245,166,35,0.2); }
+
+  .program-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .program-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px; }
+  .program-meta { display: flex; gap: 16px; margin-bottom: 18px; }
+  .meta-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+
+  .btn-primary {
+    width: 100%;
+    padding: 11px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent); opacity: 0; transition: opacity 0.2s; }
+  .btn-primary:hover { box-shadow: 0 0 24px var(--accent-glow); transform: translateY(-1px); }
+  .btn-primary:hover::after { opacity: 1; }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* ── PARTICIPATION PAGE ── */
+  .page-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-export {
+    padding: 9px 18px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .btn-export:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
+
+  .dept-filter { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+  .dept-tab { padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card); transition: all 0.2s; }
+  .dept-tab:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+  .dept-tab.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+
+  .table-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th { font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; padding: 14px 20px; text-align: left; background: var(--bg-elevated); border-bottom: 1px solid var(--border); }
+  .data-table td { padding: 14px 20px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid var(--border); }
+  .data-table tbody tr { transition: background 0.15s; }
+  .data-table tbody tr:hover td { background: var(--bg-elevated); }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+  .student-name { font-weight: 600; color: var(--text-primary) !important; font-size: 13.5px !important; }
+  .dept-chip { display: inline-block; padding: 3px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+  .dept-cse { background: rgba(124,92,252,0.15); color: #a78bfa; }
+  .dept-ise { background: rgba(56,229,197,0.1); color: var(--accent-cyan); }
+  .dept-ece { background: rgba(245,166,35,0.1); color: var(--accent-orange); }
+  .dept-mech { background: rgba(239,68,68,0.1); color: #f87171; }
+  .dept-civil { background: rgba(34,197,94,0.1); color: var(--green); }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .mini-track { width: 80px; height: 6px; background: var(--bg-base); border-radius: 10px; overflow: hidden; }
+  .mini-fill { height: 100%; border-radius: 10px; background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary)); transition: width 1s ease; }
+  .pct-text { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+  .status-chip { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; }
+  .status-completed { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .status-inprogress { background: rgba(91,138,245,0.12); color: var(--accent-secondary); border: 1px solid rgba(91,138,245,0.2); }
+  .status-enrolled { background: rgba(245,166,35,0.1); color: var(--accent-orange); border: 1px solid rgba(245,166,35,0.2); }
+
+  /* ── VERIFICATION PAGE ── */
+  .verif-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .verif-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; gap: 16px; transition: all 0.2s; }
+  .verif-stat:hover { border-color: rgba(124,92,252,0.25); }
+  .verif-stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .vs-pending { background: rgba(245,166,35,0.1); color: var(--accent-orange); }
+  .vs-verified { background: rgba(34,197,94,0.1); color: var(--green); }
+  .vs-rejected { background: rgba(239,68,68,0.1); color: var(--red); }
+  .verif-stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--text-primary); }
+  .verif-stat-label { font-size: 12.5px; color: var(--text-secondary); }
+
+  .verif-filter { display: flex; gap: 8px; margin-bottom: 20px; }
+  .verif-tab { padding: 7px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card); transition: all 0.2s; }
+  .verif-tab:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+  .verif-tab.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+
+  .verif-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .verif-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr auto;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+    animation: fadeUp 0.3s ease;
+  }
+
+  .verif-card:hover { border-color: rgba(124,92,252,0.2); background: var(--bg-card-hover); }
+
+  .verif-student { display: flex; flex-direction: column; gap: 6px; }
+  .verif-name { font-weight: 700; color: var(--text-primary); font-size: 14.5px; font-family: var(--font-display); }
+  .verif-reg { font-size: 12px; color: var(--text-muted); }
+  .verif-info { display: flex; flex-direction: column; gap: 4px; }
+  .verif-info-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  .verif-info-val { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+  .verif-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+  .btn-view, .btn-dl { padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary); }
+  .btn-view:hover, .btn-dl:hover { color: var(--text-primary); border-color: var(--border-light); }
+  .btn-approve { padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: var(--green); transition: all 0.2s; }
+  .btn-approve:hover { background: rgba(34,197,94,0.25); box-shadow: 0 0 14px rgba(34,197,94,0.2); }
+  .btn-reject { padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: var(--red); transition: all 0.2s; }
+  .btn-reject:hover { background: rgba(239,68,68,0.2); box-shadow: 0 0 14px rgba(239,68,68,0.15); }
+
+  /* ── SETTINGS PAGE ── */
+  .settings-grid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+  .settings-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .settings-section-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+  .settings-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, rgba(124,92,252,0.25), rgba(91,138,245,0.15)); display: flex; align-items: center; justify-content: center; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.3px; }
+  .form-input {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 10px 14px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
+  .form-input[disabled] { color: var(--text-muted); cursor: not-allowed; background: var(--bg-card); }
+  .form-input-icon { position: relative; }
+  .form-input-icon .lock-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+  .save-btn { margin-top: 20px; padding: 11px 24px; border-radius: 10px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; font-size: 13.5px; font-weight: 600; border: none; cursor: pointer; font-family: var(--font-body); transition: all 0.2s; }
+  .save-btn:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
+
+  /* Profile Details Styles */
+  .profile-details-section { margin-top: 10px; }
+  .profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .profile-field { display: flex; flex-direction: column; gap: 6px; }
+  .field-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .field-input { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text-primary); font-family: inherit; font-size: 13px; outline: none; cursor: not-allowed; opacity: 0.9; }
+  .field-input:read-only { background: var(--bg-card); }
+
+  .notif-item { display: flex; align-items: flex-start; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-text h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .notif-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+  .toggle { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: var(--bg-elevated); border-radius: 24px; cursor: pointer; transition: all 0.3s; border: 1px solid var(--border); }
+  .toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; background: var(--text-muted); border-radius: 50%; top: 2px; left: 2px; transition: all 0.3s; }
+  .toggle input:checked + .toggle-slider { background: var(--accent-primary); border-color: var(--accent-primary); box-shadow: 0 0 12px var(--accent-glow); }
+  .toggle input:checked + .toggle-slider::before { background: white; transform: translateX(18px); }
+
+  .security-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .security-item:last-child { border-bottom: none; }
+  .security-text h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+  .security-text p { font-size: 12px; color: var(--text-muted); }
+  .btn-manage { padding: 8px 16px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; font-size: 12.5px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; font-family: var(--font-body); }
+  .btn-manage:hover { box-shadow: 0 0 16px var(--accent-glow); }
+
+  /* Tab toggle (Students/Faculty) */
+  .tab-toggle { display: flex; gap: 4px; background: var(--bg-elevated); border-radius: 10px; padding: 4px; width: fit-content; margin-bottom: 20px; }
+  .tab-btn { padding: 7px 18px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-secondary); transition: all 0.2s; font-family: var(--font-body); display: flex; align-items: center; gap: 6px; }
+  .tab-btn.active { background: var(--accent-primary); color: white; box-shadow: 0 0 14px var(--accent-glow); }
+
+  /* Dept filter tags in dashboard */
+  .dept-filters-dash { display: flex; gap: 6px; margin-bottom: 0; }
+  .dept-filter-dash { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); color: var(--text-secondary); background: transparent; transition: all 0.2s; }
+  .dept-filter-dash.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    color: var(--text-primary);
+    box-shadow: var(--shadow);
+    z-index: 1000;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .toast-success { border-left: 3px solid var(--green); }
+  .toast-success .toast-icon { background: rgba(34,197,94,0.1); color: var(--green); }
+  .toast-error { border-left: 3px solid var(--red); }
+  .toast-error .toast-icon { background: rgba(239,68,68,0.1); color: var(--red); }
+
+  /* Reports page */
+  .reports-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .report-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; cursor: pointer; transition: all 0.3s; }
+  .report-card:hover { border-color: rgba(124,92,252,0.3); transform: translateY(-3px); box-shadow: var(--shadow); }
+  .report-icon { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(135deg, rgba(124,92,252,0.2), rgba(91,138,245,0.1)); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 20px; }
+  .report-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .report-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; }
+  .report-btn { width: 100%; padding: 9px; border-radius: 8px; background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary); font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: var(--font-body); }
+  .report-btn:hover { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+
+  /* Glow backgrounds */
+  .page::before {
+    content: '';
+    position: fixed;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,92,252,0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">C</div>
+      <div class="brand-text">
+        <h2>CompanyConnect</h2>
+        <p>Track • Verify • Connect</p>
+      </div>
+    </div>
+    <div class="role-badge">Role: Admin</div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-page="dashboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="nav-item" data-page="programs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Programs
+      </div>
+      <div class="nav-item" data-page="verification">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Verification
+      </div>
+      <div class="nav-item" data-page="reports">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Reports & Participation
+      </div>
+      <div class="nav-item" data-page="settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="logout-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search students, programs...">
+      </div>
+      <div class="topbar-actions">
+        <div class="notif-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="avatar">A</div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="dashboard">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
+        <div class="page-header" style="margin-bottom:0">
+          <h1>Admin Dashboard</h1>
+          <p>Overview of all activities and analytics</p>
+        </div>
+        <div class="dept-filters-dash">
+          <div class="dept-filter-dash">Engineering</div>
+          <div class="dept-filter-dash">Technology</div>
+          <div class="dept-filter-dash active">All</div>
+        </div>
+      </div>
+
+      <div class="tab-toggle">
+        <button class="tab-btn active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Students
+        </button>
+        <button class="tab-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+          Faculty
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="stat-badge">+12%</div>
+          <div class="stat-value" data-target="452">0</div>
+          <div class="stat-label">Total Students</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="stat-badge">+8%</div>
+          <div class="stat-value" data-target="5">0</div>
+          <div class="stat-label">Active Programs</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="stat-badge">+5%</div>
+          <div class="stat-value" id="pct-stat">0%</div>
+          <div class="stat-label">Completion Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+          <div class="stat-badge">+15%</div>
+          <div class="stat-value" data-target="401">0</div>
+          <div class="stat-label">Verified Certificates</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Department-wise Student Participation</div>
+          <div style="display:flex;gap:8px">
+            <div style="display:flex;flex-direction:column;justify-content:space-between;height:120px;margin-right:4px">
+              <span style="font-size:10px;color:var(--text-muted)">100</span>
+              <span style="font-size:10px;color:var(--text-muted)">75</span>
+              <span style="font-size:10px;color:var(--text-muted)">50</span>
+              <span style="font-size:10px;color:var(--text-muted)">25</span>
+              <span style="font-size:10px;color:var(--text-muted)">0</span>
+            </div>
+            <div style="flex:1">
+              <div class="bar-chart">
+                <div class="bar-group">
+                  <div class="bar-wrap">
+                    <div class="bar enrolled" style="height:0%" data-h="85%"></div>
+                    <div class="bar completed" style="height:0%" data-h="72%"></div>
+                  </div>
+                  <div class="bar-label">CSE</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap">
+                    <div class="bar enrolled" style="height:0%" data-h="68%"></div>
+                    <div class="bar completed" style="height:0%" data-h="58%"></div>
+                  </div>
+                  <div class="bar-label">ISE</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap">
+                    <div class="bar enrolled" style="height:0%" data-h="54%"></div>
+                    <div class="bar completed" style="height:0%" data-h="45%"></div>
+                  </div>
+                  <div class="bar-label">ECE</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap">
+                    <div class="bar enrolled" style="height:0%" data-h="42%"></div>
+                    <div class="bar completed" style="height:0%" data-h="35%"></div>
+                  </div>
+                  <div class="bar-label">MECH</div>
+                </div>
+                <div class="bar-group">
+                  <div class="bar-wrap">
+                    <div class="bar enrolled" style="height:0%" data-h="38%"></div>
+                    <div class="bar completed" style="height:0%" data-h="30%"></div>
+                  </div>
+                  <div class="bar-label">CIVIL</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent-primary)"></div>Enrolled</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--accent-secondary);opacity:0.7"></div>Completed</div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">Year-wise Participation</div>
+          <div style="display:flex;gap:8px">
+            <div style="display:flex;flex-direction:column;justify-content:space-between;height:120px;margin-right:4px">
+              <span style="font-size:10px;color:var(--text-muted)">100</span>
+              <span style="font-size:10px;color:var(--text-muted)">75</span>
+              <span style="font-size:10px;color:var(--text-muted)">50</span>
+              <span style="font-size:10px;color:var(--text-muted)">25</span>
+              <span style="font-size:10px;color:var(--text-muted)">0</span>
+            </div>
+            <div class="year-bars" style="flex:1">
+              <div class="year-bar-wrap">
+                <div class="year-bar" style="height:0%" data-h="38%"></div>
+                <div class="year-label">1st Year</div>
+              </div>
+              <div class="year-bar-wrap">
+                <div class="year-bar" style="height:0%" data-h="65%"></div>
+                <div class="year-label">2nd Year</div>
+              </div>
+              <div class="year-bar-wrap">
+                <div class="year-bar" style="height:0%" data-h="92%"></div>
+                <div class="year-label">3rd Year</div>
+              </div>
+              <div class="year-bar-wrap">
+                <div class="year-bar" style="height:0%" data-h="80%"></div>
+                <div class="year-label">4th Year</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="bottom-row">
+        <div class="chart-card">
+          <div class="chart-title">Program Type Distribution</div>
+          <div class="pie-wrapper">
+            <svg class="pie-svg" width="130" height="130" viewBox="0 0 130 130">
+              <circle cx="65" cy="65" r="50" fill="none" stroke="#1a2038" stroke-width="24"/>
+              <circle cx="65" cy="65" r="50" fill="none" stroke="#7c5cfc" stroke-width="24" stroke-dasharray="125.6 188.4" stroke-dashoffset="0" style="transition:stroke-dasharray 1.2s ease"/>
+              <circle cx="65" cy="65" r="50" fill="none" stroke="#5b8af5" stroke-width="24" stroke-dasharray="75.4 238.6" stroke-dashoffset="-125.6" style="transition:stroke-dasharray 1.2s ease"/>
+              <circle cx="65" cy="65" r="50" fill="none" stroke="#38e5c5" stroke-width="24" stroke-dasharray="50.2 263.8" stroke-dashoffset="-201" style="transition:stroke-dasharray 1.2s ease"/>
+              <circle cx="65" cy="65" r="50" fill="none" stroke="#f5a623" stroke-width="24" stroke-dasharray="62.8 251.2" stroke-dashoffset="-251.2" style="transition:stroke-dasharray 1.2s ease"/>
+            </svg>
+            <div class="pie-legend">
+              <div class="pie-legend-item"><div class="pie-dot" style="background:#7c5cfc"></div><span class="pie-legend-label">Certification</span><span class="pie-legend-pct">40%</span></div>
+              <div class="pie-legend-item"><div class="pie-dot" style="background:#5b8af5"></div><span class="pie-legend-label">Training</span><span class="pie-legend-pct">24%</span></div>
+              <div class="pie-legend-item"><div class="pie-dot" style="background:#38e5c5"></div><span class="pie-legend-label">Internship</span><span class="pie-legend-pct">16%</span></div>
+              <div class="pie-legend-item"><div class="pie-dot" style="background:#f5a623"></div><span class="pie-legend-label">Workshop</span><span class="pie-legend-pct">20%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">Internship Funnel</div>
+          <div class="funnel-list">
+            <div class="funnel-item">
+              <div class="funnel-header"><span class="funnel-label">Registered</span><span class="funnel-count">450</span></div>
+              <div class="funnel-track"><div class="funnel-fill" style="width:0%" data-w="100%"><span class="funnel-pct">100%</span></div></div>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-header"><span class="funnel-label">Enrolled</span><span class="funnel-count">352</span></div>
+              <div class="funnel-track"><div class="funnel-fill" style="width:0%" data-w="78%"><span class="funnel-pct">78%</span></div></div>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-header"><span class="funnel-label">Submitted</span><span class="funnel-count">287</span></div>
+              <div class="funnel-track"><div class="funnel-fill" style="width:0%" data-w="64%"><span class="funnel-pct">64%</span></div></div>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-header"><span class="funnel-label">Verified</span><span class="funnel-count">245</span></div>
+              <div class="funnel-track"><div class="funnel-fill" style="width:0%" data-w="54%"><span class="funnel-pct">54%</span></div></div>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-header"><span class="funnel-label">Completed</span><span class="funnel-count">206</span></div>
+              <div class="funnel-track"><div class="funnel-fill" style="width:0%" data-w="46%"><span class="funnel-pct">46%</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion + Live -->
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;margin-bottom:24px">
+        <div class="chart-card">
+          <div class="chart-title">Program Completion Rate</div>
+          <div class="completion-list">
+            <div class="completion-item">
+              <div class="completion-header"><span class="completion-name">Infosys Springboard</span><span class="completion-pct">85%</span></div>
+              <div class="completion-track"><div class="completion-fill" style="width:0%" data-w="85%"></div></div>
+            </div>
+            <div class="completion-item">
+              <div class="completion-header"><span class="completion-name">AWS Cloud Practitioner</span><span class="completion-pct">72%</span></div>
+              <div class="completion-track"><div class="completion-fill" style="width:0%" data-w="72%"></div></div>
+            </div>
+            <div class="completion-item">
+              <div class="completion-header"><span class="completion-name">Python Certification</span><span class="completion-pct">66%</span></div>
+              <div class="completion-track"><div class="completion-fill" style="width:0%" data-w="66%"></div></div>
+            </div>
+            <div class="completion-item">
+              <div class="completion-header"><span class="completion-name">HackWithInfy</span><span class="completion-pct">45%</span></div>
+              <div class="completion-track"><div class="completion-fill" style="width:0%" data-w="45%"></div></div>
+            </div>
+            <div class="completion-item">
+              <div class="completion-header"><span class="completion-name">Virtual Internship</span><span class="completion-pct">91%</span></div>
+              <div class="completion-track"><div class="completion-fill" style="width:0%" data-w="91%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-card">
+          <div class="live-header">
+            <div class="live-dot"></div>
+            <span style="font-family:var(--font-display);font-size:14px;font-weight:600">Live Activity</span>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-avatar" style="background:rgba(124,92,252,0.2);color:#a78bfa">RK<div class="activity-status-dot" style="background:var(--green)"></div></div>
+              <div class="activity-info">
+                <div class="activity-name">Rahul Kumar</div>
+                <div class="activity-action">Certificate Verified</div>
+                <div class="activity-time">2 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-avatar" style="background:rgba(245,166,35,0.15);color:var(--accent-orange)">PS<div class="activity-status-dot" style="background:var(--accent-orange)"></div></div>
+              <div class="activity-info">
+                <div class="activity-name">Priya Sharma</div>
+                <div class="activity-action">Submission Pending</div>
+                <div class="activity-time">5 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-avatar" style="background:rgba(34,197,94,0.12);color:var(--green)">AP<div class="activity-status-dot" style="background:var(--green)"></div></div>
+              <div class="activity-info">
+                <div class="activity-name">Amit Patel</div>
+                <div class="activity-action">Internship Completed</div>
+                <div class="activity-time">12 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-avatar" style="background:rgba(239,68,68,0.1);color:#f87171">SR<div class="activity-status-dot" style="background:var(--red)"></div></div>
+              <div class="activity-info">
+                <div class="activity-name">Sneha Reddy</div>
+                <div class="activity-action">Document Rejected</div>
+                <div class="activity-time">18 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-avatar" style="background:rgba(91,138,245,0.15);color:var(--accent-secondary)">VS<div class="activity-status-dot" style="background:var(--green)"></div></div>
+              <div class="activity-info">
+                <div class="activity-name">Vikram Singh</div>
+                <div class="activity-action">New Submission</div>
+                <div class="activity-time">25 min ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dept Summary -->
+      <div class="chart-card">
+        <div class="chart-title">Department Summary</div>
+        <table class="dept-table">
+          <thead>
+            <tr>
+              <th>Department</th><th>Enrolled</th><th>Completed</th><th>Completion %</th><th>Certificates</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="dept-name">CSE</td><td>85</td><td>72</td><td class="pct-badge">85%</td><td>72</td><td><span class="status-pill">✓ On Track</span></td></tr>
+            <tr><td class="dept-name">ISE</td><td>68</td><td>58</td><td class="pct-badge">85%</td><td>58</td><td><span class="status-pill">✓ On Track</span></td></tr>
+            <tr><td class="dept-name">ECE</td><td>54</td><td>45</td><td class="pct-badge">83%</td><td>45</td><td><span class="status-pill">✓ On Track</span></td></tr>
+            <tr><td class="dept-name">MECH</td><td>42</td><td>35</td><td class="pct-badge">83%</td><td>35</td><td><span class="status-pill">✓ On Track</span></td></tr>
+            <tr><td class="dept-name">CIVIL</td><td>38</td><td>30</td><td class="pct-badge" style="color:var(--accent-orange)">79%</td><td>30</td><td><span class="status-pill">✓ On Track</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PROGRAMS PAGE -->
+    <div class="page" id="programs">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
+        <div class="page-header" style="margin-bottom:0"><h1>Programs</h1><p>Browse and manage all available programs</p></div>
+        <button class="btn-create-prog" onclick="openCreateProgram()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create Program
+        </button>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-search">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="progSearchInput" placeholder="Search programs..." oninput="filterProgramCards(this.value)">
+        </div>
+        <div class="filter-tabs">
+          <div class="filter-tab active" onclick="filterProgramType('All',this)">All</div>
+          <div class="filter-tab" onclick="filterProgramType('Certification',this)">Certification</div>
+          <div class="filter-tab" onclick="filterProgramType('Internship',this)">Internship</div>
+          <div class="filter-tab" onclick="filterProgramType('Workshop',this)">Workshop</div>
+          <div class="filter-tab" onclick="filterProgramType('Hackathon',this)">Hackathon</div>
+          <div class="filter-tab" onclick="filterProgramType('Seminar',this)">Seminar</div>
+        </div>
+      </div>
+      <div class="programs-grid" id="programsGrid">
+        <div class="program-card" data-type="Certification" data-title="Infosys Springboard – Python Programming">
+          <div class="program-card-header">
+            <div class="program-icon">🐍</div>
+            <div class="program-tags"><span class="tag tag-cert">Certification</span><span class="tag tag-active">Active</span></div>
+          </div>
+          <div class="program-title">Infosys Springboard – Python Programming</div>
+          <div class="program-desc">Comprehensive Python programming course with hands-on projects and real-world applications.</div>
+          <div class="program-meta">
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 8 weeks</div>
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 142 enrolled</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Opening program details…','success')">View Details</button>
+        </div>
+        <div class="program-card" data-type="Certification" data-title="AWS Cloud Practitioner">
+          <div class="program-card-header">
+            <div class="program-icon">☁️</div>
+            <div class="program-tags"><span class="tag tag-training">Training</span><span class="tag tag-active">Active</span></div>
+          </div>
+          <div class="program-title">AWS Cloud Practitioner</div>
+          <div class="program-desc">Learn AWS fundamentals and cloud computing basics with hands-on lab exercises.</div>
+          <div class="program-meta">
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 6 weeks</div>
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 98 enrolled</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Opening program details…','success')">View Details</button>
+        </div>
+        <div class="program-card" data-type="Certification" data-title="Data Science with Python">
+          <div class="program-card-header">
+            <div class="program-icon">📊</div>
+            <div class="program-tags"><span class="tag tag-cert">Certification</span><span class="tag tag-active">Active</span></div>
+          </div>
+          <div class="program-title">Data Science with Python</div>
+          <div class="program-desc">Master data analysis, visualization, and machine learning with industry-grade tools.</div>
+          <div class="program-meta">
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 10 weeks</div>
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 54 enrolled</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Opening program details…','success')">View Details</button>
+        </div>
+        <div class="program-card" data-type="Seminar" data-title="Faculty Development Program">
+          <div class="program-card-header">
+            <div class="program-icon">🎓</div>
+            <div class="program-tags"><span class="tag tag-training">Training</span><span class="tag tag-completed">Completed</span></div>
+          </div>
+          <div class="program-title">Faculty Development Program</div>
+          <div class="program-desc">Advanced teaching methodologies and curriculum development for faculty members.</div>
+          <div class="program-meta">
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 6 weeks</div>
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 32 enrolled</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Opening program details…','success')">View Details</button>
+        </div>
+        <div class="program-card" data-type="Internship" data-title="Virtual Internship – Web Development">
+          <div class="program-card-header">
+            <div class="program-icon">💻</div>
+            <div class="program-tags"><span class="tag tag-intern">Internship</span><span class="tag tag-active">Active</span></div>
+          </div>
+          <div class="program-title">Virtual Internship – Web Development</div>
+          <div class="program-desc">Build real-world web applications with modern technologies and frameworks.</div>
+          <div class="program-meta">
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 8 weeks</div>
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 76 enrolled</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Opening program details…','success')">View Details</button>
+        </div>
+        <div class="program-card" data-type="Workshop" data-title="HackWithInfy 2026">
+          <div class="program-card-header">
+            <div class="program-icon">⚡</div>
+            <div class="program-tags"><span class="tag tag-workshop">Workshop</span><span class="tag tag-upcoming">Upcoming</span></div>
+          </div>
+          <div class="program-title">HackWithInfy 2026</div>
+          <div class="program-desc">Competitive coding workshop and hackathon preparation with mentorship from experts.</div>
+          <div class="program-meta">
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 2 days</div>
+            <div class="meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> 125 enrolled</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Opening program details…','success')">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VERIFICATION PAGE -->
+    <div class="page" id="verification">
+      <div class="page-header"><h1>Verification</h1><p>Review and verify student submissions</p></div>
+      <div class="verif-stats">
+        <div class="verif-stat">
+          <div class="verif-stat-icon vs-pending"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="verif-stat-num">3</div><div class="verif-stat-label">Pending Review</div></div>
+        </div>
+        <div class="verif-stat">
+          <div class="verif-stat-icon vs-verified"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div><div class="verif-stat-num">1</div><div class="verif-stat-label">Verified</div></div>
+        </div>
+        <div class="verif-stat">
+          <div class="verif-stat-icon vs-rejected"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+          <div><div class="verif-stat-num">1</div><div class="verif-stat-label">Rejected</div></div>
+        </div>
+      </div>
+      <div class="verif-filter">
+        <div class="verif-tab active">All</div>
+        <div class="verif-tab">Pending</div>
+        <div class="verif-tab">Verified</div>
+        <div class="verif-tab">Rejected</div>
+      </div>
+      <div class="verif-list">
+        <div class="verif-card">
+          <div class="verif-student"><div class="verif-name">Rahul Kumar</div><div style="display:flex;align-items:center;gap:8px"><span class="verif-reg">4JK21CS001</span><span class="status-chip status-enrolled" style="font-size:11px;padding:2px 8px">Pending</span></div></div>
+          <div class="verif-info"><div class="verif-info-label">Program</div><div class="verif-info-val">Python Certification</div></div>
+          <div class="verif-info"><div class="verif-info-label">Document Type · Submitted</div><div class="verif-info-val">Certificate · 4/1/2026</div></div>
+          <div class="verif-actions">
+            <button class="btn-view" onclick="showToast('Opening document preview…','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            <button class="btn-dl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            <button class="btn-approve" onclick="showToast('Document approved successfully!','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Approve</button>
+            <button class="btn-reject" onclick="showToast('Document rejected.','error')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reject</button>
+          </div>
+        </div>
+        <div class="verif-card">
+          <div class="verif-student"><div class="verif-name">Priya Sharma</div><div style="display:flex;align-items:center;gap:8px"><span class="verif-reg">4JK21CS002</span><span class="status-chip status-enrolled" style="font-size:11px;padding:2px 8px">Pending</span></div></div>
+          <div class="verif-info"><div class="verif-info-label">Program</div><div class="verif-info-val">AWS Cloud Practitioner</div></div>
+          <div class="verif-info"><div class="verif-info-label">Document Type · Submitted</div><div class="verif-info-val">Completion Badge · 3/28/2026</div></div>
+          <div class="verif-actions">
+            <button class="btn-view" onclick="showToast('Opening document preview…','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            <button class="btn-dl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            <button class="btn-approve" onclick="showToast('Document approved successfully!','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Approve</button>
+            <button class="btn-reject" onclick="showToast('Document rejected.','error')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reject</button>
+          </div>
+        </div>
+        <div class="verif-card">
+          <div class="verif-student"><div class="verif-name">Amit Patel</div><div style="display:flex;align-items:center;gap:8px"><span class="verif-reg">4JK21IS015</span><span class="status-chip status-completed" style="font-size:11px;padding:2px 8px">Verified</span></div></div>
+          <div class="verif-info"><div class="verif-info-label">Program</div><div class="verif-info-val">Web Development Internship</div></div>
+          <div class="verif-info"><div class="verif-info-label">Document Type · Submitted</div><div class="verif-info-val">Internship Report · 4/3/2026</div></div>
+          <div class="verif-actions">
+            <button class="btn-view" onclick="showToast('Opening document preview…','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            <button class="btn-dl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+          </div>
+        </div>
+        <div class="verif-card">
+          <div class="verif-student"><div class="verif-name">Sneha Reddy</div><div style="display:flex;align-items:center;gap:8px"><span class="verif-reg">4JK21EC042</span><span class="status-chip" style="font-size:11px;padding:2px 8px;background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.2)">Rejected</span></div></div>
+          <div class="verif-info"><div class="verif-info-label">Program</div><div class="verif-info-val">Data Science Workshop</div></div>
+          <div class="verif-info"><div class="verif-info-label">Document Type · Submitted</div><div class="verif-info-val">Certificate · 3/25/2026</div></div>
+          <div class="verif-actions">
+            <button class="btn-view"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            <button class="btn-dl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+          </div>
+        </div>
+        <div class="verif-card">
+          <div class="verif-student"><div class="verif-name">Vikram Singh</div><div style="display:flex;align-items:center;gap:8px"><span class="verif-reg">4JK21CS087</span><span class="status-chip status-enrolled" style="font-size:11px;padding:2px 8px">Pending</span></div></div>
+          <div class="verif-info"><div class="verif-info-label">Program</div><div class="verif-info-val">HackWithInfy Prep</div></div>
+          <div class="verif-info"><div class="verif-info-label">Document Type · Submitted</div><div class="verif-info-val">Participation Certificate · 4/2/2026</div></div>
+          <div class="verif-actions">
+            <button class="btn-view" onclick="showToast('Opening document preview…','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>View</button>
+            <button class="btn-dl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            <button class="btn-approve" onclick="showToast('Document approved successfully!','success')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Approve</button>
+            <button class="btn-reject" onclick="showToast('Document rejected.','error')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS PAGE -->
+    <div class="page" id="reports">
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div class="page-header" style="margin-bottom:0">
+          <h1>Reports & Participation</h1>
+          <p>Comprehensive insights into student activity, participation and program performance</p>
+        </div>
+        <div class="rpt-dl-group">
+          <button class="rpt-dl-btn" onclick="downloadCSV()">⬇ CSV</button>
+          <button class="rpt-dl-btn rpt-dl-excel" onclick="downloadExcel()">⬇ Excel</button>
+          <button class="rpt-dl-btn rpt-dl-pdf" onclick="downloadPDF()">⬇ PDF</button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="rpt-filters" style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+        <div class="rpt-filter-group" style="flex:1; min-width:200px;">
+          <label>Search Data</label>
+          <div style="position:relative;">
+            <svg class="search-icon" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);z-index:1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Search by name or reg no..." style="width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:8px 14px 8px 34px;color:var(--text-primary);font-family:var(--font-body);font-size:13px;outline:none;">
+          </div>
+        </div>
+        <div class="rpt-filter-group">
+          <label>Department</label>
+          <select id="rptDept" onchange="applyReportFilters()">
+            <option value="">All Departments</option>
+            <option>CSE</option><option>ISE</option><option>ECE</option><option>MECH</option><option>CIVIL</option>
+          </select>
+        </div>
+        <div class="rpt-filter-group">
+          <label>Year</label>
+          <select id="rptYear" onchange="applyReportFilters()">
+            <option value="">All Years</option>
+            <option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option>
+          </select>
+        </div>
+        <div class="rpt-filter-group">
+          <label>Status</label>
+          <select id="rptStatus" onchange="applyReportFilters()">
+            <option value="">All Status</option>
+            <option>Completed</option><option>In Progress</option><option>Enrolled</option><option>Pending</option>
+          </select>
+        </div>
+        <div class="rpt-filter-group">
+          <label>Program Type</label>
+          <select id="rptType" onchange="applyReportFilters()">
+            <option value="">All Types</option>
+            <option>Internship</option><option>Workshop</option><option>Certification</option><option>Hackathon</option><option>Seminar</option>
+          </select>
+        </div>
+        <div class="rpt-filter-group">
+          <label>From Date</label>
+          <input type="date" id="rptFrom" onchange="applyReportFilters()">
+        </div>
+        <div class="rpt-filter-group">
+          <label>To Date</label>
+          <input type="date" id="rptTo" onchange="applyReportFilters()">
+        </div>
+        <button class="rpt-reset-btn" onclick="resetReportFilters()">Reset</button>
+      </div>
+
+      <!-- Summary KPI Cards -->
+      <div class="rpt-kpi-grid">
+        <div class="rpt-kpi"><div class="rpt-kpi-icon" style="background:rgba(124,92,252,0.12);color:var(--accent-primary)">🎓</div><div class="rpt-kpi-val" id="kpi-total">287</div><div class="rpt-kpi-label">Total Enrolled</div></div>
+        <div class="rpt-kpi"><div class="rpt-kpi-icon" style="background:rgba(34,197,94,0.1);color:var(--green)">✅</div><div class="rpt-kpi-val" id="kpi-completed">206</div><div class="rpt-kpi-label">Completed</div></div>
+        <div class="rpt-kpi"><div class="rpt-kpi-icon" style="background:rgba(91,138,245,0.12);color:var(--blue)">📋</div><div class="rpt-kpi-val" id="kpi-inprog">58</div><div class="rpt-kpi-label">In Progress</div></div>
+        <div class="rpt-kpi"><div class="rpt-kpi-icon" style="background:rgba(245,158,11,0.1);color:var(--yellow)">⏳</div><div class="rpt-kpi-val" id="kpi-pending">23</div><div class="rpt-kpi-label">Pending Verification</div></div>
+        <div class="rpt-kpi"><div class="rpt-kpi-icon" style="background:rgba(239,68,68,0.1);color:var(--red)">❌</div><div class="rpt-kpi-val" id="kpi-rejected">12</div><div class="rpt-kpi-label">Rejected</div></div>
+        <div class="rpt-kpi"><div class="rpt-kpi-icon" style="background:rgba(56,229,197,0.1);color:var(--accent-cyan)">📈</div><div class="rpt-kpi-val" id="kpi-rate">72%</div><div class="rpt-kpi-label">Completion Rate</div></div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="rpt-charts-row">
+        <!-- Dept Bar Chart -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <span class="rpt-card-title">Department-wise Participation</span>
+            <span class="rpt-badge">Bar Chart</span>
+          </div>
+          <canvas id="rptDeptCanvas" height="180"></canvas>
+        </div>
+        <!-- Monthly Line Chart -->
+        <div class="rpt-card">
+          <div class="rpt-card-header">
+            <span class="rpt-card-title">Monthly Activity</span>
+            <span class="rpt-badge">Line Chart</span>
+          </div>
+          <canvas id="rptMonthCanvas" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Program Type Cards -->
+      <div class="rpt-type-row">
+        <div class="rpt-type-card" style="border-color:rgba(124,92,252,0.3)">
+          <div style="font-size:28px">💼</div>
+          <div class="rpt-type-num">3</div>
+          <div class="rpt-type-label">Internships</div>
+          <div class="rpt-type-sub">76 students</div>
+        </div>
+        <div class="rpt-type-card" style="border-color:rgba(245,166,35,0.3)">
+          <div style="font-size:28px">🔧</div>
+          <div class="rpt-type-num">2</div>
+          <div class="rpt-type-label">Workshops</div>
+          <div class="rpt-type-sub">125 students</div>
+        </div>
+        <div class="rpt-type-card" style="border-color:rgba(56,229,197,0.3)">
+          <div style="font-size:28px">🏅</div>
+          <div class="rpt-type-num">4</div>
+          <div class="rpt-type-label">Certifications</div>
+          <div class="rpt-type-sub">294 students</div>
+        </div>
+        <div class="rpt-type-card" style="border-color:rgba(239,68,68,0.3)">
+          <div style="font-size:28px">⚡</div>
+          <div class="rpt-type-num">1</div>
+          <div class="rpt-type-label">Hackathons</div>
+          <div class="rpt-type-sub">125 students</div>
+        </div>
+        <div class="rpt-type-card" style="border-color:rgba(91,138,245,0.3)">
+          <div style="font-size:28px">🎤</div>
+          <div class="rpt-type-num">1</div>
+          <div class="rpt-type-label">Seminars</div>
+          <div class="rpt-type-sub">32 students</div>
+        </div>
+      </div>
+
+      <!-- Section: Detailed Participation Report -->
+      <div class="rpt-section">
+        <div class="rpt-section-header">
+          <span class="rpt-section-title">📄 Consolidated Data Report</span>
+        </div>
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Student Name</th><th>Register No.</th><th>Department</th><th>Year</th><th>Program</th><th>Progress</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="student-name">Rahul Kumar</td><td>4JK21CS001</td><td><span class="dept-chip dept-cse">CSE</span></td><td>3rd</td><td>Python Certification</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="100%" style="width:0%"></div></div><span class="pct-text">100%</span></div></td><td><span class="status-chip status-completed">Completed</span></td></tr>
+              <tr><td class="student-name">Priya Sharma</td><td>4JK21CS002</td><td><span class="dept-chip dept-cse">CSE</span></td><td>3rd</td><td>AWS Cloud</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="75%" style="width:0%"></div></div><span class="pct-text">75%</span></div></td><td><span class="status-chip status-inprogress">In Progress</span></td></tr>
+              <tr><td class="student-name">Amit Patel</td><td>4JK21IS015</td><td><span class="dept-chip dept-ise">ISE</span></td><td>2nd</td><td>Web Development</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="60%" style="width:0%"></div></div><span class="pct-text">60%</span></div></td><td><span class="status-chip status-inprogress">In Progress</span></td></tr>
+              <tr><td class="student-name">Sneha Reddy</td><td>4JK21EC042</td><td><span class="dept-chip dept-ece">ECE</span></td><td>3rd</td><td>Data Science</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="25%" style="width:0%"></div></div><span class="pct-text">25%</span></div></td><td><span class="status-chip status-enrolled">Enrolled</span></td></tr>
+              <tr><td class="student-name">Vikram Singh</td><td>4JK21CS087</td><td><span class="dept-chip dept-cse">CSE</span></td><td>4th</td><td>HackWithInfy</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="100%" style="width:0%"></div></div><span class="pct-text">100%</span></div></td><td><span class="status-chip status-completed">Completed</span></td></tr>
+              <tr><td class="student-name">Anjali Gupta</td><td>4JK21IS023</td><td><span class="dept-chip dept-ise">ISE</span></td><td>3rd</td><td>Python Certification</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="85%" style="width:0%"></div></div><span class="pct-text">85%</span></div></td><td><span class="status-chip status-inprogress">In Progress</span></td></tr>
+              <tr><td class="student-name">Karan Malhotra</td><td>4JK21ME018</td><td><span class="dept-chip dept-mech">MECH</span></td><td>2nd</td><td>AWS Cloud</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="15%" style="width:0%"></div></div><span class="pct-text">15%</span></div></td><td><span class="status-chip status-enrolled">Enrolled</span></td></tr>
+              <tr><td class="student-name">Divya Nair</td><td>4JK21CS055</td><td><span class="dept-chip dept-cse">CSE</span></td><td>4th</td><td>Web Development</td><td><div class="progress-wrap"><div class="mini-track"><div class="mini-fill" data-w="100%" style="width:0%"></div></div><span class="pct-text">100%</span></div></td><td><span class="status-chip status-completed">Completed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div class="page" id="settings">
+      <div class="page-header"><h1>Settings</h1><p>Manage your account and preferences</p></div>
+      <div class="settings-grid">
+        <div>
+          <div class="settings-card" style="margin-bottom:16px">
+            <div class="settings-section-title">
+              <div class="settings-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              Profile Information
+            </div>
+
+            <div class="profile-details-section">
+              <div class="profile-details-grid">
+                <div class="profile-field">
+                  <label class="field-label">Roll Number</label>
+                  <input type="text" class="field-input" value="ADM2020001" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Register Number</label>
+                  <input type="text" class="field-input" value="4JK19ADM001" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Name</label>
+                  <input type="text" class="field-input" value="Admin User" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Department</label>
+                  <input type="text" class="field-input" value="Administration" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Section</label>
+                  <input type="text" class="field-input" value="N/A" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Gender</label>
+                  <input type="text" class="field-input" value="Male" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Mobile Number</label>
+                  <input type="text" class="field-input" value="+91 98765 11111" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Email ID</label>
+                  <input type="email" class="field-input" value="admin@infosys.edu" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Blood Group</label>
+                  <input type="text" class="field-input" value="B+" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Batch</label>
+                  <input type="text" class="field-input" value="N/A" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Course</label>
+                  <input type="text" class="field-input" value="Administration" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Food</label>
+                  <input type="text" class="field-input" value="Vegetarian" readonly>
+                </div>
+                <div class="profile-field">
+                  <label class="field-label">Accommodation</label>
+                  <input type="text" class="field-input" value="Staff Quarters" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-section-title">
+              <div class="settings-icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,166,35,0.1))"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+              Account Security
+            </div>
+            <div class="security-item">
+              <div class="security-text"><h4>Change Password</h4><p>Update your password regularly for security</p></div>
+              <button class="btn-manage" onclick="showToast('Opening password manager…','success')">Manage Password</button>
+            </div>
+            <div class="security-item">
+              <div class="security-text"><h4>Two-Factor Authentication</h4><p>Add an extra layer of account security</p></div>
+              <button class="btn-manage" onclick="showToast('2FA setup initiated…','success')">Enable 2FA</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="settings-card">
+            <div class="settings-section-title">
+              <div class="settings-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+              Manage Notifications
+            </div>
+            <div class="notif-item">
+              <div class="notif-text"><h4>Program Activity Emails</h4><p>Updates on your program activities and verifications.</p></div>
+              <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="notif-item">
+              <div class="notif-text"><h4>New Certificate Alerts</h4><p>Get notified when new certificates are available.</p></div>
+              <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="notif-item">
+              <div class="notif-text"><h4>Submission Reminders</h4><p>Reminders before submission deadlines.</p></div>
+              <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+            </div>
+            <div class="notif-item">
+              <div class="notif-text"><h4>Weekly Digest</h4><p>Weekly summary of your progress and activities.</p></div>
+              <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     CREATE PROGRAM MODAL
+═══════════════════════════════════════════════ -->
+<div class="cp-overlay" id="cpOverlay" onclick="closeCPOnBackdrop(event)">
+  <div class="cp-modal">
+    <div class="cp-header">
+      <div>
+        <div class="cp-title">Create New Program</div>
+        <div class="cp-subtitle">Fill in details and define custom stages</div>
+      </div>
+      <button class="cp-close" onclick="closeCreateProgram()">✕</button>
+    </div>
+
+    <!-- STEP INDICATOR -->
+    <div class="cp-steps">
+      <div class="cp-step active" id="cps1"><span class="cp-step-num">1</span><span class="cp-step-label">Program Details</span></div>
+      <div class="cp-step-line"></div>
+      <div class="cp-step" id="cps2"><span class="cp-step-num">2</span><span class="cp-step-label">Define Stages</span></div>
+      <div class="cp-step-line"></div>
+      <div class="cp-step" id="cps3"><span class="cp-step-num">3</span><span class="cp-step-label">Review & Save</span></div>
+    </div>
+
+    <!-- STEP 1: DETAILS -->
+    <div class="cp-body" id="cpStep1">
+      <div class="cp-form-grid">
+        <div class="cp-form-group cp-full">
+          <label>Program Name <span class="req">*</span></label>
+          <input type="text" id="cpName" placeholder="e.g. AWS Cloud Practitioner 2026">
+        </div>
+        <div class="cp-form-group">
+          <label>Program Type <span class="req">*</span></label>
+          <select id="cpType">
+            <option value="">Select type…</option>
+            <option>Internship</option>
+            <option>Workshop</option>
+            <option>Certification</option>
+            <option>Hackathon</option>
+            <option>Seminar</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="cp-form-group">
+          <label>Status</label>
+          <select id="cpStatus">
+            <option>Active</option>
+            <option>Upcoming</option>
+            <option>Completed</option>
+          </select>
+        </div>
+        <div class="cp-form-group">
+          <label>Start Date <span class="req">*</span></label>
+          <input type="date" id="cpStart">
+        </div>
+        <div class="cp-form-group">
+          <label>End Date <span class="req">*</span></label>
+          <input type="date" id="cpEnd">
+        </div>
+        <div class="cp-form-group cp-full">
+          <label>Description <span class="req">*</span></label>
+          <textarea id="cpDesc" rows="3" placeholder="Describe the program objectives, eligibility, and outcomes…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: STAGES -->
+    <div class="cp-body" id="cpStep2" style="display:none">
+      <div class="cp-stages-header">
+        <span class="cp-stages-hint">Drag to reorder · Click edit to rename · Each stage allows proof submission</span>
+        <button class="cp-add-stage" onclick="addStage()">+ Add Stage</button>
+      </div>
+      <div class="cp-stages-list" id="cpStagesList"></div>
+      <div class="cp-proof-info">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Each stage supports: Certificate · Report/Document · Screenshot · Project Files · Description
+      </div>
+    </div>
+
+    <!-- STEP 3: REVIEW -->
+    <div class="cp-body" id="cpStep3" style="display:none">
+      <div class="cp-review">
+        <div class="cp-review-section">
+          <div class="cp-review-label">Program Name</div>
+          <div class="cp-review-val" id="rv-name"></div>
+        </div>
+        <div class="cp-review-row">
+          <div class="cp-review-section">
+            <div class="cp-review-label">Type</div>
+            <div class="cp-review-val" id="rv-type"></div>
+          </div>
+          <div class="cp-review-section">
+            <div class="cp-review-label">Status</div>
+            <div class="cp-review-val" id="rv-status"></div>
+          </div>
+          <div class="cp-review-section">
+            <div class="cp-review-label">Duration</div>
+            <div class="cp-review-val" id="rv-duration"></div>
+          </div>
+        </div>
+        <div class="cp-review-section">
+          <div class="cp-review-label">Description</div>
+          <div class="cp-review-val" id="rv-desc" style="color:var(--text-secondary);font-size:13px"></div>
+        </div>
+        <div class="cp-review-section">
+          <div class="cp-review-label">Stages (<span id="rv-stage-count">0</span>)</div>
+          <div class="cp-stage-flow" id="rv-stages"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cp-footer">
+      <button class="cp-btn-ghost" id="cpBtnBack" onclick="cpBack()" style="display:none">← Back</button>
+      <div style="margin-left:auto;display:flex;gap:10px">
+        <button class="cp-btn-ghost" onclick="closeCreateProgram()">Cancel</button>
+        <button class="cp-btn-primary" id="cpBtnNext" onclick="cpNext()">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PROOF SUBMISSIONS MODAL
+═══════════════════════════════════════════════ -->
+<div class="cp-overlay" id="proofOverlay" onclick="closeProofOnBackdrop(event)">
+  <div class="cp-modal" style="max-width:860px">
+    <div class="cp-header">
+      <div>
+        <div class="cp-title" id="proofModalTitle">Proof Submissions</div>
+        <div class="cp-subtitle" id="proofModalSub"></div>
+      </div>
+      <button class="cp-close" onclick="closeProofModal()">✕</button>
+    </div>
+    <div class="cp-body" style="padding:0">
+      <!-- Stage progress tracker -->
+      <div class="proof-stage-tracker" id="proofStageTracker"></div>
+      <!-- Submissions table -->
+      <div style="padding:0 24px 24px">
+        <div class="proof-filter-row">
+          <select id="proofStageFilter" onchange="renderProofTable()"><option value="">All Stages</option></select>
+          <select id="proofStatusFilter" onchange="renderProofTable()">
+            <option value="">All Status</option>
+            <option>Pending</option>
+            <option>Approved</option>
+            <option>Rejected</option>
+          </select>
+        </div>
+        <div class="proof-table-wrap">
+          <table class="proof-table">
+            <thead>
+              <tr>
+                <th>Student</th><th>Stage</th><th>File</th><th>Type</th><th>Submitted</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="proofTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REJECT COMMENT MODAL -->
+<div class="cp-overlay" id="rejectOverlay">
+  <div class="cp-modal" style="max-width:420px">
+    <div class="cp-header">
+      <div class="cp-title">Reject Submission</div>
+      <button class="cp-close" onclick="closeRejectModal()">✕</button>
+    </div>
+    <div class="cp-body">
+      <div class="cp-form-group cp-full">
+        <label>Reason for Rejection <span class="req">*</span></label>
+        <textarea id="rejectComment" rows="4" placeholder="Provide a clear reason so the student can resubmit correctly…"></textarea>
+      </div>
+    </div>
+    <div class="cp-footer">
+      <button class="cp-btn-ghost" onclick="closeRejectModal()">Cancel</button>
+      <button class="cp-btn-danger" onclick="confirmReject()">Confirm Reject</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon">
+    <svg id="toast-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <span id="toast-msg">Success!</span>
+</div>
+
+<style>
+/* ── CREATE PROGRAM BUTTON ── */
+.btn-create-prog {
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
+  color:white;font-family:var(--font-body);font-size:13.5px;font-weight:600;
+  border:none;cursor:pointer;transition:all 0.2s;
+  box-shadow:0 4px 18px var(--accent-glow);
+}
+.btn-create-prog:hover{transform:translateY(-2px);box-shadow:0 6px 24px var(--accent-glow);}
+
+/* ── MODAL OVERLAY ── */
+.cp-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;z-index:500;padding:20px;
+}
+.cp-overlay.open{display:flex;}
+
+.cp-modal {
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:20px;width:100%;max-width:640px;
+  max-height:90vh;display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  animation:cpSlideIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes cpSlideIn{from{opacity:0;transform:translateY(30px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+.cp-header {
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:22px 26px 18px;border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.cp-title{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:-0.4px;}
+.cp-subtitle{font-size:12.5px;color:var(--text-muted);margin-top:3px;}
+.cp-close {
+  width:30px;height:30px;border-radius:8px;background:var(--bg-elevated);
+  border:1px solid var(--border);color:var(--text-secondary);
+  cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;flex-shrink:0;
+}
+.cp-close:hover{color:var(--red);border-color:var(--red);}
+
+/* ── STEP INDICATOR ── */
+.cp-steps {
+  display:flex;align-items:center;padding:16px 26px;
+  border-bottom:1px solid var(--border);flex-shrink:0;gap:0;
+}
+.cp-step{display:flex;align-items:center;gap:8px;}
+.cp-step-num {
+  width:26px;height:26px;border-radius:50%;
+  background:var(--bg-elevated);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--text-muted);
+  transition:all 0.3s;flex-shrink:0;
+}
+.cp-step-label{font-size:12.5px;font-weight:600;color:var(--text-muted);transition:color 0.3s;white-space:nowrap;}
+.cp-step.active .cp-step-num{background:var(--accent-primary);border-color:var(--accent-primary);color:white;box-shadow:0 0 12px var(--accent-glow);}
+.cp-step.active .cp-step-label{color:var(--text-primary);}
+.cp-step.done .cp-step-num{background:var(--green);border-color:var(--green);color:white;}
+.cp-step.done .cp-step-label{color:var(--green);}
+.cp-step-line{flex:1;height:1.5px;background:var(--border);margin:0 10px;min-width:20px;}
+
+/* ── BODY ── */
+.cp-body{padding:22px 26px;overflow-y:auto;flex:1;}
+
+.cp-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.cp-form-group{display:flex;flex-direction:column;gap:6px;}
+.cp-full{grid-column:1/-1;}
+.cp-form-group label{font-size:11.5px;font-weight:600;color:var(--text-secondary);letter-spacing:0.4px;text-transform:uppercase;}
+.req{color:var(--red);}
+.cp-form-group input,.cp-form-group select,.cp-form-group textarea {
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+  color:var(--text-primary);font-family:var(--font-body);font-size:13.5px;
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  resize:vertical;
+}
+.cp-form-group input:focus,.cp-form-group select:focus,.cp-form-group textarea:focus{
+  border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(124,92,252,0.12);
+}
+.cp-form-group input::placeholder,.cp-form-group textarea::placeholder{color:var(--text-muted);}
+
+/* ── STAGES ── */
+.cp-stages-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.cp-stages-hint{font-size:12px;color:var(--text-muted);}
+.cp-add-stage {
+  padding:7px 14px;border-radius:8px;
+  background:rgba(124,92,252,0.12);border:1px solid rgba(124,92,252,0.25);
+  color:var(--accent-primary);font-size:12.5px;font-weight:600;
+  cursor:pointer;transition:all 0.2s;
+}
+.cp-add-stage:hover{background:rgba(124,92,252,0.22);}
+
+.cp-stages-list{display:flex;flex-direction:column;gap:8px;min-height:60px;}
+
+.cp-stage-item {
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+  transition:all 0.2s;cursor:grab;
+}
+.cp-stage-item:active{cursor:grabbing;opacity:0.7;}
+.cp-stage-item.drag-over{border-color:var(--accent-primary);background:rgba(124,92,252,0.08);}
+.cp-stage-drag{color:var(--text-muted);cursor:grab;flex-shrink:0;}
+.cp-stage-num {
+  width:22px;height:22px;border-radius:6px;
+  background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:white;flex-shrink:0;
+}
+.cp-stage-name-input {
+  flex:1;background:transparent;border:none;outline:none;
+  color:var(--text-primary);font-family:var(--font-body);font-size:13.5px;font-weight:500;
+  padding:0;
+}
+.cp-stage-name-input::placeholder{color:var(--text-muted);}
+.cp-stage-del {
+  width:26px;height:26px;border-radius:6px;background:transparent;
+  border:1px solid transparent;color:var(--text-muted);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;flex-shrink:0;
+}
+.cp-stage-del:hover{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.08);}
+
+.cp-proof-info {
+  display:flex;align-items:center;gap:8px;
+  margin-top:14px;padding:10px 14px;
+  background:rgba(91,138,245,0.06);border:1px solid rgba(91,138,245,0.15);
+  border-radius:8px;font-size:12px;color:var(--text-secondary);
+}
+
+/* ── REVIEW ── */
+.cp-review{display:flex;flex-direction:column;gap:16px;}
+.cp-review-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.cp-review-section{
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:10px;padding:12px 16px;
+}
+.cp-review-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;}
+.cp-review-val{font-size:14px;font-weight:600;color:var(--text-primary);}
+
+.cp-stage-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;}
+.cp-stage-pill{
+  padding:5px 12px;border-radius:20px;
+  background:rgba(124,92,252,0.12);border:1px solid rgba(124,92,252,0.2);
+  color:var(--accent-primary);font-size:12px;font-weight:600;
+}
+.cp-stage-arrow{color:var(--text-muted);font-size:14px;}
+
+/* ── FOOTER ── */
+.cp-footer {
+  display:flex;align-items:center;padding:16px 26px;
+  border-top:1px solid var(--border);flex-shrink:0;
+}
+.cp-btn-primary {
+  padding:10px 22px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary));
+  color:white;font-family:var(--font-body);font-size:13.5px;font-weight:600;
+  border:none;cursor:pointer;transition:all 0.2s;
+  box-shadow:0 4px 14px rgba(124,92,252,0.3);
+}
+.cp-btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,92,252,0.4);}
+.cp-btn-ghost {
+  padding:10px 18px;border-radius:10px;
+  background:transparent;color:var(--text-secondary);
+  font-family:var(--font-body);font-size:13.5px;font-weight:500;
+  border:1px solid var(--border);cursor:pointer;transition:all 0.2s;
+}
+.cp-btn-ghost:hover{border-color:var(--border-light);color:var(--text-primary);background:var(--bg-elevated);}
+.cp-btn-danger {
+  padding:10px 18px;border-radius:10px;
+  background:rgba(239,68,68,0.12);color:var(--red);
+  font-family:var(--font-body);font-size:13.5px;font-weight:600;
+  border:1px solid rgba(239,68,68,0.25);cursor:pointer;transition:all 0.2s;
+}
+.cp-btn-danger:hover{background:rgba(239,68,68,0.22);}
+
+/* ── PROOF MODAL ── */
+.proof-stage-tracker {
+  display:flex;align-items:center;gap:0;
+  padding:18px 26px;border-bottom:1px solid var(--border);
+  overflow-x:auto;flex-shrink:0;
+}
+.proof-stage-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;}
+.proof-stage-circle {
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;border:2px solid var(--border);
+  background:var(--bg-elevated);color:var(--text-muted);transition:all 0.3s;
+}
+.proof-stage-circle.done{background:var(--green);border-color:var(--green);color:white;}
+.proof-stage-circle.active{background:var(--accent-primary);border-color:var(--accent-primary);color:white;box-shadow:0 0 14px var(--accent-glow);}
+.proof-stage-circle.pending{background:var(--bg-elevated);border-color:var(--border);color:var(--text-muted);}
+.proof-stage-label{font-size:10.5px;font-weight:600;color:var(--text-muted);text-align:center;max-width:70px;}
+.proof-stage-label.active-lbl{color:var(--accent-primary);}
+.proof-stage-label.done-lbl{color:var(--green);}
+.proof-stage-connector{width:40px;height:2px;background:var(--border);margin-bottom:18px;flex-shrink:0;}
+.proof-stage-connector.done-conn{background:var(--green);}
+
+.proof-filter-row{display:flex;gap:10px;margin-bottom:14px;}
+.proof-filter-row select {
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:8px;padding:7px 12px;
+  color:var(--text-primary);font-family:var(--font-body);font-size:13px;
+  outline:none;cursor:pointer;
+}
+.proof-filter-row select:focus{border-color:var(--accent-primary);}
+
+.proof-table-wrap{background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.proof-table{width:100%;border-collapse:collapse;}
+.proof-table th{
+  padding:11px 14px;text-align:left;
+  font-size:11px;font-weight:600;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:0.5px;
+  background:var(--bg-card);border-bottom:1px solid var(--border);
+}
+.proof-table td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.proof-table tbody tr:last-child td{border-bottom:none;}
+.proof-table tbody tr:hover td{background:rgba(124,92,252,0.04);}
+
+.proof-file-link{color:var(--accent-secondary);font-size:12.5px;text-decoration:none;display:flex;align-items:center;gap:5px;}
+.proof-file-link:hover{color:var(--accent-primary);}
+
+.proof-act-btn {
+  padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:600;
+  cursor:pointer;border:1px solid;transition:all 0.2s;display:inline-flex;align-items:center;gap:4px;
+}
+.proof-approve{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.25);color:var(--green);}
+.proof-approve:hover{background:rgba(34,197,94,0.2);}
+.proof-reject{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2);color:var(--red);}
+.proof-reject:hover{background:rgba(239,68,68,0.18);}
+.proof-view{background:var(--bg-card);border-color:var(--border);color:var(--text-secondary);}
+.proof-view:hover{border-color:var(--accent-primary);color:var(--accent-primary);}
+
+/* status badges */
+.ps-pending{background:rgba(245,158,11,0.1);color:var(--yellow);border:1px solid rgba(245,158,11,0.2);padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.ps-approved{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2);padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;}
+.ps-rejected{background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.2);padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;}
+
+/* program card stage bar */
+.prog-stage-bar{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.prog-stage-bar-label{font-size:11px;color:var(--text-muted);margin-bottom:8px;font-weight:600;letter-spacing:0.3px;}
+.prog-stage-steps{display:flex;align-items:center;gap:0;overflow-x:auto;}
+.prog-stage-dot{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;border:2px solid var(--border);
+  background:var(--bg-elevated);color:var(--text-muted);
+  cursor:pointer;transition:all 0.2s;
+}
+.prog-stage-dot:hover{border-color:var(--accent-primary);color:var(--accent-primary);}
+.prog-stage-dot.s-done{background:var(--green);border-color:var(--green);color:white;}
+.prog-stage-dot.s-active{background:var(--accent-primary);border-color:var(--accent-primary);color:white;box-shadow:0 0 10px var(--accent-glow);}
+.prog-stage-line{flex:1;height:2px;background:var(--border);min-width:10px;}
+.prog-stage-line.s-done-line{background:var(--green);}
+.prog-stage-tooltip{font-size:10px;color:var(--text-muted);text-align:center;margin-top:4px;}
+
+/* view proofs btn */
+.btn-view-proofs {
+  width:100%;margin-top:10px;padding:9px;
+  border-radius:8px;background:var(--bg-elevated);
+  border:1px solid var(--border);color:var(--text-secondary);
+  font-size:12.5px;font-weight:600;cursor:pointer;
+  transition:all 0.2s;font-family:var(--font-body);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-view-proofs:hover{background:rgba(124,92,252,0.1);border-color:var(--accent-primary);color:var(--accent-primary);}
+
+@media(max-width:600px){
+  .cp-form-grid{grid-template-columns:1fr;}
+  .cp-review-row{grid-template-columns:1fr;}
+  .cp-modal{border-radius:14px;}
+}
+</style>
+
+<script>
+  // Navigation
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const page = item.dataset.page;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById(page);
+      target.classList.add('active');
+      animatePage(page);
+    });
+  });
+
+  // Filter tabs
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tab.closest('.filter-tabs').querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.dept-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tab.closest('.dept-filter').querySelectorAll('.dept-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.verif-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tab.closest('.verif-filter').querySelectorAll('.verif-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.tab-toggle').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.dept-filter-dash').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.dept-filter-dash').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Animate numbers
+  function animateCounter(el, target, isPercent) {
+    let start = 0;
+    const duration = 1400;
+    const step = timestamp => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(ease * target);
+      el.textContent = isPercent ? current + '%' : current;
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = isPercent ? target + '%' : target;
+    };
+    requestAnimationFrame(step);
+  }
+
+  function animateBars() {
+    setTimeout(() => {
+      document.querySelectorAll('.bar[data-h]').forEach(bar => {
+        bar.style.height = bar.dataset.h;
+      });
+      document.querySelectorAll('.year-bar[data-h]').forEach(bar => {
+        bar.style.height = bar.dataset.h;
+      });
+    }, 200);
+  }
+
+  function animateFills() {
+    setTimeout(() => {
+      document.querySelectorAll('.funnel-fill[data-w]').forEach(f => f.style.width = f.dataset.w);
+      document.querySelectorAll('.completion-fill[data-w]').forEach(f => f.style.width = f.dataset.w);
+      document.querySelectorAll('.mini-fill[data-w]').forEach(f => f.style.width = f.dataset.w);
+    }, 300);
+  }
+
+  function animatePage(page) {
+    if (page === 'dashboard') {
+      document.querySelectorAll('[data-target]').forEach(el => {
+        animateCounter(el, parseInt(el.dataset.target), false);
+      });
+      const pct = document.getElementById('pct-stat');
+      if (pct) animateCounter(pct, 80, true);
+      animateBars();
+      animateFills();
+    }
+    if (page === 'reports') {
+      animateFills();
+    }
+  }
+
+  // Toast
+  function showToast(msg, type) {
+    const toast = document.getElementById('toast');
+    const msgEl = document.getElementById('toast-msg');
+    const iconEl = document.getElementById('toast-icon-svg');
+    msgEl.textContent = msg;
+    toast.className = 'toast toast-' + type;
+    if (type === 'error') {
+      iconEl.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+    } else {
+      iconEl.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
+    }
+    void toast.offsetWidth;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // Init
+  window.addEventListener('load', () => {
+    animatePage('dashboard');
+  });
+
+  // ═══════════════════════════════════════════
+  // PROGRAM FILTER
+  // ═══════════════════════════════════════════
+  function filterProgramCards(val) {
+    const q = val.toLowerCase();
+    document.querySelectorAll('#programsGrid .program-card').forEach(c => {
+      const title = (c.dataset.title || '').toLowerCase();
+      c.style.display = title.includes(q) ? '' : 'none';
+    });
+  }
+
+  function filterProgramType(type, el) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('#programsGrid .program-card').forEach(c => {
+      c.style.display = (type === 'All' || c.dataset.type === type) ? '' : 'none';
+    });
+  }
+
+  // ═══════════════════════════════════════════
+  // CREATE PROGRAM – STATE
+  // ═══════════════════════════════════════════
+  let cpStep = 1;
+  let cpStages = [];
+  let dragSrcIdx = null;
+  let savedPrograms = [];
+
+  // Proof submissions data (per program)
+  let proofData = {};
+  let currentProofProgId = null;
+  let rejectTargetId = null;
+
+  const defaultStages = ['Registration', 'Training', 'Mid Evaluation', 'Final Submission', 'Completion'];
+  const proofTypes = ['Certificate', 'Report/Document', 'Screenshot', 'Project Files'];
+
+  // Sample proof submissions for demo - now stage-based
+  const sampleProofs = [
+    { id:1, student:'John Doe', programId:2, stage:'Enrollment', file:'enrollment_john.pdf', type:'Certificate', submitted:'2026-01-15', status:'Approved', comment:'Enrollment confirmed' },
+    { id:2, student:'John Doe', programId:2, stage:'Module 1 Completion', file:'module1_john.pdf', type:'Certificate', submitted:'2026-02-10', status:'Approved', comment:'Module 1 completed successfully' },
+    { id:3, student:'John Doe', programId:2, stage:'Module 2 Completion', file:'module2_john.pdf', type:'Certificate', submitted:'2026-03-15', status:'Pending', comment:'' },
+    { id:4, student:'John Doe', programId:3, stage:'Application', file:'application_john.pdf', type:'Certificate', submitted:'2026-01-20', status:'Approved', comment:'Application approved' },
+    { id:5, student:'John Doe', programId:3, stage:'Week 1-2 Tasks', file:'week1-2_john.zip', type:'Project Files', submitted:'2026-02-28', status:'Pending', comment:'' },
+  ];
+
+  function openCreateProgram() {
+    cpStep = 1;
+    cpStages = [...defaultStages];
+    document.getElementById('cpName').value = '';
+    document.getElementById('cpType').value = '';
+    document.getElementById('cpStatus').value = 'Active';
+    document.getElementById('cpStart').value = '';
+    document.getElementById('cpEnd').value = '';
+    document.getElementById('cpDesc').value = '';
+    renderSteps();
+    renderStagesList();
+    document.getElementById('cpOverlay').classList.add('open');
+  }
+
+  function closeCreateProgram() {
+    document.getElementById('cpOverlay').classList.remove('open');
+  }
+
+  function closeCPOnBackdrop(e) {
+    if (e.target === document.getElementById('cpOverlay')) closeCreateProgram();
+  }
+
+  function renderSteps() {
+    [1,2,3].forEach(i => {
+      const el = document.getElementById('cps'+i);
+      el.classList.remove('active','done');
+      if (i === cpStep) el.classList.add('active');
+      else if (i < cpStep) el.classList.add('done');
+    });
+    document.getElementById('cpStep1').style.display = cpStep===1 ? '' : 'none';
+    document.getElementById('cpStep2').style.display = cpStep===2 ? '' : 'none';
+    document.getElementById('cpStep3').style.display = cpStep===3 ? '' : 'none';
+    document.getElementById('cpBtnBack').style.display = cpStep > 1 ? '' : 'none';
+    document.getElementById('cpBtnNext').textContent = cpStep === 3 ? '✓ Save Program' : 'Next →';
+  }
+
+  function cpNext() {
+    if (cpStep === 1) {
+      const name = document.getElementById('cpName').value.trim();
+      const type = document.getElementById('cpType').value;
+      const start = document.getElementById('cpStart').value;
+      const end = document.getElementById('cpEnd').value;
+      const desc = document.getElementById('cpDesc').value.trim();
+      if (!name || !type || !start || !end || !desc) {
+        showToast('Please fill in all required fields.', 'error'); return;
+      }
+      if (new Date(end) <= new Date(start)) {
+        showToast('End date must be after start date.', 'error'); return;
+      }
+      cpStep = 2; renderSteps();
+    } else if (cpStep === 2) {
+      const names = cpStages.map(s => s.trim()).filter(Boolean);
+      if (names.length < 1) { showToast('Add at least one stage.', 'error'); return; }
+      cpStages = names;
+      buildReview(); cpStep = 3; renderSteps();
+    } else if (cpStep === 3) {
+      saveNewProgram();
+    }
+  }
+
+  function cpBack() {
+    if (cpStep > 1) { cpStep--; renderSteps(); }
+  }
+
+  function buildReview() {
+    const name = document.getElementById('cpName').value.trim();
+    const type = document.getElementById('cpType').value;
+    const status = document.getElementById('cpStatus').value;
+    const start = document.getElementById('cpStart').value;
+    const end = document.getElementById('cpEnd').value;
+    const desc = document.getElementById('cpDesc').value.trim();
+    const s = new Date(start), e = new Date(end);
+    const weeks = Math.round((e - s) / (7*24*3600*1000));
+    document.getElementById('rv-name').textContent = name;
+    document.getElementById('rv-type').textContent = type;
+    document.getElementById('rv-status').textContent = status;
+    document.getElementById('rv-duration').textContent = weeks + ' week' + (weeks!==1?'s':'');
+    document.getElementById('rv-desc').textContent = desc;
+    document.getElementById('rv-stage-count').textContent = cpStages.length;
+    const flow = document.getElementById('rv-stages');
+    flow.innerHTML = cpStages.map((s,i) =>
+      `<span class="cp-stage-pill">${s}</span>${i<cpStages.length-1?'<span class="cp-stage-arrow">→</span>':''}`
+    ).join('');
+  }
+
+  function saveNewProgram() {
+    const name = document.getElementById('cpName').value.trim();
+    const type = document.getElementById('cpType').value;
+    const status = document.getElementById('cpStatus').value;
+    const start = document.getElementById('cpStart').value;
+    const end = document.getElementById('cpEnd').value;
+    const desc = document.getElementById('cpDesc').value.trim();
+    const id = 'prog_' + Date.now();
+    const prog = { id, name, type, status, start, end, desc, stages: [...cpStages] };
+    savedPrograms.push(prog);
+    proofData[id] = JSON.parse(JSON.stringify(sampleProofs)).map(p => ({...p, id: Date.now()+Math.random()}));
+    addProgramCard(prog);
+    closeCreateProgram();
+    showToast('Program "' + name + '" created successfully!', 'success');
+  }
+
+  // ═══════════════════════════════════════════
+  // STAGES LIST
+  // ═══════════════════════════════════════════
+  function renderStagesList() {
+    const list = document.getElementById('cpStagesList');
+    if (!cpStages.length) {
+      list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No stages yet. Click "+ Add Stage" to begin.</div>';
+      return;
+    }
+    list.innerHTML = cpStages.map((s, i) => `
+      <div class="cp-stage-item" draggable="true"
+        ondragstart="dragStart(${i})" ondragover="dragOver(event,${i})" ondrop="dragDrop(${i})" ondragleave="dragLeave(event)">
+        <span class="cp-stage-drag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="15" cy="5" r="1" fill="currentColor"/>
+            <circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="15" cy="12" r="1" fill="currentColor"/>
+            <circle cx="9" cy="19" r="1" fill="currentColor"/><circle cx="15" cy="19" r="1" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="cp-stage-num">${i+1}</span>
+        <input class="cp-stage-name-input" value="${s}" placeholder="Stage name…"
+          onchange="cpStages[${i}]=this.value" oninput="cpStages[${i}]=this.value">
+        <button class="cp-stage-del" onclick="deleteStage(${i})" title="Delete stage">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>`).join('');
+  }
+
+  function addStage() {
+    cpStages.push('New Stage');
+    renderStagesList();
+    // focus last input
+    setTimeout(() => {
+      const inputs = document.querySelectorAll('.cp-stage-name-input');
+      if (inputs.length) { const last = inputs[inputs.length-1]; last.focus(); last.select(); }
+    }, 50);
+  }
+
+  function deleteStage(i) {
+    cpStages.splice(i, 1);
+    renderStagesList();
+  }
+
+  // Drag & drop reorder
+  function dragStart(i) { dragSrcIdx = i; }
+  function dragOver(e, i) {
+    e.preventDefault();
+    document.querySelectorAll('.cp-stage-item').forEach(el => el.classList.remove('drag-over'));
+    document.querySelectorAll('.cp-stage-item')[i]?.classList.add('drag-over');
+  }
+  function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+  function dragDrop(i) {
+    if (dragSrcIdx === null || dragSrcIdx === i) return;
+    const moved = cpStages.splice(dragSrcIdx, 1)[0];
+    cpStages.splice(i, 0, moved);
+    dragSrcIdx = null;
+    renderStagesList();
+  }
+
+  // ═══════════════════════════════════════════
+  // ADD PROGRAM CARD TO GRID
+  // ═══════════════════════════════════════════
+  const typeEmoji = { Internship:'💼', Workshop:'🔧', Certification:'🏅', Hackathon:'⚡', Seminar:'🎤', Other:'📌' };
+  const typeTagClass = { Internship:'tag-intern', Workshop:'tag-workshop', Certification:'tag-cert', Hackathon:'tag-workshop', Seminar:'tag-training', Other:'tag-cert' };
+  const statusTagClass = { Active:'tag-active', Upcoming:'tag-upcoming', Completed:'tag-completed' };
+
+  function addProgramCard(prog) {
+    const s = new Date(prog.start), e = new Date(prog.end);
+    const weeks = Math.round((e-s)/(7*24*3600*1000));
+    const stagesHtml = buildStageBarHtml(prog);
+    const card = document.createElement('div');
+    card.className = 'program-card';
+    card.dataset.type = prog.type;
+    card.dataset.title = prog.name;
+    card.dataset.progId = prog.id;
+    card.innerHTML = `
+      <div class="program-card-header">
+        <div class="program-icon">${typeEmoji[prog.type]||'📌'}</div>
+        <div class="program-tags">
+          <span class="tag ${typeTagClass[prog.type]||'tag-cert'}">${prog.type}</span>
+          <span class="tag ${statusTagClass[prog.status]||'tag-active'}">${prog.status}</span>
+        </div>
+      </div>
+      <div class="program-title">${prog.name}</div>
+      <div class="program-desc">${prog.desc}</div>
+      <div class="program-meta">
+        <div class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ${weeks} week${weeks!==1?'s':''}
+        </div>
+        <div class="meta-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${prog.start} → ${prog.end}
+        </div>
+      </div>
+      ${stagesHtml}
+      <button class="btn-view-proofs" onclick="openProofModal('${prog.id}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        View Proof Submissions
+      </button>`;
+    document.getElementById('programsGrid').appendChild(card);
+  }
+
+  function buildStageBarHtml(prog) {
+    if (!prog.stages || !prog.stages.length) return '';
+    const nodes = prog.stages.map((s, i) => {
+      const cls = i === 0 ? 's-done' : i === 1 ? 's-active' : '';
+      const line = i < prog.stages.length-1
+        ? `<div class="prog-stage-line${i===0?' s-done-line':''}"></div>` : '';
+      return `<div class="prog-stage-dot ${cls}" title="${s}">${i+1}</div>${line}`;
+    }).join('');
+    return `
+      <div class="prog-stage-bar">
+        <div class="prog-stage-bar-label">STAGE PROGRESS</div>
+        <div class="prog-stage-steps">${nodes}</div>
+        <div class="prog-stage-tooltip" style="margin-top:6px;font-size:11px;color:var(--text-muted)">
+          ${prog.stages.join(' → ')}
+        </div>
+      </div>`;
+  }
+
+  // ═══════════════════════════════════════════
+  // PROOF SUBMISSIONS MODAL
+  // ═══════════════════════════════════════════
+  function openProofModal(progId) {
+    currentProofProgId = progId;
+    const prog = savedPrograms.find(p => p.id === progId);
+    if (!prog) return;
+    document.getElementById('proofModalTitle').textContent = prog.name + ' – Proof Submissions';
+    document.getElementById('proofModalSub').textContent = prog.type + ' · ' + prog.stages.length + ' stages';
+
+    // Build stage tracker
+    const tracker = document.getElementById('proofStageTracker');
+    tracker.innerHTML = prog.stages.map((s, i) => {
+      const proofs = (proofData[progId]||[]).filter(p => p.stage === s);
+      const approved = proofs.filter(p => p.status==='Approved').length;
+      const cls = approved > 0 ? 'done' : i === 0 ? 'active' : 'pending';
+      const lblCls = cls==='done'?'done-lbl':cls==='active'?'active-lbl':'';
+      const connector = i < prog.stages.length-1
+        ? `<div class="proof-stage-connector${cls==='done'?' done-conn':''}"></div>` : '';
+      return `
+        <div class="proof-stage-node">
+          <div class="proof-stage-circle ${cls}">${cls==='done'?'✓':i+1}</div>
+          <div class="proof-stage-label ${lblCls}">${s}</div>
+        </div>${connector}`;
+    }).join('');
+
+    // Build stage filter options
+    const sf = document.getElementById('proofStageFilter');
+    sf.innerHTML = '<option value="">All Stages</option>' +
+      prog.stages.map(s => `<option>${s}</option>`).join('');
+
+    document.getElementById('proofStatusFilter').value = '';
+    renderProofTable();
+    document.getElementById('proofOverlay').classList.add('open');
+  }
+
+  function closeProofModal() {
+    document.getElementById('proofOverlay').classList.remove('open');
+    currentProofProgId = null;
+  }
+
+  function closeProofOnBackdrop(e) {
+    if (e.target === document.getElementById('proofOverlay')) closeProofModal();
+  }
+
+  function renderProofTable() {
+    const stageF = document.getElementById('proofStageFilter').value;
+    const statusF = document.getElementById('proofStatusFilter').value;
+    let proofs = proofData[currentProofProgId] || sampleProofs.filter(p => p.programId === currentProofProgId);
+    proofs = proofs.filter(p =>
+      (!stageF || p.stage === stageF) && (!statusF || p.status === statusF)
+    );
+    const tbody = document.getElementById('proofTbody');
+    if (!proofs.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted)">No submissions found</td></tr>';
+      return;
+    }
+    tbody.innerHTML = proofs.map(p => {
+      const statusCls = p.status==='Approved'?'ps-approved':p.status==='Rejected'?'ps-rejected':'ps-pending';
+      const actions = p.status === 'Pending'
+        ? `<button class="proof-act-btn proof-approve" onclick="proofAction('${p.id}','Approved')">
+             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Approve
+           </button>
+           <button class="proof-act-btn proof-reject" onclick="openRejectModal('${p.id}')">
+             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Reject
+           </button>`
+        : p.status === 'Rejected' && p.comment
+          ? `<span style="font-size:11px;color:var(--red);max-width:140px;display:inline-block" title="${p.comment}">💬 ${p.comment.substring(0,30)}…</span>`
+          : '<span style="color:var(--text-muted);font-size:12px">—</span>';
+      return `
+        <tr>
+          <td style="font-weight:600;color:var(--text-primary)">${p.student}</td>
+          <td><span style="font-size:12px;color:var(--accent-secondary)">${p.stage}</span></td>
+          <td><a class="proof-file-link" href="#" onclick="showToast('Opening ${p.file}…','success');return false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            ${p.file}</a></td>
+          <td style="font-size:12px;color:var(--text-secondary)">${p.type}</td>
+          <td style="font-size:12px;color:var(--text-muted)">${p.submitted}</td>
+          <td><span class="${statusCls}">${p.status}</span></td>
+          <td><div style="display:flex;gap:6px;flex-wrap:wrap">${actions}</div></td>
+        </tr>`;
+    }).join('');
+  }
+
+  function proofAction(id, action) {
+    let allProofs = proofData[currentProofProgId] || sampleProofs.filter(p => p.programId === currentProofProgId);
+    const proof = allProofs.find(p => String(p.id) === String(id));
+    if (proof) { proof.status = action; }
+    renderProofTable();
+    showToast('Submission ' + action.toLowerCase() + ' successfully!', action==='Approved'?'success':'error');
+  }
+
+  function openRejectModal(id) {
+    rejectTargetId = id;
+    document.getElementById('rejectComment').value = '';
+    document.getElementById('rejectOverlay').classList.add('open');
+  }
+
+  function closeRejectModal() {
+    document.getElementById('rejectOverlay').classList.remove('open');
+    rejectTargetId = null;
+  }
+
+  function confirmReject() {
+    const comment = document.getElementById('rejectComment').value.trim();
+    if (!comment) { showToast('Please provide a rejection reason.', 'error'); return; }
+    let allProofs = proofData[currentProofProgId] || sampleProofs.filter(p => p.programId === currentProofProgId);
+    const proof = allProofs.find(p => String(p.id) === String(rejectTargetId));
+    if (proof) { proof.status = 'Rejected'; proof.comment = comment; }
+    closeRejectModal();
+    renderProofTable();
+    showToast('Submission rejected with comment.', 'error');
+  }
+</script>
+<style>
+/* REPORTS */
+.rpt-filters{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:20px;}
+.rpt-filter-group{display:flex;flex-direction:column;gap:5px;}
+.rpt-filter-group label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;}
+.rpt-filter-group select,.rpt-filter-group input{background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text-primary);font-family:var(--font-body);font-size:13px;outline:none;transition:border-color 0.2s;}
+.rpt-filter-group select:focus,.rpt-filter-group input:focus{border-color:var(--accent-primary);}
+.rpt-reset-btn{padding:8px 16px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;align-self:flex-end;font-family:var(--font-body);}
+.rpt-reset-btn:hover{border-color:var(--accent-primary);color:var(--accent-primary);}
+.rpt-dl-group{display:flex;gap:8px;}
+.rpt-dl-btn{padding:9px 16px;border-radius:9px;background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-secondary);font-size:12.5px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:var(--font-body);}
+.rpt-dl-btn:hover{background:var(--accent-primary);color:white;border-color:var(--accent-primary);box-shadow:0 0 14px var(--accent-glow);}
+.rpt-dl-excel:hover{background:#22c55e;border-color:#22c55e;box-shadow:0 0 14px rgba(34,197,94,0.3);}
+.rpt-dl-pdf:hover{background:#ef4444;border-color:#ef4444;box-shadow:0 0 14px rgba(239,68,68,0.3);}
+.rpt-kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px;}
+.rpt-kpi{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;transition:all 0.2s;}
+.rpt-kpi:hover{border-color:rgba(124,92,252,0.3);transform:translateY(-2px);}
+.rpt-kpi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:16px;}
+.rpt-kpi-val{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-1px;}
+.rpt-kpi-label{font-size:11.5px;color:var(--text-secondary);margin-top:3px;}
+.rpt-charts-row{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-bottom:20px;}
+.rpt-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+.rpt-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.rpt-card-title{font-family:var(--font-display);font-size:14px;font-weight:600;}
+.rpt-badge{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(124,92,252,0.12);color:var(--accent-primary);border:1px solid rgba(124,92,252,0.2);}
+.rpt-type-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
+.rpt-type-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;transition:all 0.2s;}
+.rpt-type-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);}
+.rpt-type-num{font-family:var(--font-display);font-size:28px;font-weight:800;margin:6px 0 2px;}
+.rpt-type-label{font-size:13px;font-weight:600;color:var(--text-primary);}
+.rpt-type-sub{font-size:11.5px;color:var(--text-muted);margin-top:3px;}
+.rpt-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+.rpt-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.rpt-section-title{font-family:var(--font-display);font-size:15px;font-weight:700;}
+.rpt-section-hint{font-size:12px;color:var(--text-muted);}
+.rpt-search-wrap{position:relative;display:flex;align-items:center;}
+.rpt-search-wrap svg{position:absolute;left:10px;color:var(--text-muted);pointer-events:none;}
+.rpt-search-wrap input{background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:7px 12px 7px 30px;color:var(--text-primary);font-family:var(--font-body);font-size:13px;outline:none;width:200px;transition:border-color 0.2s;}
+.rpt-search-wrap input:focus{border-color:var(--accent-primary);}
+.rpt-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);}
+.rpt-table{width:100%;border-collapse:collapse;}
+.rpt-table th{padding:11px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;background:var(--bg-elevated);border-bottom:1px solid var(--border);white-space:nowrap;}
+.rpt-table td{padding:12px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.rpt-table tbody tr:last-child td{border-bottom:none;}
+.rpt-table tbody tr:hover td{background:rgba(124,92,252,0.04);}
+.rpt-table tbody tr.low-completion td{background:rgba(239,68,68,0.04);}
+.rpt-table tbody tr.low-completion td:first-child{border-left:3px solid var(--red);}
+.rpt-prog-bar{width:90px;height:6px;background:var(--bg-base);border-radius:10px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px;}
+.rpt-prog-fill{height:100%;border-radius:10px;background:linear-gradient(to right,var(--accent-primary),var(--accent-secondary));transition:width 1s ease;}
+.rpt-prog-fill.low{background:linear-gradient(to right,var(--red),#f87171);}
+.vs-approved{background:rgba(34,197,94,0.1);color:var(--green);border:1px solid rgba(34,197,94,0.2);padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;display:inline-block;}
+.vs-rejected{background:rgba(239,68,68,0.1);color:var(--red);border:1px solid rgba(239,68,68,0.2);padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;display:inline-block;}
+.vs-pending{background:rgba(245,158,11,0.1);color:var(--yellow);border:1px solid rgba(245,158,11,0.2);padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:600;display:inline-block;}
+@media(max-width:1200px){.rpt-kpi-grid{grid-template-columns:repeat(3,1fr);}.rpt-type-row{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:900px){.rpt-charts-row{grid-template-columns:1fr;}.rpt-kpi-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+
+<script>
+// ── REPORTS DATA ──
+const rptPrograms = [
+  {name:'Infosys Springboard – Python',type:'Certification',enrolled:142,completed:121,dept:'CSE',date:'2026-01-15'},
+  {name:'AWS Cloud Practitioner',      type:'Certification',enrolled:98, completed:71, dept:'ISE',date:'2026-02-01'},
+  {name:'Data Science with Python',    type:'Certification',enrolled:54, completed:22, dept:'CSE',date:'2026-02-20'},
+  {name:'Virtual Internship – Web Dev',type:'Internship',   enrolled:76, completed:69, dept:'ISE',date:'2026-01-10'},
+  {name:'HackWithInfy 2026',           type:'Hackathon',    enrolled:125,completed:48, dept:'ECE',date:'2026-03-05'},
+  {name:'Faculty Development Program', type:'Seminar',      enrolled:32, completed:30, dept:'MECH',date:'2026-01-20'},
+  {name:'IoT Workshop',                type:'Workshop',     enrolled:60, completed:25, dept:'ECE',date:'2026-03-15'},
+];
+
+const rptStudents = [
+  {name:'Rahul Kumar',   dept:'CSE', program:'Python Certification',  stage:'Completion',      progress:100,status:'Completed'},
+  {name:'Priya Sharma',  dept:'CSE', program:'AWS Cloud',             stage:'Mid Evaluation',  progress:60, status:'In Progress'},
+  {name:'Amit Patel',    dept:'ISE', program:'Web Dev Internship',    stage:'Final Submission',progress:80, status:'In Progress'},
+  {name:'Sneha Reddy',   dept:'ECE', program:'Data Science',          stage:'Training',        progress:25, status:'In Progress'},
+  {name:'Vikram Singh',  dept:'CSE', program:'HackWithInfy',          stage:'Completion',      progress:100,status:'Completed'},
+  {name:'Anjali Gupta',  dept:'ISE', program:'Python Certification',  stage:'Final Submission',progress:85, status:'In Progress'},
+  {name:'Karan Malhotra',dept:'MECH',program:'AWS Cloud',             stage:'Registration',    progress:15, status:'In Progress'},
+  {name:'Divya Nair',    dept:'CSE', program:'Web Dev Internship',    stage:'Completion',      progress:100,status:'Completed'},
+];
+
+const rptProofs = [
+  {student:'Rahul Kumar',  program:'Python Certification', stage:'Completion',      file:'cert_rahul.pdf',   date:'2026-04-01',status:'Approved'},
+  {student:'Priya Sharma', program:'AWS Cloud',            stage:'Mid Evaluation',  file:'mid_priya.pdf',    date:'2026-03-28',status:'Pending'},
+  {student:'Amit Patel',   program:'Web Dev Internship',   stage:'Final Submission',file:'report_amit.pdf',  date:'2026-04-03',status:'Approved'},
+  {student:'Sneha Reddy',  program:'Data Science',         stage:'Training',        file:'cert_sneha.pdf',   date:'2026-03-25',status:'Rejected'},
+  {student:'Vikram Singh', program:'HackWithInfy',         stage:'Completion',      file:'cert_vikram.pdf',  date:'2026-04-02',status:'Approved'},
+  {student:'Anjali Gupta', program:'Python Certification', stage:'Final Submission',file:'proj_anjali.zip',  date:'2026-04-05',status:'Pending'},
+  {student:'Karan Malhotra',program:'AWS Cloud',           stage:'Registration',    file:'reg_karan.pdf',    date:'2026-03-10',status:'Pending'},
+];
+
+const rptMonthly = [
+  {month:'Aug',students:18},{month:'Sep',students:34},{month:'Oct',students:52},
+  {month:'Nov',students:41},{month:'Dec',students:29},{month:'Jan',students:63},
+  {month:'Feb',students:78},{month:'Mar',students:91},{month:'Apr',students:55},
+];
+
+const rptDeptData = [
+  {dept:'CSE', count:85},{dept:'ISE',count:68},{dept:'ECE',count:54},{dept:'MECH',count:42},{dept:'CIVIL',count:38},
+];
+
+let rptFiltered = { programs:[...rptPrograms], students:[...rptStudents], proofs:[...rptProofs] };
+
+function applyReportFilters(){
+  const dept = document.getElementById('rptDept').value;
+  const type = document.getElementById('rptType').value;
+  const from = document.getElementById('rptFrom').value;
+  const to   = document.getElementById('rptTo').value;
+  rptFiltered.programs = rptPrograms.filter(p=>
+    (!dept || p.dept===dept) &&
+    (!type || p.type===type) &&
+    (!from || p.date>=from) &&
+    (!to   || p.date<=to)
+  );
+  rptFiltered.students = rptStudents.filter(s=> !dept || s.dept===dept);
+  rptFiltered.proofs   = rptProofs.filter(p=> !dept || rptStudents.find(s=>s.name===p.student&&s.dept===dept));
+  renderAllReports();
+}
+
+function resetReportFilters(){
+  ['rptDept','rptType','rptFrom','rptTo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  rptFiltered = { programs:[...rptPrograms], students:[...rptStudents], proofs:[...rptProofs] };
+  renderAllReports();
+}
+
+function renderAllReports(){
+  renderCompletionTable();
+  renderStudentProgressTable();
+  renderProofTable2();
+  drawRptBarChart();
+  drawRptLineChart();
+  updateKPIs();
+}
+
+function updateKPIs(){
+  const progs = rptFiltered.programs;
+  const total = progs.reduce((a,p)=>a+p.enrolled,0);
+  const comp  = progs.reduce((a,p)=>a+p.completed,0);
+  const rate  = total ? Math.round(comp/total*100) : 0;
+  document.getElementById('kpi-total').textContent     = total;
+  document.getElementById('kpi-completed').textContent = comp;
+  document.getElementById('kpi-rate').textContent      = rate+'%';
+}
+
+function renderCompletionTable(){
+  const tbody = document.getElementById('rptCompletionBody');
+  tbody.innerHTML = rptFiltered.programs.map(p=>{
+    const pct = Math.round(p.completed/p.enrolled*100);
+    const low = pct < 50;
+    const fillCls = low ? 'rpt-prog-fill low' : 'rpt-prog-fill';
+    return `<tr class="${low?'low-completion':''}">
+      <td style="font-weight:600;color:var(--text-primary)">${p.name}</td>
+      <td><span class="rpt-badge">${p.type}</span></td>
+      <td>${p.enrolled}</td>
+      <td>${p.completed}</td>
+      <td style="font-weight:700;color:${low?'var(--red)':'var(--green)'}">${pct}%</td>
+      <td><div class="rpt-prog-bar"><div class="${fillCls}" style="width:${pct}%"></div></div>${pct}%</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">No data</td></tr>';
+}
+
+function renderStudentProgressTable(){
+  const q = (document.getElementById('rptStudentSearch')?.value||'').toLowerCase();
+  const rows = rptFiltered.students.filter(s=>!q||s.name.toLowerCase().includes(q)||s.program.toLowerCase().includes(q));
+  const deptColors = {CSE:'dept-cse',ISE:'dept-ise',ECE:'dept-ece',MECH:'dept-mech',CIVIL:'dept-civil'};
+  document.getElementById('rptStudentBody').innerHTML = rows.map(s=>{
+    const sc = s.status==='Completed'?'status-completed':'status-inprogress';
+    return `<tr>
+      <td style="font-weight:600;color:var(--text-primary)">${s.name}</td>
+      <td><span class="dept-chip ${deptColors[s.dept]||''}">${s.dept}</span></td>
+      <td>${s.program}</td>
+      <td style="color:var(--accent-secondary);font-size:12.5px">${s.stage}</td>
+      <td><div class="rpt-prog-bar"><div class="rpt-prog-fill" style="width:${s.progress}%"></div></div>${s.progress}%</td>
+      <td><span class="status-chip ${sc}">${s.status}</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-muted)">No data</td></tr>';
+}
+
+function renderProofTable2(){
+  document.getElementById('rptProofBody').innerHTML = rptFiltered.proofs.map(p=>{
+    const sc = p.status==='Approved'?'vs-approved':p.status==='Rejected'?'vs-rejected':'vs-pending';
+    return `<tr>
+      <td style="font-weight:600;color:var(--text-primary)">${p.student}</td>
+      <td>${p.program}</td>
+      <td style="color:var(--accent-secondary);font-size:12.5px">${p.stage}</td>
+      <td><a href="#" style="color:var(--accent-secondary);font-size:12.5px" onclick="showToast('Opening ${p.file}…','success');return false">📄 ${p.file}</a></td>
+      <td style="color:var(--text-muted);font-size:12.5px">${p.date}</td>
+      <td><span class="${sc}">${p.status}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function drawRptBarChart(){
+  const canvas = document.getElementById('rptDeptCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio||1;
+  const W = canvas.parentElement.clientWidth - 40 || 400;
+  const H = 180;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+  const data = rptDeptData;
+  const max = Math.max(...data.map(d=>d.count));
+  const padL=36,padR=10,padT=16,padB=30;
+  const cW=W-padL-padR, cH=H-padT-padB;
+  const bW=(cW/data.length)*0.5, gap=cW/data.length;
+  const colors=['#7c5cfc','#5b8af5','#38e5c5','#f5a623','#f472b6'];
+  for(let i=0;i<=4;i++){
+    const y=padT+cH-(i/4)*cH;
+    ctx.beginPath();ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+    ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='10px DM Sans,sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round((i/4)*max),padL-4,y+4);
+  }
+  data.forEach((d,i)=>{
+    const x=padL+i*gap+(gap-bW)/2;
+    const bH=(d.count/max)*cH;
+    const y=padT+cH-bH;
+    const g=ctx.createLinearGradient(0,y,0,y+bH);
+    g.addColorStop(0,colors[i]);g.addColorStop(1,colors[i]+'44');
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.roundRect(x,y,bW,bH,[4,4,0,0]);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font='11px DM Sans,sans-serif';ctx.textAlign='center';
+    ctx.fillText(d.count,x+bW/2,y-5);
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='11px DM Sans,sans-serif';
+    ctx.fillText(d.dept,x+bW/2,H-padB+14);
+  });
+}
+
+function drawRptLineChart(){
+  const canvas = document.getElementById('rptMonthCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio||1;
+  const W = canvas.parentElement.clientWidth - 40 || 340;
+  const H = 180;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+  const data = rptMonthly;
+  const max = Math.max(...data.map(d=>d.students));
+  const padL=36,padR=10,padT=16,padB=30;
+  const cW=W-padL-padR,cH=H-padT-padB;
+  for(let i=0;i<=4;i++){
+    const y=padT+cH-(i/4)*cH;
+    ctx.beginPath();ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+    ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='10px DM Sans,sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round((i/4)*max),padL-4,y+4);
+  }
+  const pts = data.map((d,i)=>({
+    x: padL+(i/(data.length-1))*cW,
+    y: padT+cH-(d.students/max)*cH
+  }));
+  // fill
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x,padT+cH);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x,padT+cH);
+  ctx.closePath();
+  const grad=ctx.createLinearGradient(0,padT,0,padT+cH);
+  grad.addColorStop(0,'rgba(124,92,252,0.3)');grad.addColorStop(1,'rgba(124,92,252,0)');
+  ctx.fillStyle=grad;ctx.fill();
+  // line
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.strokeStyle='#7c5cfc';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+  // dots + labels
+  pts.forEach((p,i)=>{
+    ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);
+    ctx.fillStyle='#7c5cfc';ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='10px DM Sans,sans-serif';ctx.textAlign='center';
+    ctx.fillText(data[i].month,p.x,H-padB+14);
+  });
+}
+
+// ── DOWNLOAD HELPERS ──
+function downloadCSV(){
+  const rows=[['Program','Type','Enrolled','Completed','Completion%']];
+  rptFiltered.programs.forEach(p=>rows.push([p.name,p.type,p.enrolled,p.completed,Math.round(p.completed/p.enrolled*100)+'%']));
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  triggerDownload('report.csv','data:text/csv;charset=utf-8,'+encodeURIComponent(csv));
+  showToast('CSV downloaded!','success');
+}
+function downloadExcel(){
+  downloadCSV();
+  showToast('Excel file downloaded!','success');
+}
+function downloadPDF(){
+  window.print();
+  showToast('Print dialog opened for PDF!','success');
+}
+function triggerDownload(name,href){
+  const a=document.createElement('a');a.href=href;a.download=name;a.click();
+}
+
+// hook into animatePage
+const _origAnimatePage = animatePage;
+function animatePage(page){
+  _origAnimatePage(page);
+  if(page==='reports'){
+    renderAllReports();
+  }
+}
+</script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Check authentication on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    Auth.requireAuth(['Admin']);
+    Auth.updateUI();
+  });
+</script>
+</body>
+</html>
